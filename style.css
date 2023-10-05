@@ -2,14 +2,14 @@
 	padding: 0;
 	margin: 0;
 }
-.container {
+.container-card {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1em;
 	height: 100vh;
 }
 
-.container article {
+.container-card article {
 	text-align: center;
 	border: 1px solid black;
 	width: calc(55% - 10vw);
@@ -21,11 +21,11 @@
 	align-items: center;
 }
 
-.container article ul {
+.container-card article ul {
 	display: flex;
 	flex-wrap: wrap;
 }
 
-.container article ul li {
+.container-card article ul li {
 	list-style: none;
 }
