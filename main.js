@@ -4,14 +4,17 @@ const baseUrl = "https://anime-api.cyclic.cloud/"
 
 const container = document.querySelector('.container')
 search.addEventListener('change', function(e){
-    e.preventDefault
+    e.preventDefault()
     let q = search.value
+    getAnimeByQuery(q)
+})
+
+function getAnimeByQuery(q){
     fetch(`${baseUrl}search?q=${q}`)
     .then(res => res.json())
     .then(({data}) => 
         data.forEach(animeData => {
-            const {title, thumbnail, genres, rating } = animeData
-    
+            const {title, genres, rating, thumbnail, slug} = animeData
             container.innerHTML += `<article>
                 <h2>${title}</h2>
                 <img src="${thumbnail}" alt="anime..." />
@@ -22,10 +25,14 @@ search.addEventListener('change', function(e){
                 </ul>
                 <p>rating: ${rating}</p>
             </article>`
-            console.log(container)
-            console.log(animeData)
-        })
-    )
-})
-
+            getAnimeDetail(slug)
+        }))
+}
+function getAnimeDetail(slug){
+    fetch(`${baseUrl}anime/${slug}`)
+    .then(res => res.json())
+    .then((data) => {
+        console.log(data)
+    })
+}
 
