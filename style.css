@@ -2,21 +2,39 @@
 	padding: 0;
 	margin: 0;
 }
+
+body {
+	background: rgb(9, 9, 161);
+}
+
 .container-card {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(400px,1fr));
-	gap: 1em;
+	row-gap: 1em;
+}
+
+.container > article:is(.detail) {
+	width: calc(60vw - 5em);
+}
+
+.container > article:is(.home) {
+	width: clamp(400px, calc(100vw - 5em),calc(100% - 20em));
 }
 
 .container > article {
 	text-align: center;
-	border: 1px solid black;
-	height: calc(100vh - 10em);
+	background: rgba(18, 115, 227, 0.774);
+	border: 1px solid rgba(18, 115, 227, 0.486);
+	height: calc(100vh - 5em);
 	display: flex;
 	margin: auto;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+dialog {
+	padding: 0;
 }
 
 article.card > img {
