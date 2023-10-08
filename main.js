@@ -63,7 +63,8 @@ function getAnimeDetail(slug){
             <ul>
             ${
                 episodeList.map(episode => {
-                        let episodeNumber = episode.replace(/(\D+)-(\D+)/g, "");;
+                        let episodeNumber = episode.replace(/(\D+-)|(\D+.)/g, "");
+                        console.log(episode)
                         return `<li>
                             <button data-value="${episode}" 
                             >
@@ -92,7 +93,6 @@ function getAnimeEpisode(episodeButtons){
         fetch(`${baseUrl}episode/${episode}`)
         .then(res => res.json())
         .then(({streamLink})=>{
-            console.log(episodeButton.childNodes[1])
             episodeButton.childNodes[1].setAttribute('href', streamLink)
             episodeButton.childNodes[1].setAttribute('target', '_blank')
         })
