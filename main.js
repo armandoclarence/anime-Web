@@ -63,7 +63,7 @@ function getAnimeDetail(slug){
             <ul>
             ${
                 episodeList.map(episode => {
-                        let episodeNumber = episode.replace(/(\D+-)|(\D+.)/g, "");
+                        let episodeNumber = episode.replace(/(\D+-|\D+.)/g, "");
                         console.log(episode)
                         return `<li>
                             <button data-value="${episode}" 
