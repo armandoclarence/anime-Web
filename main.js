@@ -1,36 +1,34 @@
 
-const search = document.querySelector('#search')
 const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://anime-api.cyclic.cloud/"
 
 const container = document.querySelector('.container-card')
 
-search.addEventListener('change', function(e){
-    e.preventDefault()
-    let q = search.value
-    getAnimeByQuery(q)
+window.addEventListener('load',function(e){
+    getAnime()
 })
 
-async function getAnimeByQuery(q){
-    const anime = await fetch(`${baseUrl}search?q=${q}`)
+async function getAnime(){
+    const anime = await fetch(`${baseUrl}complete-anime`)
     const animeData = await anime.json()
-    const {data} = animeData;
+    const {collection} = animeData;
+    const {data} = collection;
+    console.log(data);
     makeCard(data)
 }
+
+
 function makeCard(datas){
     datas.map(data => {
-        const {title, thumbnail, slug, genres, rating} = data
+        const {title, thumbnail, slug, rating, releaseDate, status} = data
         container.innerHTML += `
             <article class="card home" value=${slug}>
                 <h2>${title}</h2>
                 <img src="${thumbnail}" alt="${slug}" />
-                <ul>
-                    ${genres.map(genre => {
-                        return `<li>${genre}</li>`  
-                    })}
-                </ul>
-                <p>rating: ${rating}</p>
+                <p>Rating: ${rating}</p>
+                <p>${releaseDate}</p>
+                <p>${status}</p>
                 </article>`
             })
     const cards = document.querySelectorAll('.card')
@@ -61,9 +59,8 @@ function getAnimeDetail(slug){
             </ul>
             <p>rating: ${score}</p>
             <ul>
-            ${
-                episodeList.map(episode => {
-                        let episodeNumber = episode.replace(/(\D+)-(\D+)/g, "");;
+                ${episodeList.map(episode => {
+                    let episodeNumber = episode.replace(/(\D+)-(\D+)/g, "");
                         return `<li>
                             <button data-value="${episode}" 
                             >
@@ -92,7 +89,6 @@ function getAnimeEpisode(episodeButtons){
         fetch(`${baseUrl}episode/${episode}`)
         .then(res => res.json())
         .then(({streamLink})=>{
-            console.log(episodeButton.childNodes[1])
             episodeButton.childNodes[1].setAttribute('href', streamLink)
             episodeButton.childNodes[1].setAttribute('target', '_blank')
         })
