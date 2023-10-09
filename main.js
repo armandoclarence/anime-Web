@@ -59,6 +59,7 @@ function getAnimeDetail(slug){
             </ul>
             <p>rating: ${score}</p>
             <ul>
+<<<<<<< HEAD
                 ${episodeList.map(episode => {
                     let episodeNumber = episode.replace(/(\D+)-(\D+)/g, "");
                         return `<li>
