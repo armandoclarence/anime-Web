@@ -1,10 +1,28 @@
 * :not(dialog) {
 	padding: 0;
 	margin: 0;
+	box-sizing: border-box;
 }
 
 body {
 	background: rgb(9, 9, 161);
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: .5em;
+	background: rgba(85, 126, 173, 0.774);
+	height: 40px;
+}
+
+header nav ul li {
+	list-style-type: none;
+}
+
+main .page {
+	text-align: right;
 }
 
 .container-card {
@@ -18,7 +36,7 @@ body {
 }
 
 .container > article:is(.home) {
-	width: clamp(400px, calc(100vw - 5em),calc(100% - 20em));
+	width: clamp(300px,calc(30vw - 2em), calc(50vw - 2em));
 }
 
 .container > article {
@@ -38,7 +56,7 @@ dialog {
 }
 
 article.card > img {
-	width: 225px;
+	width: clamp(180px, calc(20vw - 1em), calc(40vw - 1em));
 }
 
 article.card > ul {
@@ -49,6 +67,10 @@ article.card > ul {
 
 article.card ul li {
 	list-style: none;
+}
+
+article.detail ul li a {
+	text-decoration: none;
 }
 
 
