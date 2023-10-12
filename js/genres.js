@@ -1,29 +1,21 @@
-const baseUrl = "https://anime-api.cyclic.cloud/"
+import { getAnimeGenre } from "./utils.js"
 const container = document.querySelector('.container')
-const userSelect = document.querySelector('#userSelect')
 window.addEventListener('load',function(e){
-    getAnime()
-})
+    getAnimeGenre().then((genres)=>{
+        genres.map(({name}) => {
+            container.innerHTML += `
+            <button class="genre">
+                <a href="?genre-list=${name}">${name}</a>
+            </button>`
 
-const getAnime = async() =>{
-    const anime = await fetch(`${baseUrl}genres`)
-    const genres = await anime.json()
-    genres.map(({name}) => {
-        container.innerHTML += `
-            <button data-value=${name}>${name}</button>
-        `
-    })
-    const buttons = document.querySelectorAll('button')
-    buttons.forEach(button => {
-        button.addEventListener('click', function(){
-            let genre =  this.getAttribute('data-value')
-            getAnimeByGenre(genre)
         })
     })
-}
-
-const getAnimeByGenre = async(genre) => {
+    let params = new URLSearchParams(window.location.search)
+    let genre = params.get('genre-list')
+    
     console.log(genre)
-}
+})
 
-console.log(window)
+
+
+

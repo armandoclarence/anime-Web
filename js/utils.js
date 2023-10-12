@@ -2,28 +2,40 @@
 const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://anime-api.cyclic.cloud/"
-let pages = 1
 const container = document.querySelector('.container-card') 
 
 export async function getAnimeOnGoing(){
-    const anime = await fetch(`${baseUrl}ongoing-anime`)
+    const anime = await fetch(`${baseUrl}ongoing-anime`,{mode: 'no-cors'})
     const animeData = await anime.json()
     const {collection} = animeData;
     const {data} = collection;
-    console.log(data)
     makeCard(data)
 }
 
-export async function getAnime(page = 1){
-    console.log(page)
+export async function getAnimeGenre(){
+    const anime = await fetch(`${baseUrl}genres`,{mode: 'no-cors'})
+    const genres = await anime.json()
+    return genres
+}
+
+// export async function getAnimeByGenre(){
+
+// }
+
+export async function getAnimeCompleted(page){
     const anime = await fetch(`${baseUrl}complete-anime?page=${page}`)
     const animeData = await anime.json()
     const {collection} = animeData;
     const {data} = collection;
-    console.log(data)
     makeCard(data)
 }
 
+export async function getAnimeByQuery(query){
+    const anime = await fetch(`${baseUrl}search?q=${query}`)
+    const animeData = await anime.json()
+    const {data} = animeData;
+    makeCard(data)
+}
 
 export function makeCard(datas){
     container.innerHTML = ''
@@ -98,5 +110,3 @@ function getAnimeEpisode(episodeButtons){
         })
     })
 }
-
-export {baseUrl}
