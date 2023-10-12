@@ -5,11 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/index.css">
+    <script type="module" src="js/search.js"></script>
+    <!-- <script type="module" src="js/main.js"></script> -->
     <title>Document</title>
 </head>
 <body>
     <header>
-        <h2>Rimunime</h2>
+        <h2>
+            <a href="/">Rimunime</a>
+        </h2>
         <nav>
             <ul>
                 <li> 
@@ -20,17 +24,21 @@
     </header>
     <div class="main">
         <main>
+            <div class="search">
+                <label for="search"></label>
+                <input type="text" name="search" id="search">
+            </div>
+            <div class="container container-card">
+            </div>
             <div class="page">
                 <button class="prev" disabled>prev</button>
                 <button class="next">next</button>
             </div>
-            <div class="container container-card"></div>
             <dialog data-modal>
                 <div class="container card-detail"></div>
             </dialog>
         </main>
         <aside>a</aside>
     </div> 
-    <script src="js/main.js"></script>
 </body>
 </html>

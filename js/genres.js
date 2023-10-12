@@ -25,3 +25,5 @@ const getAnime = async() =>{
 const getAnimeByGenre = async(genre) => {
     console.log(genre)
 }
+
+console.log(window)

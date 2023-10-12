@@ -3,63 +3,35 @@ const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://anime-api.cyclic.cloud/"
 let pages = 1
-const container = document.querySelector('.container-card')
+const container = document.querySelector('.container-card') 
 
-window.addEventListener('load',function(e){
-    getAnime(pages)
-})
+export async function getAnimeOnGoing(){
+    const anime = await fetch(`${baseUrl}ongoing-anime`)
+    const animeData = await anime.json()
+    const {collection} = animeData;
+    const {data} = collection;
+    console.log(data)
+    makeCard(data)
+}
 
-const prevButton = document.querySelector('.prev')
-const nextButton = document.querySelector('.next')
-
-prevButton.addEventListener('click',function(e){
-    pages--
-    console.log(pages)
-    if(pages > 1) {
-        prevButton.setAttribute('enabled', '')
-        prevButton.removeAttribute('disabled', '')
-    }
-    if(pages == 1) {
-        prevButton.setAttribute('disabled', '') 
-        prevButton.removeAttribute('enabled', '')
-    }
-    getAnime(pages)
-})
-
-nextButton.addEventListener('click',function(e){
-    pages++
-    console.log(pages)
-    if(pages > 1) {
-        prevButton.setAttribute('enabled', '')
-        prevButton.removeAttribute('disabled', '')
-    }
-    if(pages == 1) {
-        prevButton.setAttribute('disabled', '') 
-        prevButton.removeAttribute('enabled', '')
-    }
-    getAnime(pages)
-})
-
-async function getAnime(page = 1){
+export async function getAnime(page = 1){
+    console.log(page)
     const anime = await fetch(`${baseUrl}complete-anime?page=${page}`)
     const animeData = await anime.json()
     const {collection} = animeData;
     const {data} = collection;
+    console.log(data)
     makeCard(data)
 }
 
 
-function makeCard(datas){
+export function makeCard(datas){
     container.innerHTML = ''
     datas.map(data => {
         const {title, thumbnail, slug, rating, releaseDate, status} = data
         container.innerHTML += `
         <article class="card home" value=${slug}>
-            <h2>${title}</h2>
             <img src="${thumbnail}" alt="${slug}" />
-            <p>Rating: ${rating}</p>
-            <p>${releaseDate}</p>
-            <p>${status}</p>
         </article>`
     })
     const cards = document.querySelectorAll('.card')
@@ -127,3 +99,4 @@ function getAnimeEpisode(episodeButtons){
     })
 }
 
+export {baseUrl}

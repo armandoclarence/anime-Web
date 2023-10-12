@@ -18,6 +18,11 @@ header {
 	height: 40px;
 }
 
+header a {
+	text-decoration: none;
+	color: white;
+}
+
 header nav ul {
 	display: flex;
 }
@@ -26,10 +31,6 @@ header nav ul li {
 	list-style-type: none;
 }
 
-nav ul li a {
-	text-decoration: none;
-	color: white;
-}
 
 main .page {
 	text-align: right;
@@ -41,12 +42,17 @@ main .page {
 }
 
 main {
-	width: 80%;
+	margin: 1em;
+	width: 70%;
 }
 
 .container-card {
+	padding: 1em;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
+	background-color: blue;
+	align-items: center;
 	gap: .5em;
 }
 
