@@ -1,22 +1,29 @@
 import { getAnimeGenre, getAnimeByGenre } from "./utils.js"
-const container = document.querySelector('.container')
+const genreContainer = document.querySelector('.genres')
 window.addEventListener('load',function(e){
     getAnimeGenre().then((genres)=>{
-        console.log(genres)
         genres.map(({mal_id,name,count}) => {
-            container.innerHTML += `
-            <button class="genre">
-                <a href="?genre-id=${mal_id}" id="${mal_id}">${name} | ${count}</a>
-            </button>`
+            genreContainer.innerHTML += `
+            <li class="genre" id="${mal_id}">
+                <a href="?genre-id=${mal_id}">
+                    <span>${name}</span>
+                    <span>${count}</span>
+                </a>
+            </li>`
         })
-        let genreButton = this.document.querySelectorAll('.genre');
-        let params = new URLSearchParams(window.location.search)
-        let id = params.get('genre-id')
-        // this.location.href = `?${id}`
-        getAnimeByGenre(id)
-        console.log(genreButton)
-        console.log(this.location.href)
-        console.log(params)
+        let genreButtons = document.querySelectorAll('.genre');
+        genreButtons.forEach(genreButton => {
+            console.log(genreButton)
+            genreButton.addEventListener('click',({name})=>{
+                let params = new URLSearchParams(window.location.search)
+                let id = params.get('genre-id')
+
+                console.log(name)
+                this.location.href = `/${name}`
+                getAnimeByGenre(id)
+            })
+            
+        })
         console.log(this)
     })
 })

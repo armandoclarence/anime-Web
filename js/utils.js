@@ -1,38 +1,27 @@
 
 const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
-const baseUrl = "https://anime-api.cyclic.cloud/"
-const url = "https://api.jikan.moe/v4/"
+const baseUrl = "https://api.jikan.moe/v4/"
 const container = document.querySelector('.container-card') 
 
-export async function getAnimeOnGoing(){
-    const anime = await fetch(`${baseUrl}ongoing-anime`)
-    const animeData = await anime.json()
-    const {collection} = animeData;
-    const {data} = collection;
-    makeCard(data)
-}
-
-
 export async function getAnimeGenre(){
-    const anime = await fetch(`${url}genres/anime`)
+    const anime = await fetch(`${baseUrl}genres/anime`)
     const genres = await anime.json()
     const {data} = genres;
     return data
 }
 
 export async function getAnimeByGenre(id){
-    const anime = await fetch(`${url}anime?genres=${id}`)
+    const anime = await fetch(`${baseUrl}anime?genres=${id}`)
     const genres = await anime.json()
     const {data} = genres;
-    console.log(data)
-    // makeCard(data)
+    makeCard(data)
 }
 
 export async function getAnimeCompleted(page){
 
-    // const anime = await fetch(`${baseUrl}complete-anime?page=${page}`)
-    const anime = await fetch(`${url}anime?page=${page}`)
+    // const anime = await fetch(`${basebaseUrl}complete-anime?page=${page}`)
+    const anime = await fetch(`${baseUrl}anime?page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
     console.log(data)
@@ -40,10 +29,9 @@ export async function getAnimeCompleted(page){
 }
 
 export async function getAnimeByQuery(query){
-    const anime = await fetch(`${url}anime?q=${query}`)
+    const anime = await fetch(`${baseUrl}anime?q=${query}`)
     const animeData = await anime.json()
     const {data} = animeData;
-    console.log(data)
     makeCard(data)
 }
 
@@ -51,7 +39,6 @@ export function makeCard(datas){
     container.innerHTML = ''
     datas.map(data => {
         const {title, mal_id, score, aired, images} = data
-        console.log(data)
         container.innerHTML += `
         <article class="card home" id=${mal_id}>
             <img src="${images.jpg.image_url}" title="${title}" />
