@@ -21,7 +21,7 @@ export async function getAnimeByGenre(id){
 export async function getAnimeCompleted(page){
 
     // const anime = await fetch(`${basebaseUrl}complete-anime?page=${page}`)
-    const anime = await fetch(`${baseUrl}anime?page=${page}`)
+    const anime = await fetch(`${baseUrl}top/anime?page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
     console.log(data)
@@ -38,7 +38,7 @@ export async function getAnimeByQuery(query){
 export function makeCard(datas){
     container.innerHTML = ''
     datas.map(data => {
-        const {title, mal_id, score, aired, images} = data
+        const {title, mal_id, images} = data
         container.innerHTML += `
         <article class="card home" id=${mal_id}>
             <img src="${images.jpg.image_url}" title="${title}" />
@@ -46,47 +46,27 @@ export function makeCard(datas){
     })
     const cards = document.querySelectorAll('.card')
     cards.forEach(card => card.addEventListener('click',function(){
-        let slug = this.getAttribute('value')
-        getAnimeDetail(slug)
+        let id = this.getAttribute('id')
+        getAnimeDetail(id)
         modal.showModal()
     }))
 }
 
-async function getAnimeDetail(slug){
-    const anime = await fetch(`${baseUrl}anime/${slug}`)
+async function getAnimeDetail(id){
+    const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
-    const {title, thumbnail, genres, score,episodeLists} = animeData
-    let episodeList = episodeLists.map(episodeList => {
-            const { slug } = episodeList
-            return slug
-        })
-    episodeList.shift(episodeList[0])
-    episodeList.pop(episodeList[episodeList.length - 1])
-    let episodeNumber = episodeList.map(episode => {
-        let episodeNum = episode.replace(/(\D+-|\D+.)/g, "")
-        return { episode, episodeNum}
-    })
+    const {data} = animeData
+    const {title, images, genres, score} = data
+    // console.log(images)
     cardDetail.innerHTML =`<article class="card detail">
         <h2>${title}</h2>
-        <img src="${thumbnail}" alt="" />
+        <img src="${images.jpg.image_url}" alt="" />
         <ul>
-            ${genres.map(genre => {
-                return `<li>${genre}</li>`  
+            ${genres.map(({name})=> {
+                return `<li>${name}</li>`  
             })}
         </ul>
         <p>rating: ${score}</p>
-        <ul>
-            ${episodeNumber.map(({episode, episodeNum}) => {
-                    if(episode === 'maogkn-ftkg-s2-episode8-sub-indo') episodeNum = 8
-                    return `
-                        <li>
-                            <button data-value="${episode}" number="${episodeNum}">
-                            </button>
-                        </li>
-                    `
-                }).join('')
-            }
-        </ul>
         <input id="backButton" type="button" value="Kembali" />
     </article>`
     const episodeButtons = document.querySelectorAll('button[data-value]')
