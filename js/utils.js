@@ -19,13 +19,7 @@ export async function getAnimeByGenre(id){
 }
 
 export async function getAnimeCompleted(page){
-<<<<<<< HEAD
-    const anime = await fetch(`${baseUrl}anime?page=${page}`)
-=======
-
-    // const anime = await fetch(`${basebaseUrl}complete-anime?page=${page}`)
     const anime = await fetch(`${baseUrl}top/anime?page=${page}`)
->>>>>>> 5b4ba9e5800cc14be11d4f0a195ce58435cb7751
     const animeData = await anime.json()
     const {data} = animeData;
     console.log(data)
@@ -49,7 +43,6 @@ export function makeCard(datas){
         </article>`
     })
     const cards = document.querySelectorAll('.card')
-<<<<<<< HEAD
     cards.forEach(card => {
 
         card.addEventListener('click',function(){
@@ -68,7 +61,6 @@ async function getAnimeDetail(id){
     const {title,genres,images,score} = data
     console.log(genres)
     console.log(data)
-=======
     cards.forEach(card => card.addEventListener('click',function(){
         let id = this.getAttribute('id')
         getAnimeDetail(id)
@@ -82,16 +74,11 @@ async function getAnimeDetail(id){
     const {data} = animeData
     const {title, images, genres, score} = data
     // console.log(images)
->>>>>>> 5b4ba9e5800cc14be11d4f0a195ce58435cb7751
     cardDetail.innerHTML =`<article class="card detail">
         <h2>${title}</h2>
         <img src="${images.jpg.image_url}" alt="" />
         <ul>
-<<<<<<< HEAD
-            ${genres.map(({name}) => {
-=======
             ${genres.map(({name})=> {
->>>>>>> 5b4ba9e5800cc14be11d4f0a195ce58435cb7751
                 return `<li>${name}</li>`  
             })}
         </ul>
