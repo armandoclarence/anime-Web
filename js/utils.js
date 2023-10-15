@@ -2,7 +2,7 @@
 const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://api.jikan.moe/v4/"
-const container = document.querySelector('.container-card') 
+const container = document.querySelector('.container') 
 
 export async function getAnimeGenre(){
     const anime = await fetch(`${baseUrl}genres/anime`)
@@ -15,6 +15,7 @@ export async function getAnimeByGenre(id){
     const anime = await fetch(`${baseUrl}anime?genres=${id}`)
     const genres = await anime.json()
     const {data} = genres;
+    console.log(data)
     makeCard(data)
 }
 
@@ -26,15 +27,16 @@ export async function getAnimeCompleted(page){
     makeCard(data)
 }
 
-export async function getAnimeByQuery(query){
-    const anime = await fetch(`${baseUrl}anime?q=${query}`)
+export async function getAnimeByQuery(query,page){
+    const anime = await fetch(`${baseUrl}anime?q=${query}&page=${page}&sfw=true`)
     const animeData = await anime.json()
     const {data} = animeData;
+    console.log(data)
     makeCard(data)
 }
 
 export function makeCard(datas){
-    container.innerHTML = ''
+    container.innerHTML= '' 
     datas.map(data => {
         const {title, mal_id, images} = data
         container.innerHTML += `
@@ -52,20 +54,6 @@ export function makeCard(datas){
             modal.showModal()
         })
     })
-}
-
-async function getAnimeDetail(id){
-    const anime = await fetch(`${baseUrl}anime/${id}/full`)
-    const animeData = await anime.json()
-    const {data} = animeData
-    const {title,genres,images,score} = data
-    console.log(genres)
-    console.log(data)
-    cards.forEach(card => card.addEventListener('click',function(){
-        let id = this.getAttribute('id')
-        getAnimeDetail(id)
-        modal.showModal()
-    }))
 }
 
 async function getAnimeDetail(id){

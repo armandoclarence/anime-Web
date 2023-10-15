@@ -19,7 +19,7 @@ window.addEventListener('load', function(e){
         page.append(prevButton,nextButton)
         prevButton.addEventListener('click', function(e){
             pageNumber--
-            if(pageNumber == 0) {
+            if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
             getAnimeCompleted(pageNumber)
@@ -32,7 +32,22 @@ window.addEventListener('load', function(e){
             getAnimeCompleted(pageNumber)
         })
     } else{
-        getAnimeByQuery(query)
+        getAnimeByQuery(query,pageNumber)
+        page.append(prevButton,nextButton)
+        prevButton.addEventListener('click', function(e){
+            pageNumber--
+            if(pageNumber == 1) {
+                this.setAttribute('disabled', '')
+            }
+            getAnimeByQuery(query,pageNumber)
+
+        })
+        
+        nextButton.addEventListener('click', function(e){
+            pageNumber++
+            if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
+            getAnimeByQuery(query,pageNumber)
+        })
     }
 })
 
