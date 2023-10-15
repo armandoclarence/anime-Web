@@ -5,11 +5,15 @@ let params = new URLSearchParams(window.location.search)
 let page = document.querySelector('.page')
 let pageNumber = 1
 
-search.addEventListener('change', e =>{
-    e.preventDefault()
-    params.set('s', search.value)
-    window.location.search = params
-})
+if(search){
+
+    search.addEventListener('change', e =>{
+        e.preventDefault()
+        params.set('s', search.value)
+        window.location.search = params
+    })
+}
+
 
 window.addEventListener('load', function(e){
     page.innerHTML = ''
@@ -46,6 +50,7 @@ window.addEventListener('load', function(e){
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
+            console.log(query)
             getAnimeByQuery(query,pageNumber)
         })
     }

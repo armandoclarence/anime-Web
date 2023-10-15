@@ -11,8 +11,8 @@ export async function getAnimeGenre(){
     return data
 }
 
-export async function getAnimeByGenre(id){
-    const anime = await fetch(`${baseUrl}anime?genres=${id}`)
+export async function getAnimeByGenre(id,page){
+    const anime = await fetch(`${baseUrl}anime?genres=${id}&page=${page}`)
     const genres = await anime.json()
     const {data} = genres;
     console.log(data)
@@ -28,7 +28,7 @@ export async function getAnimeCompleted(page){
 }
 
 export async function getAnimeByQuery(query,page){
-    const anime = await fetch(`${baseUrl}anime?q=${query}&page=${page}&sfw=true`)
+    const anime = await fetch(`${baseUrl}anime?q=${query}&page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
     console.log(data)
