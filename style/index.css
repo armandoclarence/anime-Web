@@ -58,6 +58,7 @@ main {
 
 .container > article:is(.detail) {
 	width: calc(60vw - 5em);
+	flex-direction: column;
 	max-width: 30em;
 }
 
