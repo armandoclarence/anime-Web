@@ -99,6 +99,7 @@ dialog {
 	position: absolute;
 	background-color: rgb(62, 194, 62);
 	border-radius: .3em;
+	transform: scale(1.12);
 	bottom: 5px;
 }
 
@@ -112,7 +113,7 @@ article.card > img {
 	transition: all ease-out .3s;
 }
 
-article.card > img:hover {
+article.card > img:hover  {
 	transform: scale(1.1);
 }
 
