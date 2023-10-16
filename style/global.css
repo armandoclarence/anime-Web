@@ -77,6 +77,10 @@ main .page {
 	align-items: center;
 }
 
+.hidden {
+	display: none;
+}
+
 dialog {
 	padding: 0;
 }

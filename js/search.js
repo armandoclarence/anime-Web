@@ -2,7 +2,6 @@ import {getAnimeCompleted, getAnimeByQuery}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
-let page = document.querySelector('.page')
 let pageNumber = 1
 
 if(search){
@@ -14,9 +13,7 @@ if(search){
     })
 }
 
-
 window.addEventListener('load', function(e){
-    page.innerHTML = ''
     let query = params.get('s')
     if(!query) {
         getAnimeCompleted(pageNumber)
@@ -37,7 +34,6 @@ window.addEventListener('load', function(e){
         })
     } else{
         getAnimeByQuery(query,pageNumber)
-        page.append(prevButton,nextButton)
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {

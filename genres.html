@@ -1,44 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/global.css">
-    <link rel="stylesheet" href="style/genres.css">
-    <script type="module" src="js/genres.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <h2>
-            <a href="/">Rimunime</a>
-        </h2>
-        <nav>
-            <ul>
-                <li> 
-                    <a href="/">Home</a>
-                    <a href="/genres.html">Genres</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div class="cards">
-            <h2>Top Anime</h2>
-            <div class="container container-card">
-            </div>
-            <div class="page">
-                <button class="prev" disabled>prev</button>
-                <button class="next">next</button>
-            </div>
-        </div>
-        <div class="container container-card">
-            <ul class="genres"></ul>
-        </div>
-        <dialog data-modal>
-            <div class="container card-detail"></div>
-        </dialog>
-    </main>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			rel="stylesheet"
+			href="style/global.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="style/genres.css"
+		/>
+		<script
+			type="module"
+			src="js/genres.js"
+		></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<header>
+			<h2>
+				<a href="/">Rimunime</a>
+			</h2>
+			<nav>
+				<ul>
+					<li>
+						<a href="/">Home</a>
+						<a href="/genres.html">Genres</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<div class="cards">
+				<div class="container container-card">
+					<ul class="genres"></ul>
+				</div>
+				<div class="page hidden">
+					<button
+						class="prev"
+						disabled
+					>
+						prev
+					</button>
+					<button class="next">next</button>
+				</div>
+			</div>
+			<dialog data-modal>
+				<div class="container card-detail"></div>
+			</dialog>
+		</main>
+	</body>
 </html>
