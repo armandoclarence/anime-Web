@@ -2,10 +2,11 @@ import {getAnimeCompleted, getAnimeByQuery}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
+const title = document.querySelector('.cards h2')
+console.log(title)
 let pageNumber = 1
 
 if(search){
-
     search.addEventListener('change', e =>{
         e.preventDefault()
         params.set('s', search.value)
@@ -17,7 +18,6 @@ window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
         getAnimeCompleted(pageNumber)
-        page.append(prevButton,nextButton)
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
@@ -33,6 +33,7 @@ window.addEventListener('load', function(e){
             getAnimeCompleted(pageNumber)
         })
     } else{
+        title.innerHTML = `search ${query}...`
         getAnimeByQuery(query,pageNumber)
         prevButton.addEventListener('click', function(e){
             pageNumber--
