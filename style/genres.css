@@ -1,25 +1,15 @@
-.container {
+ul.genres {
     display: flex;
-    flex-wrap: wrap;
-}
-
-.container ul {
-    display: flex;
-    flex: 1;
     flex-wrap: wrap;
     gap: 1em;
 }
-.container ul li {
+ul.genres li {
     background: rgb(17, 15, 15);
     list-style: none;
-    /* width: 20%; */
 }
 
-.container ul li a{
+ul.genres li a{
     text-decoration: none;
     color: wheat;
 }
 
-ul li a {
-
-}

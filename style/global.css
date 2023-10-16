@@ -41,9 +41,22 @@ main .page {
 
 }
 
-main {
-	margin: 1em;
-	width: 70%;
+.container > article:is(.detail) {
+	width: calc(60vw - 5em);
+	flex-direction: column;
+	max-width: 30em;
+}
+
+.cards {
+    background-color: rgb(73, 73, 80);
+}
+
+.cards h2 {
+    color:white
+}
+
+.cards .page {
+    text-align: center;
 }
 
 .container-card {
@@ -51,20 +64,15 @@ main {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	background-color: blue;
 	align-items: center;
 	gap: .5em;
 }
 
-.container > article:is(.detail) {
-	width: calc(60vw - 5em);
-	max-width: 30em;
-}
-
-.container > article {
+.card-detail > article {
 	text-align: center;
 	background: rgba(84, 94, 105, 0.774);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
@@ -74,8 +82,8 @@ dialog {
 }
 
 article.card > img {
-	width: 180px;
-	height:auto;
+    width: 150px;
+    height: 150px;
 }
 
 article.card > ul {
@@ -91,5 +99,3 @@ article.card ul li {
 article.detail ul li a {
 	text-decoration: none;
 }
-
-

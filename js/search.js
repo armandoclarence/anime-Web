@@ -5,11 +5,15 @@ let params = new URLSearchParams(window.location.search)
 let page = document.querySelector('.page')
 let pageNumber = 1
 
-search.addEventListener('change', e =>{
-    e.preventDefault()
-    params.set('s', search.value)
-    window.location.search = params
-})
+if(search){
+
+    search.addEventListener('change', e =>{
+        e.preventDefault()
+        params.set('s', search.value)
+        window.location.search = params
+    })
+}
+
 
 window.addEventListener('load', function(e){
     page.innerHTML = ''
@@ -19,7 +23,7 @@ window.addEventListener('load', function(e){
         page.append(prevButton,nextButton)
         prevButton.addEventListener('click', function(e){
             pageNumber--
-            if(pageNumber == 0) {
+            if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
             getAnimeCompleted(pageNumber)
@@ -32,7 +36,23 @@ window.addEventListener('load', function(e){
             getAnimeCompleted(pageNumber)
         })
     } else{
-        getAnimeByQuery(query)
+        getAnimeByQuery(query,pageNumber)
+        page.append(prevButton,nextButton)
+        prevButton.addEventListener('click', function(e){
+            pageNumber--
+            if(pageNumber == 1) {
+                this.setAttribute('disabled', '')
+            }
+            getAnimeByQuery(query,pageNumber)
+
+        })
+        
+        nextButton.addEventListener('click', function(e){
+            pageNumber++
+            if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
+            console.log(query)
+            getAnimeByQuery(query,pageNumber)
+        })
     }
 })
 
