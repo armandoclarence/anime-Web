@@ -19,8 +19,6 @@ export async function getAnimeByGenre(id){
 }
 
 export async function getAnimeCompleted(page){
-
-    // const anime = await fetch(`${basebaseUrl}complete-anime?page=${page}`)
     const anime = await fetch(`${baseUrl}anime?page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
