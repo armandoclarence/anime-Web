@@ -5,6 +5,16 @@ const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
 const container = document.querySelector('.container') 
 
+export async function getAnimeSeason(){
+    const anime = await fetch(`${baseUrl}seasons`)
+    const season = await anime.json()
+    const {data} = season;
+    data.map(({year, seasons}) => {
+        console.log(year,seasons)
+    })
+    // const {year, seasons} = data
+}
+
 export async function getAnimeGenre(){
     const anime = await fetch(`${baseUrl}genres/anime`)
     const genres = await anime.json()
@@ -16,7 +26,6 @@ export async function getAnimeByGenre(id,page){
     const anime = await fetch(`${baseUrl}anime?genres=${id}&page=${page}`)
     const genres = await anime.json()
     const {data} = genres;
-    console.log(data)
     makeCard(data)
 }
 
@@ -35,10 +44,9 @@ export async function getAnimeByQuery(query,page){
     if(data.length < 25){
         pages.innerHTML = ''
     }
-    console.log(data)
     makeCard(data)
 }
-export function makeCard(datas){    
+function makeCard(datas){    
     container.innerHTML = '' 
     datas.map(data => {
         const {title,type, episodes, mal_id, images} = data
@@ -64,10 +72,11 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {title, images, genres, score} = data
-    cardDetail.innerHTML =`<article className="card detail">
+    const {title, images, genres, score, background} = data
+    cardDetail.innerHTML =`<article class="card detail">
         <h2>${title}</h2>
         <img src="${images.jpg.image_url}" alt="" />
+        <p>Synopsis: ${background}</p>
         <ul>
             ${genres.map(({name})=> {
                 return `<li>${name}</li>`  
@@ -76,22 +85,9 @@ async function getAnimeDetail(id){
         <p>rating: ${score}</p>
         <input id="backButton" type="button" value="Kembali" />
     </article>`
-    const episodeButtons = document.querySelectorAll('button[data-value]')
-    getAnimeEpisode(episodeButtons)
     const backButton = document.querySelector('#backButton')
     backButton.addEventListener('click',function(){
         modal.close()
     })
 }
 
-function getAnimeEpisode(episodeButtons){
-    episodeButtons.forEach(episodeButton => {
-        let episode = episodeButton.getAttribute('data-value')
-        let episodeNum = episodeButton.getAttribute('number')
-        fetch(`${baseUrl}episode/${episode}`)
-        .then(res => res.json())
-        .then(({streamLink})=>{
-            episodeButton.innerHTML += `<a href="${streamLink}" target="_blank">${episodeNum}</a>`
-        })
-    })
-}

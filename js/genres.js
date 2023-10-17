@@ -10,7 +10,7 @@ window.addEventListener('load',function(e){
         genres.map(({mal_id,name,count}) => {
             genreContainer.innerHTML += `
             <li class="genre">
-                <a href="?genreId=${mal_id}">
+                <a href="?genreId=${mal_id}&genre=${name}">
                     <span>${name}</span>
                     <span>${count}</span>
                 </a>
@@ -19,6 +19,9 @@ window.addEventListener('load',function(e){
     })
     let id = params.get('genreId')
     if(id){
+        let name = params.get('genre')
+        const title = document.querySelector('.cards h2')
+        title.textContent = `Genre ${name}`
         container.removeChild(genreContainer)
         page.classList.remove('hidden')
         getAnimeByGenre(id,pageNumber)

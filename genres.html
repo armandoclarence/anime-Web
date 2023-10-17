@@ -39,24 +39,27 @@
 				</ul>
 			</nav>
 		</header>
-		<main>
-			<div class="cards">
-				<div class="container container-card">
-					<ul class="genres"></ul>
+		<div class="main">
+			<main>
+				<div class="cards">
+					<h2></h2>
+					<div class="container container-card">
+						<ul class="genres"></ul>
+					</div>
+					<div class="page hidden">
+						<button
+							class="prev"
+							disabled
+						>
+							prev
+						</button>
+						<button class="next">next</button>
+					</div>
 				</div>
-				<div class="page hidden">
-					<button
-						class="prev"
-						disabled
-					>
-						prev
-					</button>
-					<button class="next">next</button>
-				</div>
-			</div>
-			<dialog data-modal>
-				<div class="container card-detail"></div>
-			</dialog>
-		</main>
+				<dialog data-modal>
+					<div class="container card-detail"></div>
+				</dialog>
+			</main>
+		</div>
 	</body>
 </html>

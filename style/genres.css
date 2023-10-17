@@ -1,15 +1,19 @@
 ul.genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 1em;
+    justify-content: space-around;
+    gap: .5em;
 }
+
 ul.genres li {
-    width: 50%;
-    background: rgb(17, 15, 15);
+    flex-basis: 23%;
+    background: rgb(49, 44, 44);
     list-style: none;
 }
 
 ul.genres li a{
+    display: flex;
+    justify-content: space-between;
     text-decoration: none;
     color: wheat;
 }
