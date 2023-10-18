@@ -27,10 +27,6 @@ header nav ul {
 	display: flex;
 }
 
-header nav ul li {
-	list-style-type: none;
-}
-
 main .page {
 	text-align: right;
 }
@@ -123,10 +119,10 @@ article.card > ul {
 	flex-wrap: wrap;
 }
 
-article.card ul li {
+ul li {
 	list-style: none;
 }
 
-article.detail ul li a {
+ul li a {
 	text-decoration: none;
 }
