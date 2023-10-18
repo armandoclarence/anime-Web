@@ -33,7 +33,6 @@ window.addEventListener('load',function(e){
             getAnimeByGenre(id,pageNumber)
 
         })
-        
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')

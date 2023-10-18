@@ -9,10 +9,15 @@ export async function getAnimeSeason(){
     const anime = await fetch(`${baseUrl}seasons`)
     const season = await anime.json()
     const {data} = season;
-    data.map(({year, seasons}) => {
-        console.log(year,seasons)
-    })
+    makeList(data)
     // const {year, seasons} = data
+}
+
+function makeList(data){
+    data.map(({year, seasons}) => {
+        console.log(year)
+    })
+
 }
 
 export async function getAnimeGenre(){
