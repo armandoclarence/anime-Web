@@ -3,14 +3,34 @@ const cardDetail = document.querySelector('.card-detail')
 const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
-const container = document.querySelector('.container') 
+const container = document.querySelector('.container')
+
+export async function getAnimeSchedule(){
+    const anime = await fetch(`${baseUrl}seasons/nows? `)
+    const schedule = await anime.json()
+    const {data} = schedule;
+    console.log(data)
+}
 
 export async function getAnimeSeason(){
     const anime = await fetch(`${baseUrl}seasons`)
     const season = await anime.json()
     const {data} = season;
+<<<<<<< HEAD:js/utils.js
     makeList(data)
     // const {year, seasons} = data
+=======
+    makeYearList(data)
+}
+
+function makeYearList(datas){
+    const years = document.querySelector('.years .list')
+    datas.map(({year})=>{
+        years.innerHTML += `<li>${year}</li>`
+        console.log(year)
+    })
+
+>>>>>>> 22335d2d5a850c90adb988a9a895933d768d8521:assets/js/utils.js
 }
 
 function makeList(data){
