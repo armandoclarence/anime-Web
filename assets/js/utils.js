@@ -5,11 +5,27 @@ const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
 const container = document.querySelector('.container')
 
-export async function getAnimeSchedule(){
-    const anime = await fetch(`${baseUrl}seasons/nows? `)
-    const schedule = await anime.json()
-    const {data} = schedule;
+export async function getAnimeSchedule(days){
+    const anime = await fetch(`${baseUrl}schedules?filter=${days}`)
+    const day = await anime.json();
+    const {data} = day;
     console.log(data)
+}
+
+export function makeDayList(){
+    const days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ]
+    let day = days.map(day =>{
+        getAnimeSchedule(day)
+    })
+    
 }
 
 export async function getAnimeSeason(){
