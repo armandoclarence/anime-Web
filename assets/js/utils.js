@@ -6,13 +6,16 @@ const pages = document.querySelector('.page')
 const container = document.querySelector('.container')
 
 export async function getAnimeSchedule(days){
-    const anime = await fetch(`${baseUrl}schedules?filter=${days}`)
-    const day = await anime.json();
-    const {data} = day;
-    console.log(data)
+    return new Promise(async(resolve)=>{
+        const anime = await fetch(`${baseUrl}schedules?filter=${days}`)
+        const day = await anime.json();
+        const {data} = day;
+        resolve(data);
+    })
 }
 
-export function makeDayList(){
+export async function makeDayList(){
+    console.log(container)
     const days = [
         "Monday",
         "Tuesday",
@@ -22,10 +25,19 @@ export function makeDayList(){
         "Saturday",
         "Sunday"
     ]
-    let day = days.map(day =>{
-        getAnimeSchedule(day)
-    })
-    
+    let arr = [];
+    for(const day of days){
+        let schedule = getAnimeSchedule(day)
+        arr.push(schedule);
+    }
+    Promise.allSettled(arr)
+    .then(days =>  days.map(({value}) => {
+        console.log(value)
+    }))
+    console.log(arr)
+
+   
+
 }
 
 export async function getAnimeSeason(){
