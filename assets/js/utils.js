@@ -5,17 +5,6 @@ const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
 const container = document.querySelector('.container')
 
-<<<<<<< HEAD
-export async function getAnimeSchedule(){
-    const days = {
-        "mondays",
-        "tuesdays"
-    }
-    const anime = await fetch(`${baseUrl}schedules`)
-    const schedule = await anime.json()
-    const {data} = schedule;
-    console.log(data)
-=======
 export async function getAnimeSchedule(days){
     return new Promise(async(resolve)=>{
         const anime = await fetch(`${baseUrl}schedules?filter=${days}`)
@@ -46,10 +35,6 @@ export async function makeDayList(){
         console.log(value)
     }))
     console.log(arr)
-
-   
-
->>>>>>> 731675264be48eb2d2d67504013b80b294ce4070
 }
 
 export async function getAnimeSeason(){
