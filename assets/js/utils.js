@@ -5,37 +5,30 @@ const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
 const container = document.querySelector('.container')
 
-export async function getAnimeSchedule(days){
-    return new Promise(async(resolve)=>{
-        const anime = await fetch(`${baseUrl}schedules?filter=${days}`)
-        const day = await anime.json();
-        const {data} = day;
-        resolve(data);
-    })
+const cache = {};
+
+export async function getAnimeSchedule(day) {
+    const anime = await fetch(`${baseUrl}schedules?filter=${day}`);
+    const dayData = await anime.json();
+    const { data } = dayData;
+    return data;
 }
 
-export async function makeDayList(){
-    console.log(container)
-    const days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-    ]
-    let arr = [];
-    for(const day of days){
-        let schedule = getAnimeSchedule(day)
-        arr.push(schedule);
+export async function makeDayList() {
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    try {
+        for (let i = 0; i < days.length; i++) {
+            const result = await getAnimeSchedule(days[i]);
+            console.log(result);
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    } catch (error) {
+        console.log(error);
     }
-    Promise.allSettled(arr)
-    .then(days =>  days.map(({value}) => {
-        console.log(value)
-    }))
-    console.log(arr)
 }
+
 
 export async function getAnimeSeason(){
     const anime = await fetch(`${baseUrl}seasons`)
@@ -93,8 +86,9 @@ export async function getAnimeByQuery(query,page){
     }
     makeCard(data)
 }
-function makeCard(datas){    
-    container.innerHTML = '' 
+function makeCard(datas){
+    console.log(datas)    
+    // container.innerHTML = '' 
     datas.map(data => {
         const {title,type, episodes, mal_id, images} = data
         container.innerHTML += `
