@@ -2,6 +2,7 @@ import {getAnimeCompleted, getAnimeByQuery}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
+const container = document.querySelector('.container')
 const title = document.querySelector('.cards h2')
 console.log(title)
 let pageNumber = 1

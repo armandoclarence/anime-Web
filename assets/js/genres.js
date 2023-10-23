@@ -6,13 +6,17 @@ const page = document.querySelector('.page')
 let params = new URLSearchParams(window.location.search)
 let pageNumber = 1
 window.addEventListener('load',function(e){
+    genre()
+})
+
+export function genre(){
     getAnimeGenre().then((genres)=>{
         genres.map(({mal_id,name,count}) => {
             genreContainer.innerHTML += `
             <li class="genre">
                 <a href="?genreId=${mal_id}&genre=${name}">
                     <span>${name}</span>
-                    <span>${count}</span>
+                    <span class="count">${count}</span>
                 </a>
             </li>`
         })
@@ -23,23 +27,24 @@ window.addEventListener('load',function(e){
         const title = document.querySelector('.cards h2')
         title.textContent = `Genre ${name}`
         container.removeChild(genreContainer)
-        page.classList.remove('hidden')
+        page && page.classList.remove('hidden')
         getAnimeByGenre(id,pageNumber)
-        prevButton.addEventListener('click', function(e){
+        prevButton && prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
             getAnimeByGenre(id,pageNumber)
-
+    
         })
-        nextButton.addEventListener('click', function(e){
+        nextButton && nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
             getAnimeByGenre(id,pageNumber)
         })
     }
-})
+
+}
 
 
 
