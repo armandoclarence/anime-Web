@@ -12,7 +12,7 @@ async function getAnimeSchedule(day) {
     return data;
 }
 
-export async function makeDayList() {
+export async function makeScheduleList() {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     try {
@@ -127,20 +127,21 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {title, images, genres, score, synopsis} = data
+    const {title, images, genres, score,duration,rating} = data
     cardDetail.innerHTML =`<article class="card detail">
         <h2>${title}</h2>
-        <section class="animeDetail>
-        <img src="${images.jpg.image_url}"/>
+        <section class="animeDetail">
+            <img src="${images.jpg.image_url}"/>
             <div class="info">
-                <p>Synopsis: ${synopsis}</p>
                 <ul>
                     Genres: 
                     ${genres.map(({name})=> {
                         return `<li>${name}</li>`  
                     })}
                 </ul>
-                <p>rating: ${score}</p>
+                <p>rate: ${score}</p>
+                <p>duration: ${duration}</p>
+                <p>rating: ${rating}</p>
             </div>
         </section>
         <input id="backButton" type="button" value="Kembali" />

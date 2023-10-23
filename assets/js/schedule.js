@@ -1,5 +1,5 @@
-import { makeDayList } from "./utils.js"
+import { makeScheduleList } from "./utils.js"
 
 window.addEventListener('load', function(e){
-    makeDayList()
+    makeScheduleList()
 })
