@@ -5,6 +5,10 @@ ul.genres {
     gap: .5em;
 }
 
+ul.genres.hidden {
+    display: none;
+}
+
 ul.genres li {
     flex-basis: 23%;
     background: rgb(49, 44, 44);

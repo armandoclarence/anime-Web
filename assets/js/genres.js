@@ -9,7 +9,7 @@ window.addEventListener('load',function(e){
     genre()
 })
 
-export function genre(){
+function genre(){
     getAnimeGenre().then((genres)=>{
         genres.map(({mal_id,name,count}) => {
             genreContainer.innerHTML += `
@@ -43,7 +43,6 @@ export function genre(){
             getAnimeByGenre(id,pageNumber)
         })
     }
-
 }
 
 
