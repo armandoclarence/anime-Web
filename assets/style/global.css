@@ -1,4 +1,4 @@
-* :not(dialog), ::after,::before {
+* :not(dialog), *::after,*::before {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
@@ -6,11 +6,11 @@
 
 body {
 	background: rgb(54, 54, 56);
+	color: white;
 }
 
 header {
 	display: flex;
-	color: white;
 	justify-content: space-between;
 	align-items: center;
 	padding: .5em;
@@ -19,8 +19,8 @@ header {
 }
 
 header a {
-	text-decoration: none;
 	color: white;
+	text-decoration: none;
 }
 
 header nav ul {
@@ -32,7 +32,7 @@ main .page {
 }
 
 .main {
-	width: 90%;
+	width: 95%;
 	margin: auto;
 }
 
@@ -53,7 +53,6 @@ main .page {
 }
 
 .cards h2 {
-    color:white;
 	border-radius: .2em;
 }
 
@@ -80,6 +79,7 @@ main .page {
 .card-detail > article.card >section {
 	display: flex;
 	justify-content: space-evenly;
+	overflow: hidden;
 	align-items: center;
 }
 
@@ -92,43 +92,53 @@ dialog {
 	padding: 0;
 }
 
-.card {
+.cardHome {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 150px;
+}
+
+.card .img {
+	height: 100%;
+	display: flex;
 	position: relative;
+	overflow: hidden;
+}
+
+.card .title {
+	height: auto;
+}
+
+.card img {
+	transition: all ease-out .3s;
+	opacity: .7;
+	filter: blur(.1em);
+	width: 150px;
+	height: 150px;
+}
+
+.card:hover img {
+	opacity: 1;
+	filter: none;
+	transform: scale(1.1);
 }
 
 .card .type {
 	position: absolute;
+	color: black;
 	background-color: rgb(62, 194, 62);
 	border-radius: .3em;
-	transform: scale(1.12);
-	bottom: 5px;
+}
+
+.card .typeSrc {
+	top: 0;
 }
 
 .card .eps {
+	bottom: 0;
 	right: 0;
-}
-
-article.home::after {
-	content: "";
-	background-color: black;
-	height: 100%;
-	/* padding: 50%; */
-	transform: scale(1.12);
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: -1;
-}
-
-article.card img {
-    width: 150px;
-    height: 150px;
-	transition: all ease-out .3s;
-}
-
-article.card:hover img {
-	transform: scale(1.1);
 }
 
 .info ul {

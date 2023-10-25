@@ -96,9 +96,13 @@ function makeCard(datas,day){
                 const {title,type, episodes, mal_id, images} = data
                 container.innerHTML += `
                 <article class="card home" id=${mal_id}>
-                    <img src="${images.jpg.image_url}" title="${title}" />
-                    <div class="type">${type}</div>
-                    <div class="type eps">${episodes}</div>
+                    <div class="cardHome">
+                        <div class="img">
+                            <img src="${images.jpg.image_url}" title="${title}" />
+                            <div class="type">${type}</div>
+                            <div class="type eps">${episodes}</div>
+                        </div>
+                    </div>
                 </article>`
             })
         }
@@ -107,9 +111,14 @@ function makeCard(datas,day){
         const {title,type, episodes, mal_id, images} = data
         container.innerHTML += `
         <article class="card home" id=${mal_id}>
-            <img src="${images.jpg.image_url}" title="${title}" />
-            <div class="type">${type}</div>
-            <div class="type eps">${episodes}</div>
+            <div class="cardHome">
+                <div class="img">
+                    <img src="${images.jpg.image_url}" title="${title}" />
+                    <div class="type typeSrc">${type}</div>
+                    <div class="type eps">${episodes}</div>
+                </div>
+                <div class="title">${title}</div>
+            </div>
         </article>`
     })
     let cards = document.querySelectorAll('.card')
@@ -131,7 +140,9 @@ async function getAnimeDetail(id){
     cardDetail.innerHTML =`<article class="card detail">
         <h2>${title}</h2>
         <section class="animeDetail">
-            <img src="${images.jpg.image_url}"/>
+            <div class="img">
+                <img src="${images.jpg.image_url}"/>
+            </div>
             <div class="info">
                 <ul>
                     Genres: 
