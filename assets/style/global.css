@@ -1,4 +1,6 @@
-* :not(dialog), *::after,*::before {
+* :not(dialog),
+*::after,
+*::before {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
@@ -13,9 +15,41 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: .5em;
+	padding: 0.5em;
 	background: rgba(34, 33, 33, 0.773);
 	height: 40px;
+}
+
+header nav ul {
+	display: flex;
+}
+
+nav ul li {
+	padding-right: 0.4em;
+	width: 100%;
+}
+
+nav ul li a {
+	position: relative;
+}
+
+nav ul li:nth-last-child(1) {
+	padding: 0;
+}
+
+nav ul li::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 0;
+	height: 2px;
+	transition: all 0.3s ease-in;
+	background-color: blue;
+}
+
+
+nav ul li:hover::before {
+	scale: 0 1;
 }
 
 header a {
@@ -23,16 +57,12 @@ header a {
 	text-decoration: none;
 }
 
-header nav ul {
-	display: flex;
-}
-
 main .page {
 	text-align: right;
 }
 
 .main {
-	width: 95%;
+	width: 90%;
 	margin: auto;
 }
 
@@ -53,11 +83,11 @@ main .page {
 }
 
 .cards h2 {
-	border-radius: .2em;
+	border-radius: 0.2em;
 }
 
 .cards .page {
-    text-align: center;
+	text-align: center;
 }
 
 .container-card {
@@ -66,7 +96,7 @@ main .page {
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: center;
-	gap: .7em;
+	gap: 0.7em;
 }
 
 .card-detail > article.detail {
@@ -75,8 +105,7 @@ main .page {
 	padding: 1em;
 }
 
-
-.card-detail > article.card >section {
+.card-detail > article.card > section {
 	display: flex;
 	justify-content: space-evenly;
 	overflow: hidden;
@@ -86,7 +115,6 @@ main .page {
 .hidden {
 	display: none;
 }
-
 
 dialog {
 	padding: 0;
@@ -112,9 +140,9 @@ dialog {
 }
 
 .card img {
-	transition: all ease-out .3s;
-	opacity: .7;
-	filter: blur(.1em);
+	transition: all ease-out 0.3s;
+	opacity: 0.7;
+	filter: blur(0.1em);
 	width: 150px;
 	height: 150px;
 }
@@ -129,7 +157,7 @@ dialog {
 	position: absolute;
 	color: black;
 	background-color: rgb(62, 194, 62);
-	border-radius: .3em;
+	border-radius: 0.3em;
 }
 
 .card .typeSrc {

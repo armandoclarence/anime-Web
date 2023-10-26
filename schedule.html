@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width initial-scale=1.0">
-    <link
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width initial-scale=1.0"
+		/>
+		<link
 			rel="stylesheet"
 			href="assets/style/global.css"
-	/>
-    <script type="module" src="assets/js/schedule.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <h2>
-            <a href="/">Rimunime</a>
-        </h2>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/">Home</a>
-                    <a href="/genres.html">Genres</a>
-                    <a href="/filter.html">Filter</a>
-                    <a href="/schedule.html">Schedule</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <div class="main">
-        <main>
-            <h2>Schedule</h2>
-            <div class="cards"></div>
-            <dialog data-modal>
-                <div class="container card-detail"></div>
-            </dialog>
-        </main>
-    </div>
-</body>
+		/>
+		<script
+			type="module"
+			src="assets/js/schedule.js"
+		></script>
+		<title>Document</title>
+	</head>
+	<body>
+		<header>
+			<h2>
+				<a href="/">Rimunime</a>
+			</h2>
+			<nav>
+				<ul>
+					<li>
+						<a href="/">Home</a>
+					</li>
+					<li>
+						<a href="/genres.html">Genres</a>
+					</li>
+					<li>
+						<a href="/filter.html">Filter</a>
+					</li>
+					<li class="active">
+						<a href="/schedule.html">Schedule</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<div class="main">
+			<main>
+				<h2>Schedule</h2>
+				<div class="cards"></div>
+				<dialog data-modal>
+					<div class="container card-detail"></div>
+				</dialog>
+			</main>
+		</div>
+	</body>
 </html>

@@ -1,47 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/style/global.css">
-    <script type="module" src="assets/js/search.js"></script>
-    <title>Rimunime</title>
-</head>
-<body>
-    <header>
-        <h2>
-            <a href="/">Rimunime</a>
-        </h2>
-        <nav id="nav">
-            <ul>
-                <li> 
-                    <a href="/genres.html">Genres</a>
-                    <a href="/filter.html">Filter</a>
-                    <a href="/schedule.html">Schedule</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <div class="main">
-        <main>
-            <div class="search">
-                <label for="search"></label>
-                <input type="text" name="search" id="search">
-            </div>
-            <div class="cards">
-                <h2>Top Anime</h2>
-                <div class="container container-card">
-                </div>
-                <div class="page">
-                    <button class="prev" disabled>prev</button>
-                    <button class="next">next</button>
-                </div>
-            </div>
-            <dialog data-modal>
-                <div class="container card-detail"></div>
-            </dialog>
-        </main>
-    </div> 
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			rel="stylesheet"
+			href="assets/style/global.css"
+		/>
+		<script
+			type="module"
+			src="assets/js/search.js"
+		></script>
+		<title>Rimunime</title>
+	</head>
+	<body>
+		<header>
+			<h2>
+				<a href="/">Rimunime</a>
+			</h2>
+			<nav id="nav">
+				<ul>
+					<li class="active">
+						<a href="/index.html">Home</a>
+					</li>
+					<li>
+						<a href="/genres.html">Genres</a>
+					</li>
+					<li>
+						<a href="/filter.html">Filter</a>
+					</li>
+					<li>
+						<a href="/schedule.html">Schedule</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<div class="main">
+			<main>
+				<div class="search">
+					<label for="search"></label>
+					<input
+						type="text"
+						name="search"
+						id="search"
+					/>
+				</div>
+				<div class="cards">
+					<h2>Top Anime</h2>
+					<div class="container container-card"></div>
+					<div class="page">
+						<button
+							class="prev"
+							disabled
+						>
+							prev
+						</button>
+						<button class="next">next</button>
+					</div>
+				</div>
+				<dialog data-modal>
+					<div class="container card-detail"></div>
+				</dialog>
+			</main>
+		</div>
+	</body>
 </html>
