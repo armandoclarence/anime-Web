@@ -1,3 +1,17 @@
 .container {
     justify-content: flex-start;
+    position: relative;
+}
+
+.genres {
+    min-width: 300px;
+    width: 400px;
+    position: absolute;
+    left: 0;
+    top: 2.5em;
+    padding: 1em;
+}
+
+.list ul.genres li {
+    background: none;
 }

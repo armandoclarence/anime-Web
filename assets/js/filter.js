@@ -7,13 +7,12 @@ window.addEventListener('load', function(e){
         genres.map(({mal_id,name}) => {
             genreContainer.innerHTML += `
             <li class="genre">
-                <a href="?genreId=${mal_id}&genre=${name}">
-                    <span>${name}</span>
-                </a>
+                <input type="checkbox" name="${name}" id="${mal_id}"/>
+                <label for="${mal_id}">${name}</label>
             </li>`
         })
     })
 })
 list.addEventListener('click',function(){
-    this.childNodes[1].classList.remove('hidden')
+    this.childNodes[1].classList.toggle('hidden')
 })

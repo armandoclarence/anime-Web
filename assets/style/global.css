@@ -25,31 +25,49 @@ header nav ul {
 }
 
 nav ul li {
-	padding-right: 0.4em;
-	width: 100%;
-}
-
-nav ul li a {
+	padding-inline:.4em;
 	position: relative;
+	overflow: hidden;
 }
 
-nav ul li:nth-last-child(1) {
-	padding: 0;
+nav li:not(.active) a {
+	position: relative;
+	opacity: .7;
 }
 
-nav ul li::before {
+nav a:hover {
+	opacity: 1;
+}
+
+nav ul li::after {
 	content: "";
 	position: absolute;
 	bottom: 0;
-	width: 0;
+	left: 0;
+	width: 100%;
 	height: 2px;
-	transition: all 0.3s ease-in;
+	translate: var(--_translate, 0);
+	scale: var(--_width,0) 1;
+	transition: 
+		scale .3s var(--_scale-delay, 0ms),
+		transition .5s var(--_translate-delay, 0ms);
 	background-color: blue;
 }
 
+nav ul li:hover {
+	--_width: 1; 
+}
 
-nav ul li:hover::before {
-	scale: 0 1;
+nav ul li:hover + li {
+	--_translate: -100%;
+	--_scale-delay: .3s;
+	--_translate-delay: .2ms;
+}
+
+nav ul li:has(+ :hover) {
+	--_translate: 100%;
+	--_scale-delay: .3ms;
+	--_translate-delay: 200ms;
 }
 
 header a {
