@@ -24,10 +24,26 @@ header nav ul {
 	display: flex;
 }
 
+header .search {
+	display: flex;
+	position: relative;
+	align-self: center;
+}
+
+.search input {
+	outline: 0;
+}
+
+header .search img {
+	position: absolute;
+	right: 0;
+}
+
 nav ul li {
 	padding-inline:.4em;
 	position: relative;
 	overflow: hidden;
+	--_translate: 0;
 }
 
 nav li:not(.active) a {
@@ -64,10 +80,10 @@ nav ul li:hover + li {
 	--_translate-delay: .2ms;
 }
 
-nav ul li:has( + :hover ) {
+nav ul li :hover {
 	--_translate: 100%;
-	--_scale-delay: .3ms;
-	--_translate-delay: 200ms;
+	--_scale-delay: .3s;
+	--_translate-delay: .2s;
 }
 
 header a {
@@ -96,20 +112,16 @@ main .page {
 	gap: 1em;
 }
 
-.cards > * {
+.cards {
 	background-color: rgb(73, 73, 80);
+	padding: 1em;
 }
 
 .cards h2 {
 	border-radius: 0.2em;
 }
 
-.cards .page {
-	text-align: center;
-}
-
 .container-card {
-	padding: 1em;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;

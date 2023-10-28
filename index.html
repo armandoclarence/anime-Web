@@ -25,6 +25,14 @@
 			<h2>
 				<a href="/">Rimunime</a>
 			</h2>
+			<div class="search">
+				<input
+					type="text"
+					id="search"
+					placeholder="Search..."
+				/>
+				<img src="assets/img/icons8-search-50.png" width="20" alt="search">
+			</div>
 			<nav id="nav">
 				<ul>
 					<li class="active">
@@ -44,26 +52,18 @@
 		</header>
 		<div class="main">
 			<main>
-				<div class="search">
-					<label for="search"></label>
-					<input
-						type="text"
-						name="search"
-						id="search"
-					/>
-				</div>
 				<div class="cards">
 					<h2>Top Anime</h2>
-					<div class="container container-card"></div>
 					<div class="page">
 						<button
 							class="prev"
 							disabled
 						>
-							prev
+							<img src="assets/img/icons8-previous-50.png" alt="prev">
 						</button>
-						<button class="next">next</button>
+						<button class="next"><img src="assets/img/icons8-next-48.png" alt="next"></button>
 					</div>
+					<div class="container container-card"></div>
 				</div>
 				<dialog data-modal>
 					<div class="container card-detail"></div>

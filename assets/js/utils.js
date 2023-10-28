@@ -54,9 +54,9 @@ function makeList(data){
 }
 
 export async function getAnimeGenre(){
-    const anime = await fetch(`${baseUrl}genres/anime`)
+    const anime = await fetch(`${baseUrl}genres/anime?filter=themes`)
     const genres = await anime.json()
-    const {data} = genres;
+    const {data} = genres; 
     return data
 }
 
@@ -67,15 +67,23 @@ export async function getAnimeByGenre(id,page){
     makeCard(data)
 }
 
+export async function getAnimeNow(){
+    const anime = await fetch(`${baseUrl}seasons/now`)
+    const animeNow = await anime.json()
+    console.log(animeNow)
+}
+
+getAnimeNow()
+
 export async function getAnimeCompleted(page){
-    const anime = await fetch(`${baseUrl}top/anime?page=${page}`)
+    const anime = await fetch(`${baseUrl}top/anime?sfw=true&page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
     makeCard(data)
 }
 
 export async function getAnimeByQuery(query,page){
-    const anime = await fetch(`${baseUrl}anime?q=${query}&page=${page}`)
+    const anime = await fetch(`${baseUrl}anime?sfw=true&q=${query}&page=${page}`)
     const animeData = await anime.json()
     const {data} = animeData;
     if(data.length < 25){
@@ -102,6 +110,7 @@ function makeCard(datas,day){
                             <div class="type">${type}</div>
                             <div class="type eps">${episodes}</div>
                         </div>
+                        <div class="title">${title}</div>
                     </div>
                 </article>`
             })
