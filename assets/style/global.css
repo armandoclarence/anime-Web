@@ -154,7 +154,6 @@ dialog {
 .card img {
 	transition: all ease-out 0.3s;
 	opacity: 0.7;
-	filter: blur(0.1em);
 	width: 150px;
 	height: 150px;
 }
