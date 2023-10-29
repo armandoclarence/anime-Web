@@ -11,6 +11,14 @@ body {
 	color: white;
 }
 
+ul li {
+	list-style: none;
+}
+
+ul li a {
+	text-decoration: none;
+}
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -18,6 +26,11 @@ header {
 	padding: 0.5em;
 	background: rgba(34, 33, 33, 0.773);
 	height: 40px;
+}
+
+header h2 span {
+	color: rgba(34, 33, 33, 0.773);
+	background-color: rgb(62, 194, 62);
 }
 
 header nav ul {
@@ -92,11 +105,30 @@ header a {
 }
 
 main .page {
-	text-align: right;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin-bottom: 1em;
+}
+
+main .page > button {
+	background-color: inherit;
+	border: 0;
+	color: white;
+	cursor: pointer;
+	width: 25px;
+	height: 25px;
+}
+
+.page > button:hover {
+	color: rgb(62, 194, 62);
+}
+
+.page .prev:disabled {
+	opacity: .4;
 }
 
 .main {
-	width: 90%;
 	margin: auto;
 }
 
@@ -108,8 +140,6 @@ main .page {
 .cards {
 	display: flex;
 	flex-direction: column;
-	margin: auto;
-	gap: 1em;
 }
 
 .cards {
@@ -126,6 +156,16 @@ main .page {
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	gap: 0.7em;
+}
+
+.container-card .card {
+	position: relative;
+
+}
+
+.card-detail {
+	position: absolute;
+	left: 20em;
 }
 
 .card-detail > article.detail {
@@ -180,7 +220,6 @@ dialog {
 	position: absolute;
 	color: black;
 	background-color: rgb(62, 194, 62);
-	border-radius: 0.3em;
 }
 
 .card .typeSrc {
@@ -196,10 +235,3 @@ dialog {
 	display: flex;
 }
 
-ul li {
-	list-style: none;
-}
-
-ul li a {
-	text-decoration: none;
-}

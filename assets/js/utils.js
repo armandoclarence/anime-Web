@@ -1,5 +1,4 @@
 const cardDetail = document.querySelector('.card-detail')
-const modal = document.querySelector('[data-modal]')
 const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
 const container = document.querySelector('.container')
@@ -132,11 +131,10 @@ function makeCard(datas,day){
     })
     let cards = document.querySelectorAll('.card')
     cards.forEach(card => {
-        card.addEventListener('click',function(){
+        card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
             console.log(id)
             getAnimeDetail(id)
-            modal.showModal()
         })
     })
 }
@@ -164,11 +162,6 @@ async function getAnimeDetail(id){
                 <p>rating: ${rating}</p>
             </div>
         </section>
-        <input id="backButton" type="button" value="Kembali" />
     </article>`
-    const backButton = document.querySelector('#backButton')
-    backButton.addEventListener('click',function(){
-        modal.close()
-    })
 }
 
