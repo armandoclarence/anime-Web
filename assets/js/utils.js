@@ -134,8 +134,21 @@ function makeCard(datas,day){
         card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
             console.log(id)
+            let rightCard = this.offsetWidth + this.offsetLeft
+            let leftCard = this.offsetLeft
+            let topCard = this.offsetTop
             getAnimeDetail(id)
+            cardDetail.style.top = `${topCard}px`
+            cardDetail.style.right = `${rightCard}px`
+            
+            console.log(rightCard)
+            // console.log(cardDetail.offsetLeft)
+            console.log(container.offsetWidth);
+            cardDetail.style.display = 'block'
         })
+        // card.addEventListener('mouseleave',function(){
+        //     cardDetail.style.display = 'none'
+        // })
     })
 }
 
@@ -145,21 +158,18 @@ async function getAnimeDetail(id){
     const {data} = animeData
     const {title, images, genres, score,duration,rating} = data
     cardDetail.innerHTML =`<article class="card detail">
-        <h2>${title}</h2>
+        <h3>${title}</h3>
         <section class="animeDetail">
-            <div class="img">
-                <img src="${images.jpg.image_url}"/>
-            </div>
             <div class="info">
-                <ul>
-                    Genres: 
-                    ${genres.map(({name})=> {
-                        return `<li>${name}</li>`  
-                    })}
-                </ul>
-                <p>rate: ${score}</p>
-                <p>duration: ${duration}</p>
-                <p>rating: ${rating}</p>
+            <p>scores: ${score}</p>
+            <p>duration: ${duration}</p>
+            <p>rating: ${rating}</p>
+            <ul>
+                Genre: 
+                ${genres.map(({name})=> {
+                    return `<li>${name}</li>`  
+                })}
+            </ul>
             </div>
         </section>
     </article>`

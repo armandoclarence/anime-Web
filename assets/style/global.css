@@ -133,7 +133,7 @@ main .page > button {
 }
 
 .container > article:is(.detail) {
-	width: calc(60vw - 5em);
+	width: calc(25vw - 5em);
 	max-width: 30em;
 }
 
@@ -165,11 +165,9 @@ main .page > button {
 
 .card-detail {
 	position: absolute;
-	left: 20em;
 }
 
 .card-detail > article.detail {
-	text-align: center;
 	background: rgba(84, 94, 105, 0.774);
 	padding: 1em;
 }
@@ -199,6 +197,7 @@ dialog {
 .card .img {
 	height: 100%;
 	display: flex;
+	flex-direction: column;
 	position: relative;
 	overflow: hidden;
 }
