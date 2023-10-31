@@ -128,10 +128,6 @@ main .page > button {
 	opacity: .4;
 }
 
-.main {
-	margin: auto;
-}
-
 .container > article:is(.detail) {
 	width: calc(25vw - 5em);
 	max-width: 30em;

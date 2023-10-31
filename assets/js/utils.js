@@ -135,15 +135,22 @@ function makeCard(datas,day){
             let id = this.getAttribute('id')
             console.log(id)
             let rightCard = this.offsetWidth + this.offsetLeft
-            let leftCard = this.offsetLeft
+            let leftCard = this.offsetWidth * 1.5
+            let overflowWidth = this.offsetWidth + rightCard
             let topCard = this.offsetTop
             getAnimeDetail(id)
             cardDetail.style.top = `${topCard}px`
-            cardDetail.style.right = `${rightCard}px`
-            
-            console.log(rightCard)
-            // console.log(cardDetail.offsetLeft)
-            console.log(container.offsetWidth);
+            if(overflowWidth > innerWidth){
+                cardDetail.style.right = `${leftCard}px`
+                cardDetail.style.left = ''
+            }else{
+                cardDetail.style.left = `${rightCard}px`
+
+            }
+            console.log(innerWidth)
+            console.log("right",rightCard)
+            console.log("overflowWidth",overflowWidth)
+            // console.log(container.offsetWidth);
             cardDetail.style.display = 'block'
         })
         // card.addEventListener('mouseleave',function(){
