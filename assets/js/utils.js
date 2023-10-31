@@ -1,7 +1,7 @@
 const cardDetail = document.querySelector('.card-detail')
 const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
-const container = document.querySelector('.container')
+const container = document.querySelector('.container-card')
 const card = document.querySelector('.cards')
 
 async function getAnimeSchedule(day) {
@@ -63,6 +63,9 @@ export async function getAnimeByGenre(id,page){
     const anime = await fetch(`${baseUrl}anime?genres=${id}&page=${page}`)
     const genres = await anime.json()
     const {data} = genres;
+    if(data.length < 25){
+        pages.innerHTML = ''
+    }
     makeCard(data)
 }
 
@@ -100,16 +103,16 @@ function makeCard(datas,day){
     containers.forEach(container => {
         if(container.getAttribute('value') == day){
             datas.map(data => {
-                const {title,type, episodes, mal_id, images} = data
+                const {title_english,type, episodes, mal_id, images} = data
                 container.innerHTML += `
                 <article class="card home" id=${mal_id}>
                     <div class="cardHome">
                         <div class="img">
-                            <img src="${images.jpg.image_url}" title="${title}" />
+                            <img src="${images.jpg.image_url}"/>
                             <div class="type">${type}</div>
                             <div class="type eps">${episodes}</div>
                         </div>
-                        <div class="title">${title}</div>
+                        <div class="title">${title_english}</div>
                     </div>
                 </article>`
             })
@@ -135,27 +138,20 @@ function makeCard(datas,day){
             let id = this.getAttribute('id')
             console.log(id)
             let rightCard = this.offsetWidth + this.offsetLeft
-            let leftCard = this.offsetWidth * 1.5
-            let overflowWidth = this.offsetWidth + rightCard
+            let leftCard = this.offsetWidth
             let topCard = this.offsetTop
             getAnimeDetail(id)
+            let cardDetailWidth = cardDetail.offsetWidth || 300
             cardDetail.style.top = `${topCard}px`
-            if(overflowWidth > innerWidth){
-                cardDetail.style.right = `${leftCard}px`
-                cardDetail.style.left = ''
-            }else{
-                cardDetail.style.left = `${rightCard}px`
-
-            }
-            console.log(innerWidth)
-            console.log("right",rightCard)
-            console.log("overflowWidth",overflowWidth)
-            // console.log(container.offsetWidth);
-            cardDetail.style.display = 'block'
+            cardDetail.style.left = innerWidth < cardDetailWidth + rightCard 
+            ?  
+            `${rightCard - cardDetailWidth - leftCard}px` 
+            : `${rightCard}px`
+            cardDetail.classList.remove('hidden')
         })
-        // card.addEventListener('mouseleave',function(){
-        //     cardDetail.style.display = 'none'
-        // })
+        card.addEventListener('mouseleave',function(){
+            cardDetail.classList.add('hidden')    
+        })
     })
 }
 
@@ -163,14 +159,18 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {title, images, genres, score,duration,rating} = data
+    const {title,aired, title_english, genres,synopsis, score} = data
+    const {string} = aired;
     cardDetail.innerHTML =`<article class="card detail">
-        <h3>${title}</h3>
+        <div class="title">
+            <h3>${title_english}</h3>
+            <h4>${title}</h4>
+        </div>
         <section class="animeDetail">
             <div class="info">
             <p>scores: ${score}</p>
-            <p>duration: ${duration}</p>
-            <p>rating: ${rating}</p>
+            <p class="synopsis">${synopsis}</p>
+            <p>Date aired: ${string}</p>
             <ul>
                 Genre: 
                 ${genres.map(({name})=> {

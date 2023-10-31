@@ -128,17 +128,9 @@ main .page > button {
 	opacity: .4;
 }
 
-.container > article:is(.detail) {
-	width: calc(25vw - 5em);
-	max-width: 30em;
-}
-
 .cards {
 	display: flex;
 	flex-direction: column;
-}
-
-.cards {
 	background-color: rgb(73, 73, 80);
 	padding: 1em;
 }
@@ -150,8 +142,8 @@ main .page > button {
 .container-card {
 	display: flex;
 	flex-wrap: wrap;
+	row-gap: 1rem;
 	justify-content: space-evenly;
-	gap: 0.7em;
 }
 
 .container-card .card {
@@ -161,6 +153,7 @@ main .page > button {
 
 .card-detail {
 	position: absolute;
+	width: min(300px,calc(50vw - 2em));
 }
 
 .card-detail > article.detail {
@@ -171,11 +164,22 @@ main .page > button {
 .card-detail > article.card > section {
 	display: flex;
 	justify-content: space-evenly;
-	overflow: hidden;
 	align-items: center;
 }
 
-.hidden {
+.title h4 {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.animeDetail .synopsis {
+	overflow: hidden;
+	height: 300px;
+	white-space: pre-line;
+	text-overflow: ellipsis;
+}
+
+.page.hidden, .card-detail.hidden {
 	display: none;
 }
 
@@ -187,7 +191,7 @@ dialog {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 150px;
+	width: 170px;
 }
 
 .card .img {
@@ -201,8 +205,8 @@ dialog {
 .card img {
 	transition: all ease-out 0.3s;
 	opacity: 0.7;
-	width: 150px;
-	height: 150px;
+	width: 170px;
+	height: 250px;
 }
 
 .card:hover img {

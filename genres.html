@@ -22,6 +22,7 @@
 			type="module"
 			src="assets/js/genres.js"
 		></script>
+		<script src="https://kit.fontawesome.com/15fc07582b.js" crossorigin="anonymous"></script>
 		<title>Rimunime | Genres</title>
 	</head>
 	<body>
@@ -50,21 +51,21 @@
 			<main>
 				<div class="cards">
 					<h2></h2>
-					<div class="container container-card">
-						<ul class="genres"></ul>
-					</div>
 					<div class="page hidden">
 						<button
 							class="prev"
 							disabled
 						>
-							prev
+							<i class="fa-solid fa-angle-left"></i>
 						</button>
-						<button class="next">next</button>
+						<button class="next"><i class="fa-solid fa-angle-right"></i></button>
+					</div>
+					<div class="container container-card">
+						<ul class="genres"></ul>
 					</div>
 				</div>
 				<dialog data-modal>
-					<div class="container card-detail"></div>
+					<div class="container-card card-detail"></div>
 				</dialog>
 			</main>
 		</div>
