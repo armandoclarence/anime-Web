@@ -53,7 +53,7 @@ header .search img {
 }
 
 nav ul li {
-	padding-inline:.4em;
+	padding-inline: 0.4em;
 	position: relative;
 	overflow: hidden;
 	--_translate: 0;
@@ -61,7 +61,7 @@ nav ul li {
 
 nav li:not(.active) a {
 	position: relative;
-	opacity: .7;
+	opacity: 0.7;
 }
 
 nav a:hover {
@@ -76,27 +76,26 @@ nav ul li::after {
 	width: 100%;
 	height: 2px;
 	translate: var(--_translate, 0);
-	scale: var(--_width,0) 1;
-	transition: 
-		scale .3s var(--_scale-delay, 0ms),
-		transition .5s var(--_translate-delay, 0ms);
+	scale: var(--_width, 0) 1;
+	transition: scale 0.3s var(--_scale-delay, 0ms),
+		transition 0.5s var(--_translate-delay, 0ms);
 	background-color: blue;
 }
 
 nav ul li:hover {
-	--_width: 1; 
+	--_width: 1;
 }
 
 nav ul li:hover + li {
 	--_translate: -100%;
-	--_scale-delay: .3s;
-	--_translate-delay: .2ms;
+	--_scale-delay: 0.3s;
+	--_translate-delay: 0.2ms;
 }
 
 nav ul li :hover {
 	--_translate: 100%;
-	--_scale-delay: .3s;
-	--_translate-delay: .2s;
+	--_scale-delay: 0.3s;
+	--_translate-delay: 0.2s;
 }
 
 header a {
@@ -125,7 +124,7 @@ main .page > button {
 }
 
 .page .prev:disabled {
-	opacity: .4;
+	opacity: 0.4;
 }
 
 .cards {
@@ -148,12 +147,11 @@ main .page > button {
 
 .container-card .card {
 	position: relative;
-
 }
 
 .card-detail {
 	position: absolute;
-	width: min(300px,calc(50vw - 2em));
+	width: min(300px, calc(50vw - 2em));
 }
 
 .card-detail > article.detail {
@@ -174,12 +172,14 @@ main .page > button {
 }
 .animeDetail .synopsis {
 	overflow: hidden;
-	height: 300px;
-	white-space: pre-line;
-	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	white-space: pre-wrap;
 }
 
-.page.hidden, .card-detail.hidden {
+.page.hidden,
+.card-detail.hidden {
 	display: none;
 }
 
@@ -206,7 +206,7 @@ dialog {
 	transition: all ease-out 0.3s;
 	opacity: 0.7;
 	width: 170px;
-	height: 250px;
+	height: 200px;
 }
 
 .card:hover img {
@@ -233,4 +233,3 @@ dialog {
 .info ul {
 	display: flex;
 }
-

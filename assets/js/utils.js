@@ -145,9 +145,12 @@ function makeCard(datas,day){
             cardDetail.style.top = `${topCard}px`
             cardDetail.style.left = innerWidth < cardDetailWidth + rightCard 
             ?  
-            `${rightCard - cardDetailWidth - leftCard}px` 
+            `${rightCard - cardDetailWidth - leftCard}px`  
             : `${rightCard}px`
-            cardDetail.classList.remove('hidden')
+            innerWidth < cardDetailWidth + rightCard 
+            ?
+
+            <!--  -->ardDetail.classList.remove('hidden')
         })
         card.addEventListener('mouseleave',function(){
             cardDetail.classList.add('hidden')    
@@ -159,18 +162,20 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {title,aired, title_english, genres,synopsis, score} = data
+    const {status,type,episodes,title,aired, title_english, genres,synopsis, score} = data
     const {string} = aired;
     cardDetail.innerHTML =`<article class="card detail">
+        <div class="type">${type}</div>
         <div class="title">
             <h3>${title_english}</h3>
             <h4>${title}</h4>
         </div>
         <section class="animeDetail">
             <div class="info">
-            <p>scores: ${score}</p>
             <p class="synopsis">${synopsis}</p>
+            <p>Scores: ${score}</p>
             <p>Date aired: ${string}</p>
+            <p>Status: ${status}</p>
             <ul>
                 Genre: 
                 ${genres.map(({name})=> {
