@@ -1,3 +1,4 @@
+
 * :not(dialog),
 *::after,
 *::before {
@@ -123,7 +124,7 @@ main .page > button {
 	color: rgb(62, 194, 62);
 }
 
-.page .prev:disabled {
+.page button:disabled {
 	opacity: 0.4;
 }
 
@@ -150,19 +151,21 @@ main .page > button {
 }
 
 .card-detail {
+	border: 1px solid white;
 	position: absolute;
 	width: min(300px, calc(50vw - 2em));
 }
 
 .card-detail > article.detail {
-	background: rgba(84, 94, 105, 0.774);
 	padding: 1em;
+	background: rgba(84, 94, 105, 0.774);
 }
 
 .card-detail > article.card > section {
+	position: relative;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-evenly;
-	align-items: center;
 }
 
 .title h4 {
@@ -194,6 +197,7 @@ dialog {
 	width: 170px;
 }
 
+
 .card .img {
 	height: 100%;
 	display: flex;
@@ -201,6 +205,19 @@ dialog {
 	position: relative;
 	overflow: hidden;
 }
+
+.card .play {
+	display: flex;
+	position: absolute;
+	z-index: 1;
+	inset:0;
+	align-items: center;
+	justify-content: center;
+}
+.card .img:hover .play {
+	color: rgb(62, 194, 62);
+}
+
 
 .card img {
 	transition: all ease-out 0.3s;
@@ -211,7 +228,6 @@ dialog {
 
 .card:hover img {
 	opacity: 1;
-	filter: none;
 	transform: scale(1.1);
 }
 

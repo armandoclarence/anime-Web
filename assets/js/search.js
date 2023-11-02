@@ -1,4 +1,4 @@
-import {getAnimeCompleted, getAnimeByQuery}  from './utils.js'
+import {getAnimeCompleted, getAnimeByQuery, getAnimeNow}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
@@ -18,20 +18,20 @@ if(search){
 window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
-        getAnimeCompleted(pageNumber)
+        getAnimeNow(pageNumber)
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimeCompleted(pageNumber)
+            getAnimeNow(pageNumber)
 
         })
         
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimeCompleted(pageNumber)
+            getAnimeNow(pageNumber)
         })
     } else{
         title.innerHTML = `search ${query}...`
