@@ -1,11 +1,13 @@
-import {getAnimeCompleted, getAnimeByQuery, getAnimeNow}  from './utils.js'
+import {getAnimeByQuery, getAnimeNow, getAnimeTop}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
-const container = document.querySelector('.container')
 const title = document.querySelector('.cards h2')
+const container = document.querySelector('.cards-container.now-anime')
 console.log(title)
 let pageNumber = 1
+
+
 
 if(search){
     search.addEventListener('change', e =>{
@@ -18,6 +20,7 @@ if(search){
 window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
+        getAnimeTop(pageNumber)
         getAnimeNow(pageNumber)
         prevButton.addEventListener('click', function(e){
             pageNumber--
@@ -25,7 +28,6 @@ window.addEventListener('load', function(e){
                 this.setAttribute('disabled', '')
             }
             getAnimeNow(pageNumber)
-
         })
         
         nextButton.addEventListener('click', function(e){

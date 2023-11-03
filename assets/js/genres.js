@@ -1,4 +1,4 @@
-import { getAnimeGenre, getAnimeByGenre } from "./utils.js"
+import { getAnimeGenres, getAnimesByGenre } from "./utils.js"
 import { prevButton, nextButton } from "./main.js"
 const genreContainer = document.querySelector('.genres')
 const container = document.querySelector('.container')
@@ -10,7 +10,7 @@ window.addEventListener('load',function(e){
 })
 
 function genre(){
-    getAnimeGenre().then((genres)=>{
+    getAnimeGenres().then((genres)=>{
         genres.map(({mal_id,name,count}) => {
             genreContainer.innerHTML += `
             <li class="genre">
@@ -28,19 +28,19 @@ function genre(){
         title.textContent = `Genre ${name}`
         container.removeChild(genreContainer)
         page && page.classList.remove('hidden')
-        getAnimeByGenre(id,pageNumber)
+        getAnimesByGenre(id,pageNumber)
         prevButton && prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimeByGenre(id,pageNumber)
+            getAnimesByGenre(id,pageNumber)
     
         })
         nextButton && nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimeByGenre(id,pageNumber)
+            getAnimesByGenre(id,pageNumber)
         })
     }
 }
