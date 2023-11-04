@@ -1,9 +1,10 @@
-import {getAnimeByQuery, getAnimeNow, getAnimeTop}  from './utils.js'
+import {getAnimeByQuery, getAnimeCompleted, getAnimeNow, getAnimeTop}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
-const title = document.querySelector('.cards h2')
-const container = document.querySelector('.cards-container.now-anime')
+const title = document.querySelector('.cards h3')
+const animeNowContainer = document.querySelector('.cards-container.now-anime')
+const animeQueryContainer = document.querySelector('.cards-container.query-anime')
 console.log(title)
 let pageNumber = 1
 
@@ -20,8 +21,11 @@ if(search){
 window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
+        animeQueryContainer.classList.add('hidden')
+        animeNowContainer.classList.remove('hidden')
         getAnimeTop(pageNumber)
         getAnimeNow(pageNumber)
+        getAnimeCompleted(pageNumber)
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
@@ -36,6 +40,8 @@ window.addEventListener('load', function(e){
             getAnimeNow(pageNumber)
         })
     } else{
+        animeQueryContainer.classList.remove('hidden')
+        animeNowContainer.classList.add('hidden')
         title.innerHTML = `search ${query}...`
         getAnimeByQuery(query,pageNumber)
         prevButton.addEventListener('click', function(e){

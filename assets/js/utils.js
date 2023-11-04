@@ -1,7 +1,6 @@
 const cardDetail = document.querySelector('.card-detail')
 const baseUrl = "https://api.jikan.moe/v4/"
 const pages = document.querySelector('.page')
-const container = document.querySelector('.cards-container.now-anime')
 const card = document.querySelector('.cards')
 
 async function getAnimeResponse(typeData, query=""){
@@ -62,7 +61,7 @@ function makeList(data){
 
 export async function getAnimeGenres(){
     const animeData = await getAnimeResponse('genres/anime','filter=themes')
-    return animeData
+    return await animeData
 }
 
 export async function getAnimesByGenre(id,page){
@@ -71,7 +70,7 @@ export async function getAnimesByGenre(id,page){
     if(animeData.length < 25){
         pages.children[1].setAttribute('disabled','')
     }
-    renderCards(animeData)
+    renderSubCards(animeData,'.genreAnimes')
 }
 
 export async function getAnimeNow(page){
@@ -81,6 +80,11 @@ export async function getAnimeNow(page){
 export async function getAnimeTop(page){
     const animeData = await getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
     renderSubCards(animeData, '.top-popularity-anime')
+}
+
+export async function getAnimeCompleted(page){
+    const animeData = await getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
+    renderSubCards(animeData, '.completed-anime')
 }
 
 export async function getAnimeByQuery(query,page){
@@ -97,18 +101,20 @@ function renderSubCards(datas, containerId) {
     let container = document.querySelector(`${containerId}`);
     container.innerHTML = datas.map(data => renderSubCardHTML(data,containerId)).join('');
     let cards = document.querySelectorAll('.card')
+    console.log(cards)
     renderHoverImg(cards)
 }
 
 function renderSubCardHTML(data,containerId) {
     console.log(containerId)
     const {title_english,title,type, episodes, mal_id, images} = data
-    return  containerId != '.query-anime' && containerId != '.now-anime' ?
+    return  containerId == '.top-popularity-anime' || containerId == '.completed-anime' ?
     `<article class="card home" id=${mal_id}>
-        <div class="cardHome">
+        <div class="cardHome popular">
             <div class="img">
-                <img class="" src="${images.jpg.image_url}" title="${title}" />
+                <img class="image" src="${images.jpg.image_url}" title="${title}" />
             </div>
+            <div class="title">${title_english || title}</div>
         </div>
     </article>`
     :
@@ -119,13 +125,14 @@ function renderSubCardHTML(data,containerId) {
                 <div class="type typeSrc">${type}</div>
                 <div class="type eps">${episodes}</div>
             </div>
-            <div class="title">${title || title_english}</div>
+            <div class="title">${title_english || title}</div>
         </div>
     </article>`
 }
 
 function renderHoverImg(cards){ 
     cards.forEach(card => {
+        console.log(card)
         card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
             let rightCard = this.offsetWidth + this.offsetLeft

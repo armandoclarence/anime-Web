@@ -21,6 +21,7 @@ function genre(){
             </li>`
         })
     })
+    console.log(page)
     let id = params.get('genreId')
     if(id){
         let name = params.get('genre')

@@ -1,9 +1,8 @@
-import { getAnimeGenre, getAnimeSeason } from "./utils.js"
+import { getAnimeGenres } from "./utils.js"
 const genreContainer = document.querySelector('.genres')
-// const container = document.querySelector('.container')
 const list = document.querySelector('.list button')
 window.addEventListener('load', function(e){
-    getAnimeGenre().then((genres)=>{
+    getAnimeGenres().then((genres)=>{
         genres.map(({mal_id,name}) => {
             genreContainer.innerHTML += `
             <li class="genre">
