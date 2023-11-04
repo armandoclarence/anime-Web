@@ -18,7 +18,7 @@ async function getAnimeSchedule(day) {
 
 export async function makeScheduleList() {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    try {
+    try {   
         for (let i = 0; i < days.length; i++) {
             const result = await getAnimeSchedule(days[i])
             renderCards(result,days[i])
@@ -76,13 +76,11 @@ export async function getAnimesByGenre(id,page){
 
 export async function getAnimeNow(page){
     const animeData = await getAnimeResponse('seasons/now',`page=${page}&limit=14&sfw=true`)
-    renderCards(animeData)
-    console.log(animeData)
+    renderSubCards(animeData, '.now-anime')
 }
 export async function getAnimeTop(page){
     const animeData = await getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
     renderSubCards(animeData, '.top-popularity-anime')
-    console.log(animeData)
 }
 
 export async function getAnimeByQuery(query,page){
@@ -91,29 +89,39 @@ export async function getAnimeByQuery(query,page){
     if(animeData.length < 25){
         pages.children[1].setAttribute('disabled','')
     }
-    renderCards(animeData)
+    renderSubCards(animeData, '.query-anime')
 }
 
 
-function renderSubCards(data, containerId) {
+function renderSubCards(datas, containerId) {
     let container = document.querySelector(`${containerId}`);
-    container.innerHTML = data.map(item => renderSubCardHTML(item)).join('');
+    container.innerHTML = datas.map(data => renderSubCardHTML(data,containerId)).join('');
     let cards = document.querySelectorAll('.card')
     renderHoverImg(cards)
 }
 
-function renderSubCardHTML(item) {
-    const {title,type, episodes, mal_id, images} = item
-    return `<article class="card home" id=${mal_id}>
-    <div class="cardHome">
-        <div class="img">
-            <img src="${images.jpg.image_url}" title="${title}" />
-            <div class="type typeSrc">${type}</div>
-            <div class="type eps">${episodes}</div>
+function renderSubCardHTML(data,containerId) {
+    console.log(containerId)
+    const {title_english,title,type, episodes, mal_id, images} = data
+    return  containerId != '.query-anime' && containerId != '.now-anime' ?
+    `<article class="card home" id=${mal_id}>
+        <div class="cardHome">
+            <div class="img">
+                <img class="" src="${images.jpg.image_url}" title="${title}" />
+            </div>
         </div>
-        <div class="title">${title}</div>
-    </div>
-</article>`;
+    </article>`
+    :
+    `<article class="card home" id=${mal_id}>
+        <div class="cardHome">
+            <div class="img">
+                <img src="${images.jpg.image_url}" title="${title}" />
+                <div class="type typeSrc">${type}</div>
+                <div class="type eps">${episodes}</div>
+            </div>
+            <div class="title">${title || title_english}</div>
+        </div>
+    </article>`
 }
 
 function renderHoverImg(cards){ 
@@ -146,50 +154,16 @@ function renderHoverImg(cards){
 }
 
 function renderCards(datas,day=''){
-    day ? 
     card.innerHTML+= ` 
         <h2>${day}</h2>
         <div class="container">
-            <div class="container-card" value=${day}></div>
-        </div>`
-    : container.innerHTML = ''
-    const containers = document.querySelectorAll('.container-card')
-    day ? 
+            <div class="cards-container ${day}"></div>
+    </div>`
+    const containers = document.querySelectorAll('.cards-container')
     containers.forEach(container => {
-        if(container.getAttribute('value') == day){
-            datas.map(data => {
-                const {title_english,title,type, episodes, mal_id, images} = data
-                container.innerHTML += `
-                <article class="card home" id=${mal_id}>
-                    <div class="cardHome">
-                        <div class="img">
-                            <img src="${images.jpg.image_url}"/>
-                            <div class="type">${type}</div>
-                            <div class="type eps">${episodes}</div>
-                        </div>
-                        <div class="title">${title_english || title}</div>
-                    </div>
-                </article>`
-            })
-        }
-    }) : 
-    datas.map(data => {
-        const {title,type, episodes, mal_id, images} = data
-        let card = `<article class="card home" id=${mal_id}>
-            <div class="cardHome">
-                <div class="img">
-                    <i class="la la-play play la-2x"></i>
-                    <img src="${images.jpg.image_url}" title="${title}" />
-                    <div class="type typeSrc">${type}</div>
-                    <div class="type eps">${episodes}</div>
-                </div>
-                <div class="title">${title}</div>
-            </div>
-        </article>`
-        container.innerHTML += card
+        console.log(container)
+        renderSubCards(datas, `.${day}`)
     })
-    let cards = document.querySelectorAll('.card')
-    renderHoverImg(cards)
 }
 
 async function getAnimeDetail(id){

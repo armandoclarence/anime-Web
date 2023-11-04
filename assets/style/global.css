@@ -189,8 +189,7 @@ main .page > button {
 	white-space: pre-wrap;
 }
 
-.page.hidden,
-.card-detail.hidden {
+*.hidden {
 	display: none;
 }
 
