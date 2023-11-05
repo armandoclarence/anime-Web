@@ -194,22 +194,26 @@ main .page > button {
 	justify-content: flex-start;
 }
 
-.cards-container.top-popularity-anime {
+.cards-container.top-popularity-anime, .cards-container.completed-anime {
 	flex-direction: column;
 	align-items: flex-start;
 	gap: .2em;
 }
 
-.cards-container.top-popularity-anime .card {
+.cards-container .card.sub {
+	width: 100%;
+}
+
+.card .cardSub {
 	width: 100%;
 	background-color: rgb(44, 44, 44,.6);
 }
 
-.top-popularity-anime .card:hover {
+.card .cardSub:hover {
 	background-color: rgb(44, 44, 44,1);
 }
 
-.top-popularity-anime .card .title {
+.card .cardSub .title {
 	padding: 1em;
 }
 
@@ -241,15 +245,14 @@ main .page > button {
 
 .title h4 {
 	overflow: hidden;
-	white-space: nowrap;
+	-webkit-line-clamp: 1;
 	text-overflow: ellipsis;
 }
-.animeDetail .synopsis,.cardHome .title {
+.animeDetail .synopsis,.cardHome .title,.cardSub .title h4 {
 	overflow: hidden;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 3;
-	white-space: pre-wrap;
 }
 
 * .hidden {
@@ -267,18 +270,19 @@ dialog {
 	width: 175px;
 }
 
-.cardHome.popular {
+.cardSub {
 	width:100%;
+	display: flex;
 	flex-direction: row;
 }
 
-.cardHome .title {
+.cardHome .title, .cardSub .title p {
 	-webkit-line-clamp: 2;
 	color: rgb(190, 184, 184);
 	transition: all .2s;
 }
 
-.cardHome:hover .title {
+.card:hover .title {
 	color: var(--white);
 }
 

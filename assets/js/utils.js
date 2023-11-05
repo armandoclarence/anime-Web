@@ -20,7 +20,7 @@ export async function makeScheduleList() {
     try {   
         for (let i = 0; i < days.length; i++) {
             const result = await getAnimeSchedule(days[i])
-            renderCards(result,days[i])
+            renderDayCards(result,days[i])
             await new Promise(resolve => setTimeout(resolve, 1000))
         }
     } catch (error) {
@@ -28,40 +28,9 @@ export async function makeScheduleList() {
     }
 }
 
-export async function getAnimeRecommendation(){
-    const animeData = await getAnimeResponse('recommendations/anime')
-
-}
-
-// export async function getAnimeSeason(){
-    // const animeSeason = await getAnimeResponse('seasons')
-    // const anime = await fetch(`${baseUrl}seasons`)
-    // const season = await anime.json()
-    // const {data} = season;
-    // makeList(data)
-    // const {year, seasons} = data
-    // makeYearList(data)
-// }
-
-function makeYearList(datas){
-    const years = document.querySelector('.years .list')
-    datas.map(({year})=>{
-        years.innerHTML += `<li>${year}</li>`
-        // console.log(year)
-    })
-
-}
-
-function makeList(data){
-    data.map(({year, seasons}) => {
-        console.log(year)
-    })
-
-}
-
 export async function getAnimeGenres(){
     const animeData = await getAnimeResponse('genres/anime','filter=themes')
-    return await animeData
+    return animeData
 }
 
 export async function getAnimesByGenre(id,page){
@@ -73,20 +42,6 @@ export async function getAnimesByGenre(id,page){
     renderSubCards(animeData,'.genreAnimes')
 }
 
-export async function getAnimeNow(page){
-    const animeData = await getAnimeResponse('seasons/now',`page=${page}&limit=14&sfw=true`)
-    renderSubCards(animeData, '.now-anime')
-}
-export async function getAnimeTop(page){
-    const animeData = await getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
-    renderSubCards(animeData, '.top-popularity-anime')
-}
-
-export async function getAnimeCompleted(page){
-    const animeData = await getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
-    renderSubCards(animeData, '.completed-anime')
-}
-
 export async function getAnimeByQuery(query,page){
     const animeData = await getAnimeResponse('anime',`sfw=true&q=${query}&page=${page}`)
     pages.children[1].removeAttribute('disabled','')
@@ -96,45 +51,94 @@ export async function getAnimeByQuery(query,page){
     renderSubCards(animeData, '.query-anime')
 }
 
+class AnimeRenderer {
+    constructor(containerId) {
+        this.container = document.querySelector(containerId);
+        if (!this.container) {
+            console.error(`Container with id ${containerId} not found.`);
+        }
+    }
 
-function renderSubCards(datas, containerId) {
-    let container = document.querySelector(`${containerId}`);
-    container.innerHTML = datas.map(data => renderSubCardHTML(data,containerId)).join('');
-    let cards = document.querySelectorAll('.card')
-    console.log(cards)
-    renderHoverImg(cards)
+    renderSubCards(datas) {
+        this.container.innerHTML += datas.map(data => this.renderSubCardHTML(data)).join('');
+        const cards = this.container.querySelectorAll('.card');
+        renderHoverImg(cards);
+    }
+
+    renderSubCardHTML(data) {
+        const {title_english,title,type, episodes, mal_id, images,duration} = data
+        let durations = duration.replace(' per ep', '')
+        return  this.container == '.top-popularity-anime' || this.container == '.completed-anime' ?
+            `<article class="card sub" id=${mal_id}>
+                <div class="cardSub">
+                    <div class="img">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    </div>
+                    <div class="title">
+                        <h4>
+                        ${title_english || title}
+                        </h4>
+                        <p>
+                            ${type} ${episodes} ${durations}
+                        </p>
+                    </div>
+                </div>
+            </article>`
+        :
+        this.container == '.most-viewed-anime' ?
+            `<article class="card sub" id=${mal_id}>
+                <div class="cardSub">
+                    <div class="img">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    </div>
+                    <div class="title">
+                        <h4>
+                        ${title_english || title}
+                        </h4>
+                        <p>
+                            ${type} ${episodes} ${durations}
+                        </p>
+                    </div>
+                </div>
+            </article>`
+            :
+            `<article class="card" id=${mal_id}>
+                <div class="cardHome">
+                    <div class="img">
+                        <img src="${images.jpg.image_url}" title="${title}" />
+                        <div class="type typeSrc">${type}</div>
+                        <div class="type eps">${episodes}</div>
+                    </div>
+                    <div class="title">${title_english || title}</div>
+                </div>
+            </article>`
+    }
 }
 
-function renderSubCardHTML(data,containerId) {
-    console.log(containerId)
-    const {title_english,title,type, episodes, mal_id, images} = data
-    return  containerId == '.top-popularity-anime' || containerId == '.completed-anime' ?
-    `<article class="card home" id=${mal_id}>
-        <div class="cardHome popular">
-            <div class="img">
-                <img class="image" src="${images.jpg.image_url}" title="${title}" />
-            </div>
-            <div class="title">${title_english || title}</div>
-        </div>
-    </article>`
-    :
-    `<article class="card home" id=${mal_id}>
-        <div class="cardHome">
-            <div class="img">
-                <img src="${images.jpg.image_url}" title="${title}" />
-                <div class="type typeSrc">${type}</div>
-                <div class="type eps">${episodes}</div>
-            </div>
-            <div class="title">${title_english || title}</div>
-        </div>
-    </article>`
+export async function getAnimeNows(page) {
+    try {
+        const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`);
+        const animeMostViewed = await getAnimeResponse('anime', `status=airing&sfw=true&page=${page}&limit=7`)
+        const animeCompleted = await getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
+        const animeTop = await getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
+        const now = new AnimeRenderer('.now-anime'); 
+        const mostViewed = new AnimeRenderer('.most-viewed-anime'); 
+        const completed = new AnimeRenderer('.completed-anime'); 
+        const top = new AnimeRenderer('.top-popularity-anime'); 
+        now.renderSubCards(animeNow)
+        mostViewed.renderSubCards(animeMostViewed)
+        completed.renderSubCards(animeCompleted)
+        top.renderSubCards(animeTop)
+    } catch (error) {
+        console.error('Error fetching anime data:', error);
+    }
 }
 
 function renderHoverImg(cards){ 
     cards.forEach(card => {
-        console.log(card)
         card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
+            console.log(this)
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
             let topCard = this.offsetTop
@@ -160,7 +164,7 @@ function renderHoverImg(cards){
     })
 }
 
-function renderCards(datas,day=''){
+function renderDayCards(datas,day=''){
     card.innerHTML+= ` 
         <h2>${day}</h2>
         <div class="container">
@@ -192,8 +196,7 @@ async function getAnimeDetail(id){
                 <p>Date aired: ${string}</p>
                 <p>Status: ${status}</p>
                 <ul>
-                    Genre: 
-                    ${genres.map(({name})=> {
+                    Genre:${genres.map(({name})=> {
                         return `<li>${name}</li>`  
                     })}
                 </ul>

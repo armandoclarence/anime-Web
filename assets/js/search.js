@@ -1,4 +1,4 @@
-import {getAnimeByQuery, getAnimeCompleted, getAnimeNow, getAnimeTop}  from './utils.js'
+import {getAnimeByQuery,getAnimeNows}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
@@ -23,9 +23,7 @@ window.addEventListener('load', function(e){
     if(!query) {
         animeQueryContainer.classList.add('hidden')
         animeNowContainer.classList.remove('hidden')
-        getAnimeTop(pageNumber)
-        getAnimeNow(pageNumber)
-        getAnimeCompleted(pageNumber)
+        getAnimeNows(pageNumber)
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
