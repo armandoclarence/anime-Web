@@ -180,14 +180,9 @@ main .page > button {
 	margin-bottom: 1em;
 }
 
-/* .cards-container > * {
-	flex: 1 1 200px;
-} */
-/* @container (min-width:200px){
-	.cards-container {
-	
-	}
-} */
+.cards-container.most-viewed-anime {
+	gap: 0;
+}
 
 .cards-container.query-anime {
 	justify-content: flex-start;
@@ -204,21 +199,35 @@ main .page > button {
 	width: 100%;
 }
 
-.card .cardSub {
+.card.sub .cardSub {
+	display: flex;
 	width: 100%;
-	background-color: rgb(44, 44, 44, 0.6);
+	padding: 1em;
+	background-color: rgba(44, 44, 44, 0.4);
 }
 
 .card .cardSub.most {
 	justify-content: space-between;
-	padding: 1em;
+	flex-direction: row;
 }
 
-.card .cardSub:hover {
-	background-color: rgb(44, 44, 44, 1);
+.card .cardSub.most:nth-child(2){
+	padding: 0;
+	flex-direction: column;
+}
+
+.card.sub.mosts:nth-child(2n) .cardSub{
+	background-color: rgba(44,44,44, 0.6);
+}
+
+.card.sub:hover .cardSub, .card.sub.mosts:nth-child(2n):hover .cardSub {
+	background-color: rgba(44,44,44, 1);
 }
 
 .card .cardSub .title {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 	padding: 1em;
 }
 
@@ -277,11 +286,6 @@ dialog {
 	width: 175px;
 }
 
-.cardSub {
-	width: 100%;
-	display: flex;
-}
-
 .cardHome .title,
 .cardSub .title p {
 	-webkit-line-clamp: 2;
@@ -319,7 +323,7 @@ dialog {
 }
 
 .card img {
-	transition: all ease-out 0.3s;
+	transition: all 0.3s ease-out;
 	max-width: 100%;
 	width: 175px;
 	height: 200px;
@@ -335,6 +339,28 @@ dialog {
 	transform: scale(1.1);
 }
 
+.card .bigType {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+}
+
+.card .bigType h2 {
+	font-size: 2.5em;
+	text-decoration: underline;
+	display: flex;
+	padding: .5em;
+	flex-basis: 20%;
+	align-items: flex-end;
+	color: black;
+	background: white;
+}
+
+.card .bigType .img {
+	width: 100%;
+	flex-basis: 80%;
+}
+
 .card .type {
 	position: absolute;
 	background-color: var(--green);
@@ -344,8 +370,9 @@ dialog {
 	top: 0;
 }
 
-.subCard  >.typeSrc {
-	padding: 1em .5em;
+.card .typeSub {
+	top: 0;
+	padding: .25em .5em;
 }
 
 .card .eps {

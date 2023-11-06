@@ -50,7 +50,6 @@ export async function getAnimeByQuery(query,page){
     }
     renderSubCards(animeData, '.query-anime')
 }
-let i = 1
 class AnimeRenderer {
     constructor(containerId) {
         this.container = document.querySelector(containerId)
@@ -60,12 +59,12 @@ class AnimeRenderer {
     }
 
     renderSubCards(datas) {
-        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data)).join('')
+        let i = 1
+        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
         const cards = this.container.querySelectorAll('.card')
         renderHoverImg(cards)
     }
-
-    renderSubCardHTML(data) {
+    renderSubCardHTML(data,i) {
         const {title_english,title,type, episodes, mal_id, images,duration} = data
         let durations = duration.replace(' per ep', '')
         return  this.container.classList[1] == 'top-popularity-anime' || this.container.classList[1] == 'completed-anime' ?
@@ -86,22 +85,42 @@ class AnimeRenderer {
             </article>`
         :
         this.container.classList[1] == 'most-viewed-anime' ?
-            `<article class="card sub" id=${mal_id}>
+            `<article class="card sub mosts" id=${mal_id}>
+                ${ i == 1 ? `<h3>MOST VIEWED</h3>`: '' }
                 <div class="cardSub most">
-                    <div class="type typeSrc">
-                        0${i++}
-                    </div>
+                    ${i == 1 ? `
+                        <div class="bigType">
+                            <h2>0${i}</h2>
+                            <div class="img">
+                                <img class=images src="${images.jpg.large_image_url}" alt="" />
+                            </div>
+                        </div>
+                    ` : 
+                    ''
+                    }
+                    ${i == 1 ? '' : `
+                        <div class="type typeSub">
+                        
+                        0${i}
+                    </div>`
+                    }
                     <div class="title">
                         <h4>
                         ${title_english || title}
                         </h4>
                         <p>
-                        ${type} ${episodes || ''}
+                        ${type} 
+                        <i class="lar la-closed-captioning"></i>${episodes || ''}
                         </p>    
                     </div>
-                    <div class="img">
+                    ${
+                        i != 1 ? `
+                        <div class="img">
                         <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                    </div>
+                        </div>
+                        `
+                        : ''
+                    }
                 </div>
             </article>`
             :
