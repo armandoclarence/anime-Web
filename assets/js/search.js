@@ -29,13 +29,13 @@ window.addEventListener('load', function(e){
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimeNow(pageNumber)
+            getAnimeNows(pageNumber)
         })
         
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimeNow(pageNumber)
+            getAnimeNows(pageNumber)
         })
     } else{
         animeQueryContainer.classList.remove('hidden')

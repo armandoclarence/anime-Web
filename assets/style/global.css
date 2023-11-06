@@ -315,7 +315,8 @@ dialog {
 .card img {
 	transition: all ease-out 0.3s;
 	max-width: 100%;
-	height: auto;
+	width: 175px;
+	height: 200px;
 }
 
 .card img.image {

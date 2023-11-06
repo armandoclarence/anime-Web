@@ -16,7 +16,7 @@ async function getAnimeSchedule(day) {
 }
 
 export async function makeScheduleList() {
-    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     try {   
         for (let i = 0; i < days.length; i++) {
             const result = await getAnimeSchedule(days[i])
@@ -53,22 +53,22 @@ export async function getAnimeByQuery(query,page){
 
 class AnimeRenderer {
     constructor(containerId) {
-        this.container = document.querySelector(containerId);
+        this.container = document.querySelector(containerId)
         if (!this.container) {
-            console.error(`Container with id ${containerId} not found.`);
+            console.error(`Container with id ${containerId} not found.`)
         }
     }
 
     renderSubCards(datas) {
-        this.container.innerHTML += datas.map(data => this.renderSubCardHTML(data)).join('');
-        const cards = this.container.querySelectorAll('.card');
-        renderHoverImg(cards);
+        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data)).join('')
+        const cards = this.container.querySelectorAll('.card')
+        renderHoverImg(cards)
     }
 
     renderSubCardHTML(data) {
         const {title_english,title,type, episodes, mal_id, images,duration} = data
         let durations = duration.replace(' per ep', '')
-        return  this.container == '.top-popularity-anime' || this.container == '.completed-anime' ?
+        return  this.container.classList[1] == 'top-popularity-anime' || this.container.classList[1] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
                     <div class="img">
@@ -85,19 +85,19 @@ class AnimeRenderer {
                 </div>
             </article>`
         :
-        this.container == '.most-viewed-anime' ?
+        this.container.classList[1] == 'most-viewed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
-                    <div class="img">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                    </div>
                     <div class="title">
                         <h4>
                         ${title_english || title}
                         </h4>
                         <p>
-                            ${type} ${episodes} ${durations}
-                        </p>
+                        ${type} ${episodes} ${durations}
+                        </p>    
+                    </div>
+                    <div class="img">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
                     </div>
                 </div>
             </article>`
@@ -117,20 +117,44 @@ class AnimeRenderer {
 
 export async function getAnimeNows(page) {
     try {
-        const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`);
-        const animeMostViewed = await getAnimeResponse('anime', `status=airing&sfw=true&page=${page}&limit=7`)
-        const animeCompleted = await getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
-        const animeTop = await getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
-        const now = new AnimeRenderer('.now-anime'); 
-        const mostViewed = new AnimeRenderer('.most-viewed-anime'); 
-        const completed = new AnimeRenderer('.completed-anime'); 
-        const top = new AnimeRenderer('.top-popularity-anime'); 
+        const animeNow = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`)
+            ),250)
+        )
+        const animeTop = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
+            ),500)
+        )
+        const animeMostViewed = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                getAnimeResponse('anime', `status=airing&sfw=true&page=${page}&limit=5`)
+            ),750)
+        )
+        const animeCompleted = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
+            ),1000)
+        )
+        const now = new AnimeRenderer('.now-anime') 
+        const top = new AnimeRenderer('.top-popularity-anime') 
+        const mostViewed = new AnimeRenderer('.most-viewed-anime') 
+        const completed = new AnimeRenderer('.completed-anime') 
+        const animeLoad = [animeNow,animeTop,animeMostViewed,animeCompleted]
+        const containers = [now,top,mostViewed,completed]
+        Promise.all(animeLoad)
+        .then(res=)
         now.renderSubCards(animeNow)
         mostViewed.renderSubCards(animeMostViewed)
         completed.renderSubCards(animeCompleted)
         top.renderSubCards(animeTop)
     } catch (error) {
-        console.error('Error fetching anime data:', error);
+        console.error('Error fetching anime data:', error)
     }
 }
 
@@ -182,7 +206,7 @@ async function getAnimeDetail(id){
     const animeData = await anime.json()
     const {data} = animeData
     const {status,type,episodes,title,aired, title_english, genres,synopsis, score} = data
-    const {string} = aired;
+    const {string} = aired
     cardDetail.innerHTML =`<article class="card detail">
         <div class="type typeSrc">${type}</div>
         <section class="animeDetail">
