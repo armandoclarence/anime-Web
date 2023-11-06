@@ -50,7 +50,7 @@ export async function getAnimeByQuery(query,page){
     }
     renderSubCards(animeData, '.query-anime')
 }
-
+let i = 1
 class AnimeRenderer {
     constructor(containerId) {
         this.container = document.querySelector(containerId)
@@ -87,13 +87,16 @@ class AnimeRenderer {
         :
         this.container.classList[1] == 'most-viewed-anime' ?
             `<article class="card sub" id=${mal_id}>
-                <div class="cardSub">
+                <div class="cardSub most">
+                    <div class="type typeSrc">
+                        0${i++}
+                    </div>
                     <div class="title">
                         <h4>
                         ${title_english || title}
                         </h4>
                         <p>
-                        ${type} ${episodes} ${durations}
+                        ${type} ${episodes || ''}
                         </p>    
                     </div>
                     <div class="img">
@@ -145,10 +148,6 @@ export async function getAnimeNows(page) {
         const top = new AnimeRenderer('.top-popularity-anime') 
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
         const completed = new AnimeRenderer('.completed-anime') 
-        const animeLoad = [animeNow,animeTop,animeMostViewed,animeCompleted]
-        const containers = [now,top,mostViewed,completed]
-        Promise.all(animeLoad)
-        .then(res=)
         now.renderSubCards(animeNow)
         mostViewed.renderSubCards(animeMostViewed)
         completed.renderSubCards(animeCompleted)
