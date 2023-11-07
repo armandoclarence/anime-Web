@@ -92,16 +92,16 @@ class AnimeRenderer {
                         <div class="bigType">
                             <h2>0${i}</h2>
                             <div class="img">
-                                <img class=images src="${images.jpg.large_image_url}" alt="" />
+                                <img class=image" src="${images.jpg.large_image_url}" alt="" />
                             </div>
                         </div>
                     ` : 
-                    ''
-                    }
-                    ${i == 1 ? '' : `
-                        <div class="type typeSub">
-                        
+                    `
+                    <div class="type typeSub">
                         0${i}
+                    </div>
+                    <div class="img">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
                     </div>`
                     }
                     <div class="title">
@@ -113,14 +113,6 @@ class AnimeRenderer {
                         <i class="lar la-closed-captioning"></i>${episodes || ''}
                         </p>    
                     </div>
-                    ${
-                        i != 1 ? `
-                        <div class="img">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                        </div>
-                        `
-                        : ''
-                    }
                 </div>
             </article>`
             :

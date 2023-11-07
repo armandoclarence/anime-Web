@@ -167,6 +167,7 @@ main .page > button {
 .container.sub {
 	display: flex;
 	gap: 1em;
+	margin-bottom: 1em;
 }
 
 .subContainer {
@@ -202,33 +203,33 @@ main .page > button {
 .card.sub .cardSub {
 	display: flex;
 	width: 100%;
-	padding: 1em;
 	background-color: rgba(44, 44, 44, 0.4);
 }
 
-.card .cardSub.most {
+.card.sub .cardSub.most {
 	justify-content: space-between;
-	flex-direction: row;
+	padding: 0.4em;
 }
 
-.card .cardSub.most:nth-child(2){
+.card .cardSub.most:nth-child(2) {
 	padding: 0;
 	flex-direction: column;
 }
 
-.card.sub.mosts:nth-child(2n) .cardSub{
-	background-color: rgba(44,44,44, 0.6);
+.card.sub.mosts:nth-child(2n) .cardSub {
+	background-color: rgba(44, 44, 44, 0.6);
 }
 
-.card.sub:hover .cardSub, .card.sub.mosts:nth-child(2n):hover .cardSub {
-	background-color: rgba(44,44,44, 1);
+.card.sub:hover .cardSub,
+.card.sub.mosts:nth-child(2n):hover .cardSub {
+	background-color: rgba(44, 44, 44, 1);
 }
 
 .card .cardSub .title {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
-	padding: 1em;
+	padding-left: 0.5em;
+	justify-content: center;
 }
 
 .cards-container .card {
@@ -303,7 +304,10 @@ dialog {
 	flex-direction: column;
 	position: relative;
 	overflow: hidden;
-	transition: all 0.5s;
+}
+
+.card .most .img {
+	order: 1;
 }
 
 .card .play {
@@ -325,13 +329,16 @@ dialog {
 .card img {
 	transition: all 0.3s ease-out;
 	max-width: 100%;
-	width: 175px;
 	height: 200px;
 }
 
 .card img.image {
 	height: 90px;
 	width: 70px;
+}
+
+.card .most img.image {
+	padding: 0.5em;
 }
 
 .card:hover img {
@@ -349,7 +356,7 @@ dialog {
 	font-size: 2.5em;
 	text-decoration: underline;
 	display: flex;
-	padding: .5em;
+	padding: 0.5em;
 	flex-basis: 20%;
 	align-items: flex-end;
 	color: black;
@@ -372,7 +379,7 @@ dialog {
 
 .card .typeSub {
 	top: 0;
-	padding: .25em .5em;
+	padding: 0.25em 0.5em;
 }
 
 .card .eps {
@@ -382,4 +389,16 @@ dialog {
 
 .info ul {
 	display: flex;
+}
+
+.backToTop {
+	display: flex;
+	gap: 0.5em;
+	justify-content: center;
+}
+
+.footerList {
+	display: flex;
+	justify-content: center;
+	gap: 1em;
 }
