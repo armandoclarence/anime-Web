@@ -1,7 +1,7 @@
 import { getAnimeGenres, getAnimesByGenre } from "./utils.js"
 import { prevButton, nextButton } from "./main.js"
 const genreContainer = document.querySelector('.genres')
-const container = document.querySelector('.container')
+const container = document.querySelector('.genreAnimes')
 const page = document.querySelector('.page')
 let params = new URLSearchParams(window.location.search)
 let pageNumber = 1

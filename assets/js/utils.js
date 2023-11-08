@@ -39,7 +39,8 @@ export async function getAnimesByGenre(id,page){
     if(animeData.length < 25){
         pages.children[1].setAttribute('disabled','')
     }
-    renderSubCards(animeData,'.genreAnimes')
+    const animesByGenre = new AnimeRenderer('.genreAnimes')
+    animesByGenre.renderSubCards(animeData)
 }
 
 export async function getAnimeByQuery(query,page){
@@ -48,7 +49,8 @@ export async function getAnimeByQuery(query,page){
     if(animeData.length < 25){
         pages.children[1].setAttribute('disabled','')
     }
-    renderSubCards(animeData, '.query-anime')
+    const animeByQuery = new AnimeRenderer('.query-anime')
+    animeByQuery.renderSubCards(animeData)
 }
 class AnimeRenderer {
     constructor(containerId) {
@@ -87,14 +89,12 @@ class AnimeRenderer {
         this.container.classList[0] == 'most-viewed-anime' ?
             `<article class="card sub mosts" id=${mal_id}>
                 ${ i == 1 ? `<h3>MOST VIEWED</h3>`: '' }
-                <div class="cardSub most">
+                <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     ${i == 1 ? `
-                        <div class="bigType">
                             <h2>0${i}</h2>
                             <div class="img">
                                 <img class=image" src="${images.jpg.large_image_url}" alt="" />
                             </div>
-                        </div>
                     ` : 
                     `
                     <div class="type typeSub">
@@ -120,8 +120,6 @@ class AnimeRenderer {
                 <div class="cardHome">
                     <div class="img">
                         <img src="${images.jpg.image_url}" title="${title}" />
-                        <div class="type typeSrc">${type}</div>
-                        <div class="type eps">${episodes}</div>
                     </div>
                     <div class="title">${title_english || title}</div>
                 </div>
@@ -201,13 +199,15 @@ function renderHoverImg(cards){
 function renderDayCards(datas,day=''){
     card.innerHTML+= ` 
         <h2>${day}</h2>
-        <div class="container">
-            <div class="cards-container ${day}"></div>
-    </div>`
+            <div class="cards-container ${day}">
+            </div>`
     const containers = document.querySelectorAll('.cards-container')
     containers.forEach(container => {
+        container = container.classList[1]
+        container = new AnimeRenderer(`.${container}`)
         console.log(container)
-        renderSubCards(datas, `.${day}`)
+        
+        container.renderSubCards(datas)
     })
 }
 

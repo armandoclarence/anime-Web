@@ -157,26 +157,24 @@ main .page > button {
 	gap: 1em;
 }
 
-.subContainer {
-	width: 33.3%;
+.subs {
+	display: grid;
+	grid-template-columns: repeat(3,1fr);
+	gap: 1em;
 }
 
 .cards {
 	display: grid;
 }
 
-.cards h2 {
-	border-radius: 0.2em;
-}
 .now-anime {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-	grid-template-rows: repeat(2, 1fr);
 	gap: 1em;
 }
 
 .now-anime .card {
-	display: grid;
+	/* display: grid; */
 }
 
 .most-viewed-anime {
@@ -199,20 +197,37 @@ main .page > button {
 }
 
 .card.sub .cardSub {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(5,1fr);
+	grid-template-areas: 'img title title title title';
+	gap: .5em;
 	width: 100%;
 	background-color: rgba(44, 44, 44, 0.4);
 }
 
 .card.sub .cardSub.most {
-	justify-content: space-between;
+	grid-template-areas: 'title title title title img';
 	padding: 0.4em;
 }
 
-.card .cardSub.most:nth-child(2) {
+.card .cardSub.big {
+	grid-template-rows: repeat(3,1fr);
+	grid-template-columns: 1fr 4fr;
 	padding: 0;
-	flex-direction: column;
 }
+
+.card .cardSub.big h2 {
+
+	font-size: 2.5em;
+	text-decoration: underline;
+	padding: 0.5em;
+	color: black;
+	background: white;
+}
+
+.card .cardSub.big .img {
+}
+
 
 .card.sub.mosts:nth-child(2n) .cardSub {
 	background-color: rgba(44, 44, 44, 0.6);
@@ -224,10 +239,7 @@ main .page > button {
 }
 
 .card .cardSub .title {
-	display: flex;
-	flex-direction: column;
-	padding-left: 0.5em;
-	justify-content: center;
+	grid-area: title;
 }
 
 .card {
@@ -295,10 +307,12 @@ dialog {
 .card .img {
 	position: relative;
 	overflow: hidden;
+	height: 200px;
 }
 
-.card .most .img {
-	order: 1;
+.card.sub .img {
+	grid-area: img;
+	height: 90px;
 }
 
 .card .play {
@@ -336,37 +350,22 @@ dialog {
 	transform: scale(1.1);
 }
 
-.card .bigType {
-	width: 100%;
-	flex-direction: row;
-}
 
 .card .bigType h2 {
 	font-size: 2.5em;
 	text-decoration: underline;
-	display: flex;
 	padding: 0.5em;
-	flex-basis: 20%;
-	align-items: flex-end;
 	color: black;
 	background: white;
 }
 
 .card .bigType .img {
 	width: 100%;
-	flex-basis: 80%;
-}
-
-.card .type {
-	position: absolute;
-	background-color: var(--green);
-}
-
-.card .typeSrc {
-	top: 0;
 }
 
 .card .typeSub {
+	position: absolute;
+	background-color: var(--green);
 	top: 0;
 	padding: 0.25em 0.5em;
 }
@@ -399,4 +398,16 @@ dialog {
 
 .copyright_right {
 	text-align: end;
+}
+
+
+@media (max-width: 50em){
+	.now-anime {
+		grid-template-columns: repeat(5,1fr);
+	}
+}
+@media (max-width: 30em){
+	.now-anime {
+		grid-template-columns: repeat(3,1fr);
+	}
 }
