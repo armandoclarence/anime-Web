@@ -126,9 +126,7 @@ main {
 }
 
 .page {
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
+	text-align: end;
 	margin-bottom: 1em;
 }
 
@@ -149,15 +147,6 @@ main .page > button {
 	opacity: 0.4;
 }
 
-.cards {
-	display: flex;
-	flex-direction: column;
-}
-
-.cards h2 {
-	border-radius: 0.2em;
-}
-
 .container {
 	padding-bottom: 1em;
 	margin-bottom: 1em;
@@ -172,28 +161,40 @@ main .page > button {
 	width: 33.3%;
 }
 
-.cards-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5em;
+.cards {
+	display: grid;
 }
 
-.cards-container.most-viewed-anime {
+.cards h2 {
+	border-radius: 0.2em;
+}
+.now-anime {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap: 1em;
+}
+
+.now-anime .card {
+	display: grid;
+}
+
+.most-viewed-anime {
 	gap: 0;
 }
 
-.cards-container.query-anime {
+.query-anime {
 	justify-content: flex-start;
 }
 
-.cards-container.top-popularity-anime,
-.cards-container.completed-anime {
+.top-popularity-anime,
+.completed-anime {
 	flex-direction: column;
 	justify-content: space-between;
 	gap: 0.24em;
 }
 
-.cards-container .card.sub {
+.card.sub {
 	width: 100%;
 }
 
@@ -229,9 +230,8 @@ main .page > button {
 	justify-content: center;
 }
 
-.cards-container .card {
+.card {
 	position: relative;
-	width: 175px;
 	transition: all 0.3s;
 	cursor: pointer;
 }
@@ -278,10 +278,7 @@ dialog {
 }
 
 .cardHome {
-	display: flex;
-	flex-direction: column;
 	text-align: center;
-	width: 175px;
 }
 
 .cardHome .title,
@@ -296,9 +293,6 @@ dialog {
 }
 
 .card .img {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
 	position: relative;
 	overflow: hidden;
 }
@@ -308,7 +302,6 @@ dialog {
 }
 
 .card .play {
-	display: flex;
 	position: absolute;
 	z-index: 1;
 	scale: 0 1.3;
@@ -325,7 +318,7 @@ dialog {
 
 .card img {
 	transition: all 0.3s ease-out;
-	max-width: 100%;
+	width: 100%;
 	height: 200px;
 }
 
@@ -344,7 +337,6 @@ dialog {
 }
 
 .card .bigType {
-	display: flex;
 	width: 100%;
 	flex-direction: row;
 }

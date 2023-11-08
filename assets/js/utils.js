@@ -67,7 +67,7 @@ class AnimeRenderer {
     renderSubCardHTML(data,i) {
         const {title_english,title,type, episodes, mal_id, images,duration} = data
         let durations = duration.replace(' per ep', '')
-        return  this.container.classList[1] == 'top-popularity-anime' || this.container.classList[1] == 'completed-anime' ?
+        return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
                     <div class="img">
@@ -84,7 +84,7 @@ class AnimeRenderer {
                 </div>
             </article>`
         :
-        this.container.classList[1] == 'most-viewed-anime' ?
+        this.container.classList[0] == 'most-viewed-anime' ?
             `<article class="card sub mosts" id=${mal_id}>
                 ${ i == 1 ? `<h3>MOST VIEWED</h3>`: '' }
                 <div class="cardSub most">
