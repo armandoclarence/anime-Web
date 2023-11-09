@@ -21,7 +21,7 @@ export async function makeScheduleList() {
         for (let i = 0; i < days.length; i++) {
             const result = await getAnimeSchedule(days[i])
             renderDayCards(result,days[i])
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            await new Promise(resolve => setTimeout(resolve, 2000))
         }
     } catch (error) {
         console.log(error)
@@ -72,9 +72,7 @@ class AnimeRenderer {
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
-                    <div class="img">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                    </div>
+                    <img class="image" src="${images.jpg.image_url}" title="${title}" />
                     <div class="title">
                         <h4>
                         ${title_english || title}
@@ -88,22 +86,18 @@ class AnimeRenderer {
         :
         this.container.classList[0] == 'most-viewed-anime' ?
             `<article class="card sub mosts" id=${mal_id}>
-                ${ i == 1 ? `<h3>MOST VIEWED</h3>`: '' }
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     ${i == 1 ? `
+                            <h3>MOST VIEWED</h3>
                             <h2>0${i}</h2>
-                            <div class="img">
-                                <img class=image" src="${images.jpg.large_image_url}" alt="" />
-                            </div>
+                            <img class="image" src="${images.jpg.large_image_url}" alt="" />
                     ` : 
                     `
                     <div class="type typeSub">
                         0${i}
                     </div>
-                    <div class="img">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                    </div>`
-                    }
+                    <img class="image" src="${images.jpg.image_url}" title="${title}" />                    
+                    `}
                     <div class="title">
                         <h4>
                         ${title_english || title}
@@ -188,6 +182,7 @@ function renderHoverImg(cards){
             '-.5em'
             : 
             '.5em'
+            console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
         card.addEventListener('mouseleave',function(){
@@ -199,16 +194,12 @@ function renderHoverImg(cards){
 function renderDayCards(datas,day=''){
     card.innerHTML+= ` 
         <h2>${day}</h2>
-            <div class="cards-container ${day}">
-            </div>`
-    const containers = document.querySelectorAll('.cards-container')
-    containers.forEach(container => {
-        container = container.classList[1]
-        container = new AnimeRenderer(`.${container}`)
-        console.log(container)
-        
-        container.renderSubCards(datas)
-    })
+        <div class="cards-container ${day}">
+        </div>`
+    const cardDay = document.querySelector(`.${day}`)
+    cardDay.classList.add('now-anime')
+    const container = new AnimeRenderer(`.${day}`)
+    container.renderSubCards(datas)
 }
 
 async function getAnimeDetail(id){
