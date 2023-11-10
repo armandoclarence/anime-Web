@@ -33,8 +33,8 @@ a {
 
 header {
 	display: grid;
-	grid-template-columns: repeat(3,1fr);
-	grid-template-areas: 'titleHeader search linkHeader';
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: "titleHeader search linkHeader";
 	background: var(--blackBrown);
 }
 
@@ -166,8 +166,8 @@ main .page > button {
 
 .subs {
 	display: grid;
-	grid-template-columns: repeat(3,1fr);
-	grid-template-areas: 'popularity mostViewed completed';
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: "popularity mostViewed completed";
 	gap: 1.8em;
 }
 
@@ -180,7 +180,6 @@ main .page > button {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	gap: 1em;
-
 }
 
 .most-viewed-anime {
@@ -220,23 +219,24 @@ main .page > button {
 
 .card.sub .cardSub {
 	display: grid;
-	grid-template-columns: repeat(5,1fr);
-	grid-template-areas: 'img title title title title';
-	gap: .5em;
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-areas: "img title title title title";
+	gap: 0.5em;
 	width: 100%;
 	background-color: rgba(44, 44, 44, 0.4);
 }
 
 .card.sub .cardSub.most {
-	grid-template-areas: 'title title title title img';
+	grid-template-areas: "title title title title img";
 	padding: 0.4em;
 }
 
 .card.sub .cardSub.big {
 	grid-template-rows: 1fr 185px 1fr;
-	grid-template-areas:'titleCol titleCol titleCol titleCol titleCol' 
-						'number img img img img'
-						'title title title title title';
+	grid-template-areas:
+		"titleCol titleCol titleCol titleCol titleCol"
+		"number img img img img"
+		"title title title title title";
 	gap: 0;
 	padding: 0;
 }
@@ -339,40 +339,34 @@ main .page > button {
 .card .img {
 	position: relative;
 	overflow: hidden;
-	height: 200px;
+}
+
+.card.sub .img {
+	grid-area: img;
+	height: 90px;
 }
 
 .card.sub img {
-	height: 90px;
-	grid-area: img;
+	height: fit-content;
 }
 
 .card.sub .big .img {
-	height: auto;
-}
-
-.card.sub .big .img img {
-	padding: 0;
-	height: auto;
-	width: inherit;
+	height: fit-content;
 }
 
 .card img {
 	transition: all 0.3s ease-out;
 	width: 100%;
-	height: 200px;
 }
 
-
 .card .most img.image {
-	padding: .5em;
+	padding: 0.5em;
 }
 
 .card:hover .cardHome img {
 	opacity: 1;
 	transform: scale(1.1);
 }
-
 
 .card .typeSub {
 	position: absolute;
@@ -392,11 +386,12 @@ main .page > button {
 
 footer {
 	display: grid;
-	grid-template-columns: repeat(2,1fr);
+	grid-template-columns: repeat(2, 1fr);
 	place-items: center;
-	grid-template-areas: 'backToTop backToTop' 
-						 'footerList footerList' 
-						 'copyright_left copyright_right';
+	grid-template-areas:
+		"backToTop backToTop"
+		"footerList footerList"
+		"copyright_left copyright_right";
 	padding: 1em;
 }
 
@@ -414,67 +409,68 @@ footer {
 	place-self: end;
 	place-items: end;
 	grid-area: copyright_right;
-	
 }
 
 .copyright_left {
 	display: grid;
-	grid-template-columns: repeat(2,1fr);
+	grid-template-columns: repeat(2, 1fr);
 	place-items: center;
 	place-self: start;
 	grid-area: copyright_left;
 }
 
-
-@media (max-width: 60em){
+@media (max-width: 60em) {
 	.now-anime {
-		grid-template-columns: repeat(5,1fr);
+		grid-template-columns: repeat(5, 1fr);
 	}
 	header {
-		grid-template-rows: repeat(2,1fr);
-		grid-template-columns: repeat(2,1fr);
-		grid-template-areas: 'titleHeader linkHeader'
-							 'search search';
+		grid-template-rows: repeat(2, 1fr);
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas:
+			"titleHeader linkHeader"
+			"search search";
 	}
 	.subs {
-		grid-template-rows: repeat(2,1fr);
-		grid-template-columns: repeat(2,1fr);
-		grid-template-areas: 'popularity mostViewed'
-							 'completed completed';
+		grid-template-rows: repeat(2, 1fr);
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas:
+			"popularity mostViewed"
+			"completed completed";
 	}
 
-	.search {
-		width: 100%;
-		padding: 1em;
-	}
-
-	#search {
-		width: 100%;
-	}
-
+	
 	footer {
 		grid-template-columns: 1fr;
-		grid-template-areas: 'backToTop' 
-						 'footerList' 
-						 'copyright_left' 
-						 'copyright_right';
+		grid-template-areas:
+			"backToTop"
+			"footerList"
+			"copyright_left"
+			"copyright_right";
 	}
 
 	.copyright {
 		text-align: center;
 		place-self: center;
-	}	
+	}
 }
-@media (max-width: 40em){
+@media (max-width: 40em) {
 	.now-anime {
-		grid-template-columns: repeat(3,1fr);
+		grid-template-columns: repeat(3, 1fr);
 	}
 
 	.subs {
-		grid-template-rows: repeat(3,1fr);
-		grid-template-columns: repeat(2,1fr);
-		grid-template-areas: 'popularity popularity'
-							 'mostViewed mostViewed'
-							 'completed completed';
+		grid-template-rows: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas:
+		"popularity popularity"
+			"mostViewed mostViewed"
+			"completed completed";
+		}
 	}
-}
+	.search {
+		width: 100%;
+	}
+	
+	#search {
+		width: 100%;
+	}

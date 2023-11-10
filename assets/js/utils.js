@@ -72,7 +72,9 @@ class AnimeRenderer {
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
-                    <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    <div class="img">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    </div>
                     <div class="title">
                         <h4>
                         ${title_english || title}
@@ -88,9 +90,11 @@ class AnimeRenderer {
             `<article class="card sub mosts" id=${mal_id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     ${i == 1 ? `
-                            <h3>MOST VIEWED</h3>
-                            <h2>0${i}</h2>
-                            <img class="image" src="${images.jpg.large_image_url}" alt="" />
+                    <h3>MOST VIEWED</h3>
+                    <h2>0${i}</h2>
+                    <div class="img">
+                        <img class="image" src="${images.jpg.large_image_url}" alt="" />
+                    </div>
                     ` : 
                     `
                     <div class="type typeSub">
