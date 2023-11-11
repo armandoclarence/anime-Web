@@ -186,7 +186,7 @@ main .page > button {
 
 .now-anime {
 	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(min(150px,25ch - 4em),1fr));
 	gap: 1em;
 }
 
@@ -416,9 +416,6 @@ footer {
 }
 
 @media (max-width: 60em) {
-	.now-anime {
-		grid-template-columns: repeat(5, 1fr);
-	}
 	.subs {
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-areas:
@@ -442,10 +439,6 @@ footer {
 	}
 }
 @media (max-width: 40em) {
-	.now-anime {
-		grid-template-columns: repeat(3, 1fr);
-	}
-
 	header {
 		grid-template-rows: repeat(2, 1fr);
 		grid-template-columns: repeat(2, 1fr);
@@ -478,11 +471,5 @@ footer {
 	
 	#search {
 		width: 100%;
-	}
-}
-
-@media (max-width: 25em) {
-	.now-anime {
-		grid-template-columns: repeat(2, 1fr);
 	}
 }
