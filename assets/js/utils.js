@@ -67,7 +67,7 @@ class AnimeRenderer {
         renderHoverImg(cards)
     }
     renderSubCardHTML(data,i) {
-        const {title_english,title,type, episodes, mal_id, images,duration} = data
+        const {title_english,title,title_japanese,type, episodes, mal_id, images,duration} = data
         let durations = duration.replace(' per ep', '')
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
@@ -100,7 +100,7 @@ class AnimeRenderer {
                     `}
                     <div class="title">
                         <h4>
-                        ${title_english || title}
+                        ${i == 1 ? title_japanese : title}
                         </h4>
                         <p>
                         ${type} 
@@ -162,6 +162,8 @@ export async function getAnimeNows(page) {
 
 function renderHoverImg(cards){ 
     cards.forEach(card => {
+        console.log(window.innerWidth)
+        if(window.innerWidth < 1000) return
         card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
             console.log(this)
