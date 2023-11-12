@@ -355,13 +355,31 @@ main .page > button {
 
 .card.sub img {
 	grid-area: img;
+<<<<<<< HEAD
 	height: 90px;
+=======
+<<<<<<< HEAD
+	height: 90px;
+=======
+	height: 100px;
+>>>>>>> 3d3872051a567f7162eead6f607921b9fe5276d6
+>>>>>>> 9ef0a611d44d17561363d65b0c1f54594f8ea350
 }
 
 .card.sub :not(.big) img {
 	width: 70px;
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+.card.sub .big img {
+	height: 100px;
+}
+
+>>>>>>> 3d3872051a567f7162eead6f607921b9fe5276d6
+>>>>>>> 9ef0a611d44d17561363d65b0c1f54594f8ea350
 .card .most:not(.big) img.image {
 	scale: 0.7;
 }
