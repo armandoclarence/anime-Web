@@ -72,7 +72,7 @@ class AnimeRenderer {
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${mal_id}>
                 <div class="cardSub">
-                    <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    <img class="image" src="${images.jpg.image_url}"  title="${title}" />
                     <div class="title">
                         <h4>
                         ${title_english || title}
@@ -87,17 +87,12 @@ class AnimeRenderer {
         this.container.classList[0] == 'most-viewed-anime' ?
             `<article class="card sub mosts" id=${mal_id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
+                    <img class="image" src="${images.jpg.image_url}"  title="${title}" />                    
                     ${i == 1 ? `
                     <h3>MOST VIEWED</h3>
                     <h2>0${i}</h2>
-                    <img class="image" src="${images.jpg.large_image_url}" alt="" />
-                    ` : 
-                    `
-                    <div class="type typeSub">
-                        0${i}
-                    </div>
-                    <img class="image" src="${images.jpg.image_url}" title="${title}" />                    
-                    `}
+                    ` : ''
+                    }
                     <div class="title">
                         <h4>
                         ${i == 1 ? title_japanese : title}
@@ -132,19 +127,19 @@ export async function getAnimeNows(page) {
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=${page}&limit=7`)
+                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
             ),500)
         )
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('anime', `status=airing&sfw=true&page=${page}&limit=5`)
+                getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
             ),750)
         )
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`status=complete&sfw=true&page=${page}&limit=7`)
+                getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
             ),1000)
         )
         const now = new AnimeRenderer('.now-anime') 
@@ -162,14 +157,13 @@ export async function getAnimeNows(page) {
 
 function renderHoverImg(cards){ 
     cards.forEach(card => {
-        console.log(window.innerWidth)
         if(window.innerWidth < 1000) return
         card.addEventListener('mouseenter',function(){
             let id = this.getAttribute('id')
-            console.log(this)
-            let rightCard = this.offsetWidth + this.offsetLeft
-            let leftCard = this.offsetWidth
-            let topCard = this.offsetTop
+            const img = this.children[0].children[0]
+            let rightCard = img.offsetWidth + img.offsetLeft
+            let leftCard = img.offsetWidth
+            let topCard = img.offsetTop
             getAnimeDetail(id)
             let cardDetailWidth = cardDetail.offsetWidth || 300
             cardDetail.style.top = `${topCard}px`

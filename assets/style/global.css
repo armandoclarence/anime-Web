@@ -16,6 +16,7 @@
 	--green: rgb(62, 194, 62);
 	--grey: rgb(190, 184, 184);
 	--black: black;
+	--i: 1;
 }
 
 html {
@@ -190,12 +191,8 @@ main .page > button {
 
 .now-anime {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(160px, 30ch - 3em), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(150px, 25ch - 3em), 1fr));
 	gap: 1em;
-}
-
-.most-viewed-anime {
-	gap: 0;
 }
 
 .query-anime {
@@ -234,8 +231,14 @@ main .page > button {
 	background-color: var(--blackLowGrey-4);
 }
 
+.most-viewed-anime {
+	counter-reset: card;
+}
+
 .card.sub .cardSub.most {
 	grid-template-areas: "title title title title img";
+	position: relative;
+	counter-increment: card;
 	padding: 0.4em;
 }
 
@@ -286,7 +289,6 @@ main .page > button {
 }
 
 .card {
-	position: relative;
 	transition: all 0.3s;
 	cursor: pointer;
 }
@@ -310,14 +312,14 @@ main .page > button {
 	justify-content: space-evenly;
 }
 
-.title h4 {
+.card .title h4 {
 	overflow: hidden;
 	-webkit-line-clamp: 1;
 	text-overflow: ellipsis;
 }
 .animeDetail .synopsis,
 .cardHome .title,
-.cardSub .title h4 {
+.title h4 {
 	overflow: hidden;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -343,43 +345,47 @@ main .page > button {
 	color: var(--white);
 }
 
+.card .most::before {
+	content: "0" counter(card);
+	position: absolute;
+	background-color: var(--green);
+	padding: 0.25em 0.5em;
+}
+
+.card .most.big::before {
+	content: '';
+	padding: 0;
+}
+
 .card .img {
-	position: relative;
 	overflow: hidden;
+	position: relative;
 }
 
 .card img {
+	position: relative;
 	transition: all 0.3s ease-out;
 	width: 100%;
 }
 
+.card .img::before {
+	content: '\23EF';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 50%;
+	z-index: 2;
+}
+
 .card.sub img {
 	grid-area: img;
-<<<<<<< HEAD
-	height: 90px;
-=======
-<<<<<<< HEAD
-	height: 90px;
-=======
-	height: 100px;
->>>>>>> 3d3872051a567f7162eead6f607921b9fe5276d6
->>>>>>> 9ef0a611d44d17561363d65b0c1f54594f8ea350
+	height: 85px;
 }
 
 .card.sub :not(.big) img {
-	width: 70px;
+	width: 70px;	
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-.card.sub .big img {
-	height: 100px;
-}
-
->>>>>>> 3d3872051a567f7162eead6f607921b9fe5276d6
->>>>>>> 9ef0a611d44d17561363d65b0c1f54594f8ea350
 .card .most:not(.big) img.image {
 	scale: 0.7;
 }
@@ -387,13 +393,6 @@ main .page > button {
 .card:hover .cardHome img {
 	opacity: 1;
 	scale: 1.1;
-}
-
-.card .typeSub {
-	position: absolute;
-	background-color: var(--green);
-	top: 0;
-	padding: 0.25em 0.5em;
 }
 
 .card .eps {
