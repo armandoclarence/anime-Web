@@ -2,7 +2,7 @@ import {getAnimeByQuery,getAnimeNows}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
-const title = document.querySelector('.cards h3')
+const title = document.querySelector('.container h3')
 const animeNowContainer = document.querySelector('.now-anime')
 const animeQueryContainer = document.querySelector('.query-anime')
 console.log(title)

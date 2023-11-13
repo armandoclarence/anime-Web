@@ -110,7 +110,11 @@ class AnimeRenderer {
                     <div class="img">
                         <img src="${images.jpg.image_url}" title="${title}" />
                     </div>
-                    <div class="title">${title_english || title}</div>
+                    <div class="title">
+                        <h4>
+                            ${title_english || title}
+                        </h4>
+                    </div>
                 </div>
             </article>`
     }
@@ -128,19 +132,19 @@ export async function getAnimeNows(page) {
             resolve => 
             setTimeout(()=>resolve(
                 getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
-            ),500)
+            ),250)
         )
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
                 getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
-            ),750)
+            ),250)
         )
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
                 getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
-            ),1000)
+            ),250)
         )
         const now = new AnimeRenderer('.now-anime') 
         const top = new AnimeRenderer('.top-popularity-anime') 
@@ -208,19 +212,17 @@ async function getAnimeDetail(id){
         <article class="animeDetail">
             <div class="title">
                 <h3>${title_english || title}</h3>
-                <h4>${title}</h4>
+                <p>${title}</p>
             </div>
-            <div class="info">
-                <p class="synopsis">${synopsis}</p>
-                <p>Scores: ${score}</p>
-                <p>Date aired: ${string}</p>
-                <p>Status: ${status}</p>
-                <ul>
-                    Genre:${genres.map(({name})=> {
-                        return `<li>${name}</li>`  
-                    })}
-                </ul>
-            </div>
+            <p class="synopsis">${synopsis}</p>
+            <p>Scores: ${score}</p>
+            <p>Date aired: ${string}</p>
+            <p>Status: ${status}</p>
+            <ul>
+                Genre:${genres.map(({name})=> {
+                    return `<li>${name}</li>`  
+                })}
+            </ul>
         </article>
     `
 }
