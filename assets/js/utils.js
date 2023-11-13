@@ -166,7 +166,7 @@ function renderHoverImg(cards){
             let topCard = this.offsetTop
             getAnimeDetail(id)
             let cardDetailWidth = cardDetail.offsetWidth || 300
-            cardDetail.style.top = `${topCard}px`
+            cardDetail.style.top = `${topCard + 50}px`
             cardDetail.style.left = innerWidth < cardDetailWidth + rightCard 
             ?  
             `${rightCard - cardDetailWidth - leftCard}px`  
@@ -202,11 +202,10 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${baseUrl}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {status,type,episodes,title,aired, title_english, genres,synopsis, score} = data
+    const {status,episodes,title,aired, title_english, genres,synopsis, score} = data
     const {string} = aired
-    cardDetail.innerHTML =`<article class="card detail">
-        <div class="type typeSrc">${type}</div>
-        <section class="animeDetail">
+    cardDetail.innerHTML =`
+        <article class="animeDetail">
             <div class="title">
                 <h3>${title_english || title}</h3>
                 <h4>${title}</h4>
@@ -222,7 +221,7 @@ async function getAnimeDetail(id){
                     })}
                 </ul>
             </div>
-        </section>
-    </article>`
+        </article>
+    `
 }
 

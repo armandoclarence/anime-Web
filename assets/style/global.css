@@ -88,7 +88,7 @@ header .search {
 .searchIcon {
 	position: absolute;
 	top: 50%;
-	right: .5em;
+	right: 0.5em;
 	transform: translateY(-50%);
 	color: black;
 }
@@ -299,16 +299,16 @@ main .page > button {
 	z-index: 1;
 }
 
-.card-detail > article.detail {
+.card-detail > *  {
+	position: relative;
+	display: flex;
+	flex-direction: column;
 	padding: 1em;
 	background-color: var(--blackGrey);
 }
 
-.card-detail > article.card > section {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
+.card-detail > * > * {
+	gap: 1em;
 }
 
 .card .title h4 {
@@ -353,7 +353,7 @@ main .page > button {
 }
 
 .card .most.big::before {
-	content: '';
+	content: "";
 	padding: 0;
 }
 
@@ -369,25 +369,35 @@ main .page > button {
 }
 
 .card .img::before {
-	transition: all 0.3s ease-out;
+	transition: all 0.3s;
 	opacity: 0;
 	content: "\25B7";
 	position: absolute;
 	display: inline-block;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
-	font-size: 3em;
+	font-size: 4em;
 	z-index: 2;
 }
 
-.card .img:hover::before {
-	opacity: 1;
+.card .img::after, .card.detail::after {
+	content: "TV";
+    position: absolute;
+    left: 0;
+    background: var(--green);
+    padding: 0.2em;
+    font-size: .8em;
+    z-index: 2;
 }
 
-.card .img:not(:hover)::before {
-	scale: 1.6;
-	opacity: 0;
+.card:hover .img::before {
+	opacity: 1;
+	transform: translate(-50%, -50%);
+}
+
+.card:not(:hover) .img::before {
+	scale: 3;
+	transform: translate(-15%, -20%);
 	color: var(--green);
 }
 
@@ -397,7 +407,7 @@ main .page > button {
 }
 
 .card.sub :not(.big) img {
-	width: 70px;	
+	width: 70px;
 }
 
 .card .most:not(.big) img.image {
