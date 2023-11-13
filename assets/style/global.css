@@ -88,7 +88,7 @@ header .search {
 .searchIcon {
 	position: absolute;
 	top: 50%;
-	right: 1em;
+	right: .5em;
 	transform: translateY(-50%);
 	color: black;
 }
@@ -191,7 +191,7 @@ main .page > button {
 
 .now-anime {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(150px, 25ch - 3em), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(160px, 25ch - 3em), 1fr));
 	gap: 1em;
 }
 
@@ -360,6 +360,7 @@ main .page > button {
 .card .img {
 	overflow: hidden;
 	position: relative;
+	transition: all 0.3s ease-out;
 }
 
 .card img {
@@ -368,12 +369,14 @@ main .page > button {
 	width: 100%;
 }
 
-.card .img::before {
-	content: '\23EF';
+.card .img:hover::before {
+	content: "\25B7";
 	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 50%;
+	display: inline-block;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 5em;
 	z-index: 2;
 }
 
