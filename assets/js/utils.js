@@ -158,12 +158,12 @@ export async function getAnimeNows(page) {
 function renderHoverImg(cards){ 
     cards.forEach(card => {
         if(window.innerWidth < 1000) return
-        card.addEventListener('mouseenter',function(){
-            let id = this.getAttribute('id')
-            const img = this.children[0].children[0]
-            let rightCard = img.offsetWidth + img.offsetLeft
-            let leftCard = img.offsetWidth
-            let topCard = img.offsetTop
+        let id = card.getAttribute('id')
+        const img = card.children[0].children[0]
+        img.addEventListener('mouseenter',function(){
+            let rightCard = this.offsetWidth + this.offsetLeft
+            let leftCard = this.offsetWidth
+            let topCard = this.offsetTop
             getAnimeDetail(id)
             let cardDetailWidth = cardDetail.offsetWidth || 300
             cardDetail.style.top = `${topCard}px`
@@ -181,7 +181,7 @@ function renderHoverImg(cards){
             console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
-        card.addEventListener('mouseleave',function(){
+        img.addEventListener('mouseleave',function(){
             cardDetail.classList.add('hidden')    
         })
     })
