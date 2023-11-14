@@ -1,4 +1,4 @@
-import {getAnimeByQuery,getAnimeNows}  from './utils.js'
+import {getAnimeByQuery,getAnimeNows, getAnimeNow}  from './utils.js'
 import { prevButton, nextButton } from './main.js'
 const search = document.querySelector('#search')
 let params = new URLSearchParams(window.location.search)
@@ -7,8 +7,6 @@ const animeNowContainer = document.querySelector('.now-anime')
 const animeQueryContainer = document.querySelector('.query-anime')
 console.log(title)
 let pageNumber = 1
-
-
 
 if(search){
     search.addEventListener('change', e =>{
@@ -29,13 +27,13 @@ window.addEventListener('load', function(e){
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimeNows(pageNumber)
+            getAnimeNow(pageNumber)
         })
         
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimeNows(pageNumber)
+            getAnimeNow(pageNumber)
         })
     } else{
         animeQueryContainer.classList.remove('hidden')

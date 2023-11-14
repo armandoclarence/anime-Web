@@ -43,6 +43,7 @@ a {
 header {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	padding: 1em;
 	grid-template-areas: "titleHeader search linkHeader";
 	background: var(--blackBrown);
 }
@@ -57,24 +58,19 @@ h2 span {
 }
 header nav {
 	display: grid;
-	align-items: center;
-	justify-content: end;
 	grid-area: linkHeader;
 }
 
-header nav .bars {
-	place-self: end;
-	display: none;
+header nav > * {
+	place-items: end;
 }
 
 header nav ul {
 	display: flex;
-	background-color: var(--blackLowGrey-4);
-	align-items: center;
+	background-color: inherit;
 }
 
 header .search {
-	display: inline-flex;
 	place-self: center;
 	grid-area: search;
 	position: relative;
@@ -146,8 +142,9 @@ main {
 	margin-bottom: 1em;
 }
 
-p {
-	font-size: .8rem;
+p,
+ul {
+	font-size: 0.8rem;
 }
 
 .page {
@@ -303,16 +300,24 @@ main .page > button {
 	z-index: 1;
 }
 
-.card-detail > *  {
+.card-detail > * {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	padding: 1em;
+	padding: 1.5em;
 	background-color: var(--blackGrey);
 	gap: 1em;
 }
 
-.card-detail > * > ul {
+.card-detail > * > * {
+	color: var(--grey);
+}
+
+.card-detail > * > .title h3 {
+	color: var(--white);
+}
+
+.card-detail > * > .info > ul {
 	display: flex;
 }
 
@@ -324,8 +329,7 @@ main .page > button {
 	-webkit-line-clamp: 2;
 }
 
-.cardHome .title,
-.title h4,
+.title > *,
 .animeDetail .synopsis {
 	overflow: hidden;
 	display: -webkit-box;
@@ -377,11 +381,11 @@ main .page > button {
 	position: relative;
 	transition: all 0.3s ease-out;
 	width: 100%;
-	height: 200px;
+	aspect-ratio: 2 / 3;
 }
 
 .card .img::before {
-	transition: all 0.3s;
+	transition: opacity 0.5s, transform 0.3s, scale 0.4s;
 	opacity: 0;
 	content: "\25B7";
 	position: absolute;
@@ -392,20 +396,21 @@ main .page > button {
 	z-index: 2;
 }
 
-.card .img::after, .animeDetail::after {
+.card .img::after,
+.animeDetail::after {
 	content: "TV";
-    position: absolute;
+	position: absolute;
 	top: 0;
-    left: 0;
-    background: var(--green);
-    padding: 0.2em;
-    font-size: .8em;
-    z-index: 1;
+	left: 0;
+	background: var(--green);
+	padding: 0.2em;
+	font-size: 0.8em;
+	z-index: 1;
 }
 
 .animeDetail::after {
 	left: 1em;
-	padding: .4em;
+	padding: 0.4em;
 }
 
 .card:hover .img::before {
@@ -415,7 +420,7 @@ main .page > button {
 
 .card:not(:hover) .img::before {
 	scale: 3;
-	transform: translate(-15%, -20%);
+	transform: translate(-15%, -18%);
 	color: var(--green);
 }
 
@@ -509,7 +514,6 @@ footer {
 }
 @media (max-width: 40em) {
 	header {
-		grid-template-rows: repeat(2, 1fr);
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-areas:
 			"titleHeader linkHeader"
@@ -527,18 +531,19 @@ footer {
 	.subs .completed {
 		height: calc(50ch / 2);
 	}
-	header nav .bars {
+
+	header nav .bar {
 		display: block;
 	}
-	.search {
+
+	.search,
+	#search {
 		width: 100%;
 	}
 
 	header nav ul {
+		display: none;
 		flex-direction: column;
-	}
-
-	#search {
-		width: 100%;
+		background-color: var(--blackLowGrey-4);
 	}
 }

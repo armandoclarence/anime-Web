@@ -120,14 +120,15 @@ class AnimeRenderer {
     }
 }
 
+export async function getAnimeNow(page){
+    const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`)
+    const now = new AnimeRenderer('.now-anime')
+    now.renderSubCards(animeNow)
+} 
+
 export async function getAnimeNows(page) {
     try {
-        const animeNow = await new Promise(
-            resolve => 
-            setTimeout(()=>resolve(
-                getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`)
-            ),250)
-        )
+        const animeNow = await getAnimeNow(page)
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
@@ -146,11 +147,9 @@ export async function getAnimeNows(page) {
                 getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
             ),250)
         )
-        const now = new AnimeRenderer('.now-anime') 
         const top = new AnimeRenderer('.top-popularity-anime') 
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
         const completed = new AnimeRenderer('.completed-anime') 
-        now.renderSubCards(animeNow)
         mostViewed.renderSubCards(animeMostViewed)
         completed.renderSubCards(animeCompleted)
         top.renderSubCards(animeTop)
@@ -215,14 +214,16 @@ async function getAnimeDetail(id){
                 <p>${title}</p>
             </div>
             <p class="synopsis">${synopsis}</p>
-            <p>Scores: ${score}</p>
-            <p>Date aired: ${string}</p>
-            <p>Status: ${status}</p>
-            <ul>
-                Genre:${genres.map(({name})=> {
-                    return `<li>${name}</li>`  
-                })}
-            </ul>
+            <div class="info">
+                <p>Scores: ${score}</p>
+                <p>Date aired: ${string}</p>
+                <p>Status: ${status}</p>
+                <ul>
+                    Genre:${genres.map(({name})=> {
+                        return `<li>${name}</li>`  
+                    })}
+                </ul>
+            </div>
         </article>
     `
 }
