@@ -146,6 +146,10 @@ main {
 	margin-bottom: 1em;
 }
 
+p {
+	font-size: .8rem;
+}
+
 .page {
 	text-align: end;
 	margin-bottom: 1em;
