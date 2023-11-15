@@ -55,6 +55,7 @@ export async function getAnimeByQuery(query,page){
 class AnimeRenderer {
     constructor(containerId) {
         this.container = document.querySelector(containerId)
+        console.log(this.container)
         if (!this.container) {
             console.error(`Container with id ${containerId} not found.`)
         }
@@ -120,39 +121,39 @@ class AnimeRenderer {
     }
 }
 
-export async function getAnimeNow(page){
-    const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=14&sfw=true`)
+export async function getAnimeNow(page,limit){
+    const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=${limit}&sfw=true`)
     const now = new AnimeRenderer('.now-anime')
-    now.renderSubCards(animeNow)
+    now && now.renderSubCards(animeNow)
+    return animeNow
 } 
 
-export async function getAnimeNows(page) {
+export async function getAnimeNows() {
     try {
-        const animeNow = await getAnimeNow(page)
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
-            ),250)
-        )
-        const animeMostViewed = await new Promise(
-            resolve => 
-            setTimeout(()=>resolve(
-                getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
-            ),250)
-        )
-        const animeCompleted = await new Promise(
-            resolve => 
-            setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
+                 getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
             ),250)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
-        const mostViewed = new AnimeRenderer('.most-viewed-anime') 
-        const completed = new AnimeRenderer('.completed-anime') 
-        mostViewed.renderSubCards(animeMostViewed)
-        completed.renderSubCards(animeCompleted)
         top.renderSubCards(animeTop)
+        const animeMostViewed = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                 getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
+            ),500)
+        )
+        const mostViewed = new AnimeRenderer('.most-viewed-anime') 
+        mostViewed.renderSubCards(animeMostViewed)
+        const animeCompleted = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                 getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
+            ),750)
+        )
+        const completed = new AnimeRenderer('.completed-anime') 
+        completed.renderSubCards(animeCompleted)
     } catch (error) {
         console.error('Error fetching anime data:', error)
     }

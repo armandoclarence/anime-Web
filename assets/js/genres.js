@@ -28,7 +28,7 @@ function genre(){
         const title = document.querySelector('.cards h2')
         title.textContent = `Genre ${name}`
         container.removeChild(genreContainer)
-        container.classList.add('now-anime')
+        container.classList.add('anime')
         page && page.classList.remove('hidden')
         getAnimesByGenre(id,pageNumber)
         prevButton && prevButton.addEventListener('click', function(e){

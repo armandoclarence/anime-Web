@@ -19,27 +19,27 @@ if(search){
 window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
-        animeQueryContainer.classList.add('hidden')
-        animeNowContainer.classList.remove('hidden')
-        getAnimeNows(pageNumber)
+        getAnimeNow(pageNumber,14)
+        getAnimeNows()
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimeNow(pageNumber)
+            getAnimeNow(pageNumber,14)
         })
         
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimeNow(pageNumber)
+            getAnimeNow(pageNumber,14)
         })
     } else{
         animeQueryContainer.classList.remove('hidden')
         animeNowContainer.classList.add('hidden')
         title.innerHTML = `search ${query}...`
         getAnimeByQuery(query,pageNumber)
+        getAnimeNows()
         prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {

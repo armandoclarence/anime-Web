@@ -4,9 +4,9 @@ const nextButton = document.querySelector('.next')
 const bar = document.querySelector('.bar')
 const navLink = document.querySelector('#nav ul')
 
-navLink.classList.toggle('hidden')
+navLink && navLink.classList.toggle('hidden')
 
-bar.addEventListener('click', function(e){
+bar && bar.addEventListener('click', function(e){
     navLink.classList.toggle('hidden')
 })
 
