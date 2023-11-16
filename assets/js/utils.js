@@ -163,30 +163,27 @@ function renderHoverImg(cards){
     cards.forEach(card => {
         if(window.innerWidth < 1000) return
         let id = card.getAttribute('id')
-        const img = card.children[0].children[0]
-        img.addEventListener('mouseenter',function(){
+        // const img = card.children[0].children[0]
+        card.addEventListener('mouseover',function(){
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
             let topCard = this.offsetTop
             getAnimeDetail(id)
             let cardDetailWidth = cardDetail.offsetWidth || 300
             cardDetail.style.top = `${topCard + 50}px`
-            cardDetail.style.left = innerWidth < cardDetailWidth + rightCard 
-            ?  
-            `${rightCard - cardDetailWidth - leftCard}px`  
-            : 
-            `${rightCard}px`
-            cardDetail.style.marginLeft = ''
-            cardDetail.style.marginLeft = innerWidth < cardDetailWidth + rightCard 
-            ?  
-            '-.5em'
-            : 
-            '.5em'
+            cardDetail.style.left = 
+            innerWidth < cardDetailWidth + rightCard 
+            ? `${rightCard - cardDetailWidth - leftCard}px`  
+            : `${rightCard}px`
+            cardDetail.style.marginLeft = 
+            innerWidth < cardDetailWidth + rightCard 
+            ?  '-.5em'
+            : '.5em'
             console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
-        img.addEventListener('mouseleave',function(){
-            cardDetail.classList.add('hidden')    
+        cardDetail.addEventListener('mouseup',function(){
+            this.classList?.remove('hidden')
         })
     })
 }

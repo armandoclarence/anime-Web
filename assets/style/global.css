@@ -196,7 +196,7 @@ main .page > button {
 .anime {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(min(200px, 40ch - 3em), 1fr));
-	gap: .7em;
+	gap: 0.7em;
 }
 
 .query-anime {
@@ -342,7 +342,6 @@ main .page > button {
 	-webkit-line-clamp: 3;
 }
 
-
 .cardHome {
 	text-align: center;
 }
@@ -369,6 +368,10 @@ main .page > button {
 .card .most.big::before {
 	content: "";
 	padding: 0;
+}
+
+.now-anime:focus-visible ~ .card-detail {
+	visibility: visible;
 }
 
 .card .img {
@@ -514,8 +517,8 @@ footer {
 	header {
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-areas:
-		"titleHeader linkHeader"
-		"search search";
+			"titleHeader linkHeader"
+			"search search";
 	}
 	.subs {
 		grid-template-rows: 1fr auto 1fr;
@@ -524,22 +527,22 @@ footer {
 			"popularity popularity"
 			"mostViewed mostViewed"
 			"completed completed";
-		}
+	}
 
-		.subs .completed {
-			height: calc(50ch / 2);
+	.subs .completed {
+		height: calc(50ch / 2);
 	}
 
 	header nav .bar {
 		display: block;
 		position: relative;
 	}
-	
+
 	.search,
 	#search {
 		width: 100%;
 	}
-	
+
 	header nav ul {
 		flex-direction: column;
 		position: absolute;
@@ -550,11 +553,11 @@ footer {
 		animation-duration: 2s;
 		animation-delay: 4s;
 	}
-	
+
 	header nav ul:focus-visible {
-		transition: all .2s;
+		transition: all 0.2s;
 	}
-	
+
 	header nav ul > * {
 		padding: 1em;
 		opacity: 0;
