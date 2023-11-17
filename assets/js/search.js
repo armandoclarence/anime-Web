@@ -19,7 +19,6 @@ if(search){
 window.addEventListener('load', function(e){
     let query = params.get('s')
     if(!query) {
-        getAnimeNow(pageNumber,14)
         getAnimeNows()
         prevButton.addEventListener('click', function(e){
             pageNumber--

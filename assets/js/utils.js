@@ -88,7 +88,9 @@ class AnimeRenderer {
         this.container.classList[0] == 'most-viewed-anime' ?
             `<article class="card sub mosts" id=${mal_id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
-                    <img class="image" src="${images.jpg.image_url}"  title="${title}" />                    
+                    <div class="imgs">
+                        <img class="image" src="${images.jpg.image_url}"  title="${title}" />                    
+                    </div>
                     ${i == 1 ? `
                     <h3>MOST VIEWED</h3>
                     <h2>0${i}</h2>
@@ -123,34 +125,40 @@ class AnimeRenderer {
 
 export async function getAnimeNow(page,limit){
     const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=${limit}&sfw=true`)
-    const now = new AnimeRenderer('.now-anime')
-    now && now.renderSubCards(animeNow)
     return animeNow
 } 
 
 export async function getAnimeNows() {
     try {
+        const animeNow = await new Promise(
+            resolve => 
+            setTimeout(()=>resolve(
+                getAnimeNow(1,14)
+            ),250)
+        )
+        const now = new AnimeRenderer('.now-anime')
+        now && now.renderSubCards(animeNow)
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                 getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
-            ),250)
+                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
+            ),500)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
         top.renderSubCards(animeTop)
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                 getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
-            ),500)
+                getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
+            ),750)
         )
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
         mostViewed.renderSubCards(animeMostViewed)
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                 getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
-            ),750)
+                getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
+            ),1000)
         )
         const completed = new AnimeRenderer('.completed-anime') 
         completed.renderSubCards(animeCompleted)
@@ -182,7 +190,7 @@ function renderHoverImg(cards){
             console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
-        cardDetail.addEventListener('mouseover',function(){
+        img.addEventListener('mouseleave',function(){
             this.classList?.remove('hidden')
         })
     })
