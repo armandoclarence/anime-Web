@@ -1,8 +1,6 @@
 .sliders {
     position: relative;
     height: 200px;
-    top: 0;
-    left: 0;
 }
 
 .sliders > .slider  {
