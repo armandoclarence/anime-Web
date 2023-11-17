@@ -1,21 +1,17 @@
 .sliders {
     position: relative;
     height: 200px;
-    top: 0;
-    left: 0;
 }
 
 .sliders > .slider  {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
     height: inherit;
     width: 100%;
 }
 
 .slider img {
-    height: 200px;
+    height: inherit;
     width: 100%;
     object-fit: cover;
     filter: grayscale(1);
@@ -24,4 +20,5 @@
 
 .slider:hover img {
     filter: grayscale(0);
+    image-rendering: pixelated;
 }

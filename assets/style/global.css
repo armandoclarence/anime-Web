@@ -195,7 +195,7 @@ main .page > button {
 
 .anime {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(200px, 40ch - 3em), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(165px, 25ch - 3em), 1fr));
 	gap: 0.7em;
 }
 
@@ -273,6 +273,9 @@ main .page > button {
 
 .card .cardSub.big img.image {
 	height: 200px;
+	width: 100%;
+	background-size: 50% 50%;
+	image-rendering: pixelated;
 	padding: 0;
 }
 
@@ -425,8 +428,11 @@ main .page > button {
 }
 
 .card.sub img {
-	grid-area: img;
 	height: 85px;
+}
+
+.card.sub img,.card.sub .imgs {
+	grid-area: img;
 }
 
 .card.sub :not(.big) img {

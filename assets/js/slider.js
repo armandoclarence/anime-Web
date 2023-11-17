@@ -7,7 +7,7 @@ animeSlider.map(anime => {
     const {images,title} = anime
     sliderContainer.innerHTML += `
     <div class="slider">
-       <img src="${images.jpg.large_image_url}" alt="${title}" />
+        <img src="${images.jpg.large_image_url}" alt="${title}" />
     </div>
     `
     console.log(images)
