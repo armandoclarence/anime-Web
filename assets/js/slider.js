@@ -1,14 +1,12 @@
 import {getAnimeNow} from './utils.js'
-const sliderContainer = document.querySelector('.sliders')
+const sliderContainer = document.querySelector('.slider')
 
 const animeSlider = await getAnimeNow(1,5)
-
+let i=1;
 animeSlider.map(anime => {
     const {images,title} = anime
     sliderContainer.innerHTML += `
-    <div class="slider">
-       <img src="${images.jpg.large_image_url}" alt="${title}" />
-    </div>
+       <img src="${images.jpg.large_image_url}" alt="${title}" tabindex="${i++}" />
     `
     console.log(images)
 })

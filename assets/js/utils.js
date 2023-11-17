@@ -163,8 +163,8 @@ function renderHoverImg(cards){
     cards.forEach(card => {
         if(window.innerWidth < 1000) return
         let id = card.getAttribute('id')
-        // const img = card.children[0].children[0]
-        card.addEventListener('mouseover',function(){
+        const img = card.children[0].children[0]
+        img.addEventListener('mouseover',function(){
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
             let topCard = this.offsetTop
@@ -182,7 +182,7 @@ function renderHoverImg(cards){
             console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
-        cardDetail.addEventListener('mouseup',function(){
+        cardDetail.addEventListener('mouseover',function(){
             this.classList?.remove('hidden')
         })
     })
