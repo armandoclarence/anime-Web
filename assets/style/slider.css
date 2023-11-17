@@ -1,6 +1,7 @@
 .sliders {
     position: relative;
-    height: 200px;
+    top: 0;
+    left: 0;
 }
 
 .sliders > .slider  {
@@ -8,16 +9,18 @@
     cursor: pointer;
     overflow: hidden;
     margin-inline: auto;
-    display: flex;
-    height: inherit;
-    box-sizing: content-box;
     height: 14rem;
     width: 100%;
+    display: flex;
+    width: 12000px;
 }
 
 .slider img {
     position: relative;
     width: 100%;
+    height: inherit;
+    top: 0;
+    left: 0;
     display: block;    
     object-fit: cover;
     filter: grayscale(1);
