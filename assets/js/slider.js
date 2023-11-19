@@ -2,7 +2,6 @@ import {getAnimeNow} from './utils.js'
 const sliderContainer = document.querySelector('.slider')
 
 const animeSlider = await getAnimeNow(1,5)
-let i=1;
 
 for(let i=1;animeSlider.length * 2;i++)
 animeSlider.map(anime => {
