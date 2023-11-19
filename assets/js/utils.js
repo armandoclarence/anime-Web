@@ -52,76 +52,6 @@ export async function getAnimeByQuery(query,page){
     const animeByQuery = new AnimeRenderer('.query-anime')
     animeByQuery.renderSubCards(animeData)
 }
-class AnimeRenderer {
-    constructor(containerId) {
-        this.container = document.querySelector(containerId)
-        console.log(this.container)
-        if (!this.container) {
-            console.error(`Container with id ${containerId} not found.`)
-        }
-    }
-
-    renderSubCards(datas) {
-        let i = 1
-        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
-        const cards = this.container.querySelectorAll('.card')
-        renderHoverImg(cards)
-    }
-    renderSubCardHTML(data,i) {
-        const {title_english,title,title_japanese,type, episodes, mal_id, images,duration} = data
-        let durations = duration.replace(' per ep', '')
-        return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
-            `<article class="card sub" id=${mal_id}>
-                <div class="cardSub">
-                    <img class="image" src="${images.jpg.image_url}" title="${title}" />
-                    <div class="title">
-                        <h4>
-                        ${title_english || title}
-                        </h4>
-                        <p>
-                            ${type} ${episodes} ${durations}
-                        </p>
-                    </div>
-                </div>
-            </article>`
-        :
-        this.container.classList[0] == 'most-viewed-anime' ?
-            `<article class="card sub mosts" id=${mal_id}>
-                <div class="cardSub most ${i == 1 ? 'big' : ''}">
-                    <div class="imgs">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />                    
-                    </div>
-                    ${i == 1 ? `
-                    <h3>MOST VIEWED</h3>
-                    <h2>0${i}</h2>
-                    ` : ''
-                    }
-                    <div class="title">
-                        <h4>
-                        ${i == 1 ? title_japanese : title}
-                        </h4>
-                        <p>
-                        ${type} 
-                        <i class="lar la-closed-captioning"></i>${episodes || ''}
-                        </p>    
-                    </div>
-                </div>
-            </article>`
-            :
-            `<article class="card" id=${mal_id}>
-                <div class="cardHome">
-                    <div class="img">
-                        <img src="${images.jpg.image_url}" title="${title}" />
-                    </div>
-                    <div class="title">
-                        <h4>
-                            ${title_english || title}
-                        </h4>
-                    </div>
-                </div>
-            </article>`
-    }
-}
 
 export async function getAnimeNow(page,limit){
     const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=${limit}&sfw=true`)
@@ -234,3 +164,73 @@ async function getAnimeDetail(id){
     `
 }
 
+class AnimeRenderer {
+    constructor(containerId) {
+        this.container = document.querySelector(containerId)
+        console.log(this.container)
+        if (!this.container) {
+            console.error(`Container with id ${containerId} not found.`)
+        }
+    }
+
+    renderSubCards(datas) {
+        let i = 1
+        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
+        const cards = this.container.querySelectorAll('.card')
+        renderHoverImg(cards)
+    }
+    renderSubCardHTML(data,i) {
+        const {title_english,title,title_japanese,type, episodes, mal_id, images,duration} = data
+        let durations = duration.replace(' per ep', '')
+        return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
+            `<article class="card sub" id=${mal_id}>
+                <div class="cardSub">
+                    <img class="image" src="${images.jpg.image_url}" title="${title}"/>
+                    <div class="title">
+                        <h4>
+                        ${title_english || title}
+                        </h4>
+                        <p>
+                            ${type} ${episodes} ${durations}
+                        </p>
+                    </div>
+                </div>
+            </article>`
+        :
+        this.container.classList[0] == 'most-viewed-anime' ?
+            `<article class="card sub mosts" id=${mal_id}>
+                <div class="cardSub most ${i == 1 ? 'big' : ''}">
+                    <div class="imgs">
+                        <img class="image" src="${images.jpg.image_url}" title="${title}" />                    
+                    </div>
+                    ${i == 1 ? `
+                    <h3>MOST VIEWED</h3>
+                    <h2>0${i}</h2>
+                    ` : ''
+                    }
+                    <div class="title">
+                        <h4>
+                        ${i == 1 ? title_japanese : title}
+                        </h4>
+                        <p>
+                        ${type} 
+                        <i class="lar la-closed-captioning"></i>${episodes || ''}
+                        </p>    
+                    </div>
+                </div>
+            </article>`
+            :
+            `<article class="card" id=${mal_id}>
+                <div class="cardHome">
+                    <div class="img">
+                        <img src="${images.jpg.image_url}" title="${title}" />
+                    </div>
+                    <div class="title">
+                        <h4>
+                            ${title_english || title}
+                        </h4>
+                    </div>
+                </div>
+            </article>`
+    }
+}

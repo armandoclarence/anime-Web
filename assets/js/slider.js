@@ -3,12 +3,19 @@ const sliderContainer = document.querySelector('.slider')
 
 const animeSlider = await getAnimeNow(1,5)
 
-for(let i=1;animeSlider.length * 2;i++)
-animeSlider.map(anime => {
+let anime= animeSlider.map(anime => {
     const {images,title} = anime
-    sliderContainer.innerHTML += `
-       <img src="${images.jpg.large_image_url}" alt="${title}" tabindex="${i++}" />
-    `
-    console.log(images)
+    return `<img src="${images.jpg.large_image_url}" alt="${title}" tabindex="${i++}" />`
 })
+
+let duplicateAnime = [...anime].join('');
+sliderContainer.innerHTML += duplicateAnime
+sliderContainer.innerHTML += duplicateAnime
+
+let j = 1
+sliderContainer.addEventListener('mousedown',function(e){
+    console.log(e)
+    // this.style.transform = `translateX(${-1317 * j++}px)`
+})
+console.log(duplicateAnime)
 console.log(sliderContainer)
