@@ -1,10 +1,18 @@
 const cardDetail = document.querySelector('.card-detail')
 const baseUrl = "https://api.jikan.moe/v4/"
+const kitsuApi = "https://kitsu.io/api/edge/";
 const pages = document.querySelector('.page')
 const card = document.querySelector('.cards')
 
 async function getAnimeResponse(typeData, query=""){
     const anime = await fetch(`${baseUrl}${typeData}?${query}`)
+    const animeData = await anime.json()
+    const { data } = animeData
+    return data
+}
+
+export async function getAnimeKitsuResponse(typeData, query=""){
+    const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
     const { data } = animeData
     return data
@@ -79,7 +87,7 @@ export async function getAnimeNows() {
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('anime', `status=airing&sfw=true&page=1&limit=5`)
+                getAnimeResponse('anime','page=1&limit=5')
             ),750)
         )
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
@@ -117,11 +125,10 @@ function renderHoverImg(cards){
             innerWidth < cardDetailWidth + rightCard 
             ?  '-.5em'
             : '.5em'
-            console.log(cardDetail)
             cardDetail.classList.remove('hidden')
         })
         img.addEventListener('mouseleave',function(){
-            this.classList?.remove('hidden')
+            cardDetail.classList.add('hidden')
         })
     })
 }

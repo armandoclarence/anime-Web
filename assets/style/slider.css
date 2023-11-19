@@ -1,28 +1,29 @@
 .sliders {
     position: relative;
     overflow: hidden;
+    margin-inline: auto;
+    height: 14rem;
 }
 
 .sliders > .slider  {
     position: relative;
-    cursor: pointer;
-    margin-inline: auto;
-    height: 14rem;
-    display: flex;
-    width: 13170px;
-    transition: all .2s;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10,minmax(calc(100vw - 1em),1fr));
+    transition: all .3s;
 }
 
-.slider img {
+.slider a {
+    cursor: pointer;
     position: relative;
     width: 100%;
-    height: inherit;
-    object-fit: cover;
+    background-size: cover;
+    opacity: .3;
+    background-position: center 30%;
     filter: grayscale(1);
     transition: all .2s;
 }
 
-.slider:hover img {
+.slider:hover a {
     filter: grayscale(0);
-    image-rendering: pixelated;
 }
