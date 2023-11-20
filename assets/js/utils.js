@@ -87,9 +87,10 @@ export async function getAnimeNows() {
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('anime','page=1&limit=5')
+                getAnimeResponse('top/anime','filter=airing&page=1&limit=5')
             ),750)
         )
+        console.log(animeMostViewed)
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
         mostViewed.renderSubCards(animeMostViewed)
         const animeCompleted = await new Promise(
