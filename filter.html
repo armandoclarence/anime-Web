@@ -36,7 +36,7 @@
 			<nav>
 				<ul>
 					<li>
-						<a>Genres</a>
+						<a href="genres.html">Genres</a>
 					</li>
 					<li>
 						<a href="/filter.html?types">Types</a>
@@ -64,39 +64,31 @@
 		</header>
 		<div class="main">
 			<main>
-				<h2></h2>
 				<ul class="lists">
-					<button class="list">
-						Type
-					</button>
-					<ul class="type hidden"></ul>
-					<button class="list">
-						Genres
-					</button>
-					<ul class="genres hidden"></ul>
-					<button class="list">
-						Year
-					</button>
-					<ul class="hidden"></ul>
-					<button class="list">
-						Rating
-					</button>
-					<ul class="hidden"></ul>
-					<button class="list">
-						Status
-					</button>
-					<ul class="hidden"></ul>
-					<button class="list">
-						Season
-					</button>
-					<ul class="hidden"></ul>
-					<button class="list">
-						Recently added
-					</button>
-					<ul class="hidden"></ul>
+					<input type="text" />
+					<button id="types">Type</button>
+					<button id="genres">Genres</button>
+					<button id="years">Year</button>
+					<button id="ratings">Rating</button>
+					<button id="status">Status</button>
+					<button id="seasons">Season</button>
+					<button id="info">Recently added</button>
+					<ul id="types" class="list hidden">
+						<li id="Movie">Movie</li>
+						<li id="TV">TV</li>
+						<li id="OVA">OVA</li>
+						<li id="ONA">ONA</li>
+						<li id="Special">Special</li>
+						<li id="Music">Music</li>
+					</ul>
+					<ul id="genres"  class="list hidden"></ul>
+					<ul id="years" class="list hidden"></ul>
+					<ul id="ratings" class="list hidden"></ul>
+					<ul id="status" class="list hidden"></ul>
+					<ul id="seasons" class="list hidden"></ul>
+					<ul id="info" class="list hidden"></ul>
 				</ul>
-				<div class="cards">
-				</div>
+				<div class="cards"></div>
 			</main>
 		</div>
 	</body>

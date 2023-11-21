@@ -1,13 +1,21 @@
-
 .lists {
     display: grid;
-}
-
-.lists > * {
+    grid-template-columns: repeat(4,1fr);
     gap: .5em;
 }
 
-.genres {
+.hidden {
+    display: none;
+}
+
+.lists button {
+    background: rgb(49, 44, 44);
+    padding: .5em;
+    position: relative;
+    border: none;
+}
+
+.lists > ul {
     min-width: 300px;
     width: 400px;
     position: absolute;

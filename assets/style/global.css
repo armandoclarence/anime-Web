@@ -195,7 +195,7 @@ main .page > button {
 
 .anime {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(165px, 25ch - 1em), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(165px, 25ch - 3em), 1fr));
 	gap: 0.7em;
 }
 

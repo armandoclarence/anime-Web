@@ -4,7 +4,6 @@ ul.genres {
     gap: .5em;
     grid-template-columns: repeat(4,minmax(140px,1fr));
     width: calc(90ch - 1em);
-    background: var(--blackGrey);
 }
 
 ul.genres.hidden {
