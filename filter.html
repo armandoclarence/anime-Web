@@ -74,17 +74,55 @@
 					<button id="seasons">Season</button>
 					<button id="info">Recently added</button>
 					<ul id="types" class="list hidden">
-						<li id="Movie">Movie</li>
-						<li id="TV">TV</li>
-						<li id="OVA">OVA</li>
-						<li id="ONA">ONA</li>
-						<li id="Special">Special</li>
-						<li id="Music">Music</li>
+						<li id="Movie">
+							<input type="checkbox" name="movie" id="movie"/>
+                			<label for="movie">Movie</label>
+						</li>
+						<li id="TV">
+							<input type="checkbox" name="tv" id="tv"/>
+                			<label for="tv">TV</label>
+						</li>
+						<li id="OVA">
+							<input type="checkbox" name="ova" id="ova"/>
+                			<label for="ova">OVA</label>
+						</li>
+						<li id="ONA">
+							<input type="checkbox" name="ona" id="ona"/>
+                			<label for="ona">ONA</label>
+						</li>
+						<li id="Special">
+							<input type="checkbox" name="special" id="special"/>
+                			<label for="special">Special</label>
+						</li>
+						<li id="Music">
+							<input type="checkbox" name="music" id="music"/>
+                			<label for="music">Music</label>
+						</li>
 					</ul>
-					<ul id="genres"  class="list hidden"></ul>
+					<ul id="genres"  class="list genres hidden"></ul>
 					<ul id="years" class="list hidden"></ul>
-					<ul id="ratings" class="list hidden"></ul>
-					<ul id="status" class="list hidden"></ul>
+					<ul id="ratings" class="list hidden">
+						<li id="G">
+							<input type="checkbox" name="g" id="g"/>
+                			<label for="g">G - All Ages</label>
+						</li>
+						<li id="PG">
+							<input type="checkbox" name="pg" id="pg"/>
+                			<label for="pg">PG - Children</label>
+						</li>
+						<li id="R">
+							<input type="checkbox" name="r" id="r"/>
+                			<label for="r">R - 17+ (violence & profanity)</label>
+						</li>
+						<li id="R18">
+							<input type="checkbox" name="r18" id="r18"/>
+                			<label for="r18">R18 - Hentai</label>
+						</li>
+					</ul>
+					<ul id="status" class="list hidden">
+							<input type="checkbox" name="" id=""/>
+                			<label for="">R18 - Hentai</label>
+					</ul>
 					<ul id="seasons" class="list hidden"></ul>
 					<ul id="info" class="list hidden"></ul>
 				</ul>

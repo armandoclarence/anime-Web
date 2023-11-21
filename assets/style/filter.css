@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: .5em;
+    position: relative;
 }
 
 .hidden {
@@ -9,21 +10,21 @@
 }
 
 .lists button {
-    background: rgb(49, 44, 44);
+    background: rgb(49, 44, 44,.6);
     padding: .5em;
-    position: relative;
     border: none;
+    position: relative;
 }
 
-.lists > ul {
+.lists >button:hover {
+    background: rgb(49, 44, 44,1);
+}
+
+.lists > .list {
+    background: var(--blackGrey);
     min-width: 300px;
-    width: 400px;
     position: absolute;
     left: 0;
     top: 2.5em;
     padding: 1em;
-}
-
-.list ul.genres li {
-    background: none;
 }
