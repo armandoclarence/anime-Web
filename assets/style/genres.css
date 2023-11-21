@@ -1,8 +1,10 @@
 ul.genres {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     justify-content: space-around;
     gap: .5em;
+    grid-template-columns: repeat(4,minmax(140px,1fr));
+    width: calc(90ch - 1em);
+    background: var(--blackGrey);
 }
 
 ul.genres.hidden {
@@ -10,7 +12,6 @@ ul.genres.hidden {
 }
 
 ul.genres li {
-    flex-basis: 23%;
     background: rgb(49, 44, 44);
     list-style: none;
 }

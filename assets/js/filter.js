@@ -1,6 +1,6 @@
 import { getAnimeGenres } from "./utils.js"
 const genreContainer = document.querySelector('.genres')
-const list = document.querySelector('.list button')
+const [...listButtons] = document.querySelectorAll('.list button')
 window.addEventListener('load', function(e){
     getAnimeGenres().then((genres)=>{
         genres.map(({mal_id,name}) => {
@@ -12,7 +12,9 @@ window.addEventListener('load', function(e){
         })
     })
 })
-list.addEventListener('click',function(){
-    this.nextElementSibling.classList.toggle('hidden')
-    console.log(this.nextElementSibling)
+listButtons.map(listButton => {
+    listButton.addEventListener('click',function(){
+        this.nextElementSibling.classList.toggle('hidden')
+        console.log(this.nextElementSibling)
+    })
 })

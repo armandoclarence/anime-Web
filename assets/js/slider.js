@@ -40,15 +40,17 @@ let k=1
 let j = 1
 let imgLength = imgs.length
 setInterval(()=>{
-    imgs[imgLength - 1].classList.remove('prev-slide')
     console.log(k)
     if(k == 10){
+        imgs[8].classList.remove('prev-slide')
         imgs[9].classList.remove('current-slide')
         imgs[9].classList.add('prev-slide')
         imgs[0].classList.add('current-slide')
+        imgs[1].classList.add('next-slide')
         k=1;
     }
     else{
+        imgs[imgLength - 1].classList.remove('prev-slide')
         k - 2 >= 0 && imgs[k-2].classList.remove('prev-slide')
         imgs[k-1].classList.add('prev-slide')
         imgs[k-1].classList.remove('current-slide')
@@ -61,4 +63,4 @@ setInterval(()=>{
     // console.log(k++, imgLength-1)
     sliderContainer.style.transitionDelay = '0ms'
     sliderContainer.style.transform = `translate3d(${-(img.clientWidth) *  (j<10 ? j++ : j=0)}px,0px,0px)`
-},3000)
+},2000)

@@ -1,6 +1,10 @@
-.container {
-    justify-content: flex-start;
-    position: relative;
+
+.lists {
+    display: grid;
+}
+
+.lists > * {
+    gap: .5em;
 }
 
 .genres {
