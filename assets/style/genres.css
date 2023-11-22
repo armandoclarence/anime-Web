@@ -6,10 +6,6 @@ ul.genres {
     width: calc(90ch - 1em);
 }
 
-ul.genres.hidden {
-    display: none;
-}
-
 ul.genres li {
     background: rgb(49, 44, 44);
     list-style: none;

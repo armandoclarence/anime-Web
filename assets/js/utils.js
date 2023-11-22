@@ -4,7 +4,7 @@ const kitsuApi = "https://kitsu.io/api/edge/";
 const pages = document.querySelector('.page')
 const card = document.querySelector('.cards')
 
-async function getAnimeResponse(typeData, query=""){
+export async function getAnimeResponse(typeData, query=""){
     const anime = await fetch(`${baseUrl}${typeData}?${query}`)
     const animeData = await anime.json()
     const { data } = animeData

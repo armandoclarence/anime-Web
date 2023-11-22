@@ -1,11 +1,11 @@
 .lists {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(5,1fr);
     gap: .5em;
     position: relative;
 }
 
-.hidden {
+* > .list.hidden {
     display: none;
 }
 
@@ -24,7 +24,10 @@
     background: var(--blackGrey);
     min-width: 300px;
     position: absolute;
-    left: 0;
-    top: 2.5em;
     padding: 1em;
+}
+
+ul.years {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
 }

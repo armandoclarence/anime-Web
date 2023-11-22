@@ -1,8 +1,8 @@
 import {getAnimeKitsuResponse} from './utils.js'
 const sliderContainer = document.querySelector('.slider')
 
-async function getImg(){
-    const animeSlider = await getAnimeKitsuResponse('anime','filter[status]=current&page[limit]=5&page[offset]=20')
+async function getImg(){    
+    const animeSlider = await getAnimeKitsuResponse('anime','filter[seasonYear]=2023&filter[status]=current&page[limit]=5')
     let i = 0
     let anime = animeSlider.map(img=>{
         console.log(img)
@@ -21,9 +21,7 @@ let img = document.querySelector('.slider a')
 let [...imgs] = document.querySelectorAll('.slider a')
 
 window.addEventListener('resize',function(e){
-    console.log(j)
     sliderContainer.style.transform = `translate3d(${-img.clientWidth * j}px,0px,0px)`
-    console.log("img",img.clientWidth)
 });
 for(let img of imgs) {
     imgs[9].classList.add('prev-slide')
@@ -60,7 +58,6 @@ setInterval(()=>{
         k< 9 && imgs[k+1].classList.remove('current-slide')
     }
     k++
-    // console.log(k++, imgLength-1)
     sliderContainer.style.transitionDelay = '0ms'
     sliderContainer.style.transform = `translate3d(${-(img.clientWidth) *  (j<10 ? j++ : j=0)}px,0px,0px)`
 },2000)

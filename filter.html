@@ -26,14 +26,26 @@
 			type="module"
 			src="assets/js/filter.js"
 		></script>
+		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+		<script src="https://kit.fontawesome.com/15fc07582b.js" defer crossorigin="anonymous"></script>
+		<script src="assets/js/main.js" type="module"></script>
 		<title>Rimunime | Filter</title>
 	</head>
 	<body>
 		<header>
-			<h2>
+			<h2 id="top">
 				<a href="/">Rimu<span>&Icy;</span>ime</a>
 			</h2>
-			<nav>
+			<div class="search">
+				<input
+					type="text"
+					id="search"
+					placeholder="Search..."
+					/>
+				<i class="fas fa-search searchIcon"></i>
+			</div>
+			<nav id="nav">
+				<i class="las la-bars bar"></i>
 				<ul>
 					<li>
 						<a href="genres.html">Genres</a>
@@ -71,60 +83,101 @@
 					<button id="years">Year</button>
 					<button id="ratings">Rating</button>
 					<button id="status">Status</button>
+					<button id="country">Country</button>
 					<button id="seasons">Season</button>
-					<button id="info">Recently added</button>
+					<button id="sort">Recently added</button>
+					<button type="submit" id="filter">Filter</button>
 					<ul id="types" class="list hidden">
 						<li id="Movie">
 							<input type="checkbox" name="movie" id="movie"/>
                 			<label for="movie">Movie</label>
 						</li>
-						<li id="TV">
+						<li>
 							<input type="checkbox" name="tv" id="tv"/>
                 			<label for="tv">TV</label>
 						</li>
-						<li id="OVA">
+						<li>
 							<input type="checkbox" name="ova" id="ova"/>
                 			<label for="ova">OVA</label>
 						</li>
-						<li id="ONA">
+						<li>
 							<input type="checkbox" name="ona" id="ona"/>
                 			<label for="ona">ONA</label>
 						</li>
-						<li id="Special">
+						<li>
 							<input type="checkbox" name="special" id="special"/>
                 			<label for="special">Special</label>
 						</li>
-						<li id="Music">
+						<li>
 							<input type="checkbox" name="music" id="music"/>
                 			<label for="music">Music</label>
 						</li>
 					</ul>
 					<ul id="genres"  class="list genres hidden"></ul>
-					<ul id="years" class="list hidden"></ul>
+					<ul id="years" class="list years hidden"></ul>
 					<ul id="ratings" class="list hidden">
-						<li id="G">
+						<li>
 							<input type="checkbox" name="g" id="g"/>
                 			<label for="g">G - All Ages</label>
 						</li>
-						<li id="PG">
+						<li>
 							<input type="checkbox" name="pg" id="pg"/>
                 			<label for="pg">PG - Children</label>
 						</li>
-						<li id="R">
+						<li>
 							<input type="checkbox" name="r" id="r"/>
                 			<label for="r">R - 17+ (violence & profanity)</label>
 						</li>
-						<li id="R18">
+						<li>
 							<input type="checkbox" name="r18" id="r18"/>
                 			<label for="r18">R18 - Hentai</label>
 						</li>
 					</ul>
 					<ul id="status" class="list hidden">
-							<input type="checkbox" name="" id=""/>
-                			<label for="">R18 - Hentai</label>
+						<li>
+							<input type="checkbox" name="notYetAired" id="notYetAired"/>
+							<label for="notYetAired">Not Yet Aired</label>
+						</li>
+						<li>
+							<input type="checkbox" name="releasing" id="releasing"/>
+							<label for="releasing">Releasing</label>
+						</li>
+						<li>
+							<input type="checkbox" name="completed" id="completed"/>
+							<label for="completed">Completed</label>
+						</li>
 					</ul>
-					<ul id="seasons" class="list hidden"></ul>
-					<ul id="info" class="list hidden"></ul>
+					<ul id="country" class="list hidden">
+						<li>
+							<input type="checkbox" name="china" id="china"/>
+							<label for="china">China</label>
+						</li>
+						<li>
+							<input type="checkbox" name="japan" id="japan"/>
+							<label for="japan">Japan</label>
+						</li>
+					</ul>
+					<ul id="seasons" class="list hidden">
+						<li>
+							<input type="checkbox" name="fall" id="fall"/>
+							<label for="fall">Fall</label>
+						</li>
+						<li>
+							<input type="checkbox" name="summer" id="summer"/>
+							<label for="summer">Summer</label>
+						</li>
+						<li>
+							<input type="checkbox" name="spring" id="spring"/>
+							<label for="spring">Spring</label>
+						</li>
+						<li>
+							<input type="checkbox" name="winter" id="winter"/>
+							<label for="winter">Winter</label>
+						</li>
+					</ul>
+					<ul id="sort" class="list hidden">
+
+					</ul>
 				</ul>
 				<div class="cards"></div>
 			</main>
