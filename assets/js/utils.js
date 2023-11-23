@@ -15,7 +15,6 @@ export async function getAnimeKitsuResponse(typeData, query=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
     const { data } = animeData
-    console.log(data);
     return data
 }
 
@@ -62,8 +61,8 @@ export async function getAnimeByQuery(query,page){
     animeByQuery.renderSubCards(animeData)
 }
 
-export async function getAnimeNow(page,limit){
-    const animeNow = await getAnimeResponse('seasons/now', `page=${page}&limit=${limit}&sfw=true`)
+export async function getAnimeNow(pageNumber,limit){
+    const animeNow = await getAnimeKitsuResponse('anime', `filter[status]=current&page[offset]=${pageNumber * limit}&page[limit]=${limit}`)
     return animeNow
 } 
 
@@ -72,7 +71,7 @@ export async function getAnimeNows() {
         const animeNow = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeNow(1,14)
+                getAnimeNow(0,14)
             ),250)
         )
         const now = new AnimeRenderer('.now-anime')
@@ -83,12 +82,13 @@ export async function getAnimeNows() {
                 getAnimeKitsuResponse('anime',`sort=popularityRank&page[limit]=7`)
             ),500)
         )
+        console.log(animeTop)
         const top = new AnimeRenderer('.top-popularity-anime') 
         top.renderSubCards(animeTop)
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('top/anime','filter=airing&page=1&limit=5')
+                getAnimeKitsuResponse('anime','sort=userCount&page[limit]=5')
             ),750)
         )
         console.log(animeMostViewed)
@@ -97,7 +97,7 @@ export async function getAnimeNows() {
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
+                getAnimeKitsuResponse('anime',`filter[status]=finished&page[limit]=7`)
             ),1000)
         )
         const completed = new AnimeRenderer('.completed-anime') 
@@ -147,22 +147,22 @@ function renderDayCards(datas,day=''){
 }
 
 async function getAnimeDetail(id){
-    const anime = await fetch(`${baseUrl}anime/${id}`)
+    const anime = await fetch(`${kitsuApi}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {status,episodes,title,aired, title_english, genres,synopsis, score} = data
-    const {string} = aired
+    const {attributes} = data
+    const {subtype,episodeCount,titles, startDate, genres,synopsis, averageRating} = attributes
     cardDetail.innerHTML =`
         <article class="animeDetail">
             <div class="title">
-                <h3>${title_english || title}</h3>
-                <p>${title}</p>
+                <h3>${titles.en || titles.en_jp}</h3>
+                <p>${titles.en}</p>
             </div>
             <p class="synopsis">${synopsis}</p>
             <div class="info">
-                <p>Scores: ${score}</p>
-                <p>Date aired: ${string}</p>
-                <p>Status: ${status}</p>
+                <p>Scores: ${averageRating / 100}</p>
+                <p>Date aired: ${startDate}</p>
+                <p>Status: ${subtype}</p>
                 <ul>
                     Genre:${genres.map(({name})=> {
                         return `<li>${name}</li>`  
@@ -189,28 +189,31 @@ class AnimeRenderer {
         renderHoverImg(cards)
     }
     renderSubCardHTML(data,i) {
-        const {title_english,title,title_japanese,type, episodes, mal_id, images,duration} = data
-        let durations = duration.replace(' per ep', '')
+        console.log(data)
+        const {attributes,id} = data
+        console.log(attributes)
+        const {titles,subtype,coverImage,posterImage,episodeCount,episodeLength}  = attributes
+        console.log(coverImage)
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
-            `<article class="card sub" id=${mal_id}>
+            `<article class="card sub" id=${id}>
                 <div class="cardSub">
-                    <img class="image" src="${images.jpg.image_url}" title="${title}" />
+                    <img class="image" src="${posterImage.small}" title="${titles.en}" />
                     <div class="title">
                         <h4>
-                        ${title_english || title}
+                        ${titles.en || titles.en_jp}
                         </h4>
                         <p>
-                            ${type} ${episodes} ${durations}
+                            ${subtype} ${episodeCount|| ''} ${episodeLength}
                         </p>
                     </div>
                 </div>
             </article>`
         :
         this.container.classList[0] == 'most-viewed-anime' ?
-            `<article class="card sub mosts" id=${mal_id}>
+            `<article class="card sub mosts" id=${id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     <div class="imgs">
-                        <img class="image" src="${images.jpg.image_url}" title="${title}" />                    
+                        <img class="image" src="${coverImage.original || posterImage.original}" title="${titles.en}" />
                     </div>
                     ${i == 1 ? `
                     <h3>MOST VIEWED</h3>
@@ -219,24 +222,24 @@ class AnimeRenderer {
                     }
                     <div class="title">
                         <h4>
-                        ${i == 1 ? title_english : title}
+                        ${i == 1 ? titles.en : titles.end_jp}
                         </h4>
                         <p>
-                        ${type} 
-                        <i class="lar la-closed-captioning"></i>${episodes || ''}
+                        ${subtype} 
+                        <i class="lar la-closed-captioning"></i>${episodeCount || ''}
                         </p>    
                     </div>
                 </div>
             </article>`
             :
-            `<article class="card" id=${mal_id}>
+            `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img src="${images.jpg.image_url}" title="${title}" />
+                        <img src="${posterImage.small}" title="${titles.en}" />
                     </div>
                     <div class="title">
                         <h4>
-                            ${title_english || title}
+                            ${titles.en || titles.en_jp}
                         </h4>
                     </div>
                 </div>

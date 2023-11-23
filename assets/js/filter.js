@@ -17,11 +17,9 @@ window.addEventListener('load', function(e){
 async function makeYearList(){
     const yearsRes = await getAnimeResponse('seasons')
     const yearsWrapper = document.querySelector('ul#years')
-    console.log(yearsWrapper)
     let yearU2000 = yearsRes.filter(({year})=> year>=2000)
     let yearD2000 = yearsRes.filter(({year})=> year < 2000 & year%10==0)
     yearD2000 = yearD2000.map(({year}) => JSON.parse(`{"year":"${year}s"}`))
-    console.log(yearD2000)
     const years = [...yearU2000,...yearD2000]
     console.log(years)
     years.map(({year})=>{
