@@ -230,7 +230,6 @@ main .page > button {
 	grid-template-columns: repeat(5, 1fr);
 	grid-template-areas: "img title title title title";
 	gap: 0.5em;
-	width: 100%;
 	background-color: var(--blackLowGrey-4);
 }
 
@@ -274,7 +273,6 @@ main .page > button {
 .card .cardSub.big img.image {
 	height: 200px;
 	width: 100%;
-	background-size: 50% 50%;
 	image-rendering: pixelated;
 	padding: 0;
 }

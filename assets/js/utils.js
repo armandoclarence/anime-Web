@@ -15,6 +15,7 @@ export async function getAnimeKitsuResponse(typeData, query=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
     const { data } = animeData
+    console.log(data);
     return data
 }
 
@@ -79,7 +80,7 @@ export async function getAnimeNows() {
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`filter=bypopularity&sfw=true&page=1&limit=7`)
+                getAnimeKitsuResponse('anime',`sort=popularityRank&page[limit]=7`)
             ),500)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
@@ -87,7 +88,7 @@ export async function getAnimeNows() {
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime','filter=airing&page=1&limit=5')
+                getAnimeKitsuResponse('top/anime','filter=airing&page=1&limit=5')
             ),750)
         )
         console.log(animeMostViewed)
@@ -96,7 +97,7 @@ export async function getAnimeNows() {
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
+                getAnimeKitsuResponse('top/anime',`status=complete&sfw=true&page=1&limit=7`)
             ),1000)
         )
         const completed = new AnimeRenderer('.completed-anime') 
@@ -218,7 +219,7 @@ class AnimeRenderer {
                     }
                     <div class="title">
                         <h4>
-                        ${i == 1 ? title_japanese : title}
+                        ${i == 1 ? title_english : title}
                         </h4>
                         <p>
                         ${type} 

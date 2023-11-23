@@ -44,8 +44,7 @@ setInterval(()=>{
         imgs[9].classList.remove('current-slide')
         imgs[9].classList.add('prev-slide')
         imgs[0].classList.add('current-slide')
-        imgs[1].classList.add('next-slide')
-        k=1;
+        k=0;
     }
     else{
         imgs[imgLength - 1].classList.remove('prev-slide')
