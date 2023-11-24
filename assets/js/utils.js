@@ -36,11 +36,6 @@ export async function makeScheduleList() {
     }
 }
 
-export async function getAnimeGenres(){
-    const animeData = await getAnimeResponse('genres/anime','filter=themes')
-    return animeData
-}
-
 export async function getAnimesByGenre(id,page){
     const animeData = await getAnimeResponse('anime',`genres=${id}&page=${page}`)
     pages.children[1].removeAttribute('disabled','')
@@ -85,12 +80,11 @@ export async function getAnimeNows() {
             ),500)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
-        console.log(top)
         top.renderSubCards(animeTop)
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('anime','filter[status]=current&sort=userCount&page[limit]=5')
+                getAnimeKitsuResponse('anime','filter[status]=current&sort=favoritesCount&page[limit]=5')
             ),750)
         )
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
@@ -147,28 +141,52 @@ function renderDayCards(datas,day=''){
     container.renderSubCards(datas)
 }
 
+async function getAnimeGenres(id){
+    const genres = await fetch(`${kitsuApi}anime/${id}/genres`)
+    const genresData = await genres.json();
+    const {data} = genresData
+    return data
+}
+
+async function getAnimeCategories(id){
+    const categories = await fetch(`${kitsuApi}anime/${id}/categories`)
+    const categoriesData = await categories.json();
+    const {data} = categoriesData
+    return data
+}
+
 async function getAnimeDetail(id){
     const anime = await fetch(`${kitsuApi}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
-    const {attributes,relationships} = data
-    const {genres} = relationships
-    console.log(relationships)
-    console.log(genres)
+    const {attributes} = data
+    const genres = await getAnimeGenres(id);
+    const genre = genres.map(({attributes})=>{
+        const {name} = attributes
+        return name
+    })
+    const categories = await getAnimeCategories(id);
+    const category = categories.map(({attributes})=>{
+        const {title} = attributes
+        console.log(title)
+        return title
+    })
+    console.log(category)
+    console.log(genre)
     const {subtype,episodeCount,titles, startDate,synopsis, averageRating} = attributes
     cardDetail.innerHTML =`
         <article class="animeDetail">
             <div class="title">
-                <h3>${titles.en || titles.en_jp}</h3>
-                <p>${titles.en}</p>
+                <h3>${titles.en || titles.en_jp || titles.en_ch}</h3>
+                <p>${titles.en || titles.en_jp || titles.en_ch}</p>
             </div>
             <p class="synopsis">${synopsis}</p>
             <div class="info">
-                <p>Scores: ${averageRating / 10}</p>
+                <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
                 <p>Date aired: ${startDate}</p>
                 <p>Status: ${subtype}</p>
                 <ul>
-                    Genre:
+                    Genre: ${genre==undefined ?genre : category}
                 </ul>
             </div>
         </article>
