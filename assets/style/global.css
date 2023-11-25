@@ -447,14 +447,14 @@ main .page > button {
 }
 
 footer {
-	padding: 3em 0;
+	padding: 3em 1em;
 }
 
 .backToTop {
 	display: flex;
 	position: relative;
 	justify-content: center;
-	
+	padding-bottom: 1em;
 }
 
 .backToTop::before {
@@ -462,7 +462,7 @@ footer {
 	border-bottom: 1px solid;
 	position: absolute;
 	left: 0;
-	bottom: -1.5em;
+	bottom: 0;
 	right: 0;
 }
 
@@ -479,11 +479,36 @@ footer {
 
 .copyright {
 	display: flex;
+	justify-content: space-between;
 }
 
-.copyright_left {
+.copyright * {
+	align-self: center;
+}
+
+.copyright > .copyright_left {
 	display: flex;
 	gap: 1.5em;
+}
+
+.copyright > .copyright_right {
+	text-align: end;
+}
+
+@media (max-width:40em){
+	.copyright {
+		flex-direction: column;
+		text-align: center;
+		place-self: center;
+	}
+	.copyright >.copyright_left {
+		gap: 0;
+		flex-direction: column;
+	}
+
+	.copyright > .copyright_right {
+		text-align: center;
+	}
 }
 
 @media (max-width: 60em) {
@@ -503,10 +528,6 @@ footer {
 			"copyright_right";
 	}
 
-	.copyright {
-		text-align: center;
-		place-self: center;
-	}
 }
 @media (max-width: 50em) {
 	header {

@@ -1,49 +1,49 @@
-import { getAnimeGenres, getAnimesByGenre } from "./utils.js"
+import { getAnimeCategories, getAnimesByCategory } from "./utils.js"
 import { prevButton, nextButton } from "./main.js"
-const genreContainer = document.querySelector('.genres')
-const container = document.querySelector('.genreAnimes')
+const categoryContainer = document.querySelector('.categories')
+const container = document.querySelector('.categoryAnimes')
 const page = document.querySelector('.page')
 let params = new URLSearchParams(window.location.search)
-let pageNumber = 1
+let pageNumber = 0
 window.addEventListener('load',function(e){
-    genre()
-})
-
-function genre(){
-    getAnimeGenres().then((genres)=>{
-        genres.map(({mal_id,name,count}) => {
-            genreContainer.innerHTML += `
-            <li class="genre">
-                <a href="?genreId=${mal_id}&genre=${name}">
-                    <span>${name}</span>
-                    <span class="count">${count}</span>
-                </a>
-            </li>`
-        })
-    })
-    let id = params.get('genreId')
-    if(id){
-        let name = params.get('genre')
+    category()
+    let name = params.get('category')
+    if(name){
         const title = document.querySelector('.cards h2')
-        title.textContent = `Genre ${name}`
-        container.removeChild(genreContainer)
+        title.textContent = `Category ${name}`
+        container.removeChild(categoryContainer)
         container.classList.add('anime')
         page && page.classList.remove('hidden')
-        getAnimesByGenre(id,pageNumber)
+        getAnimesByCategory(name,pageNumber)
         prevButton && prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {
                 this.setAttribute('disabled', '')
             }
-            getAnimesByGenre(id,pageNumber)
-    
+            getAnimesByCategory(name,pageNumber)
+        
         })
         nextButton && nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            getAnimesByGenre(id,pageNumber)
+            getAnimesByCategory(name,pageNumber)
         })
     }
+})
+
+export function category(){
+    getAnimeCategories().then((category)=>{
+        category.map(({attributes}) => {
+            const {title,totalMediaCount} = attributes
+            categoryContainer.innerHTML += `
+            <li class="category">
+                <a href="?&category=${title}">
+                    <span>${title}</span>
+                    <span class="count">${totalMediaCount}</span>
+                </a>
+            </li>`
+        })
+    })
 }
 
 

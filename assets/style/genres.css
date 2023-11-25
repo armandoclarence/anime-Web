@@ -1,17 +1,19 @@
-ul.genres {
-    display: grid;
-    justify-content: space-around;
-    gap: .5em;
-    grid-template-columns: repeat(4,minmax(140px,1fr));
-    width: calc(90ch - 1em);
-}
-
-ul.genres li {
-    background: rgb(49, 44, 44);
+li {
     list-style: none;
 }
 
-ul.genres li a{
+ul.categories {
+    display: grid;
+    justify-content: space-around;
+    gap: .5em;
+    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+}
+
+ul.categories li {
+    background: rgb(49, 44, 44);
+}
+
+ul.categories li a{
     display: flex;
     justify-content: space-between;
     text-decoration: none;

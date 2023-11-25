@@ -36,14 +36,14 @@ export async function makeScheduleList() {
     }
 }
 
-export async function getAnimesByGenre(id,page){
-    const animeData = await getAnimeResponse('anime',`genres=${id}&page=${page}`)
+export async function getAnimesByCategory(genre,pageNumber){
+    const animeData = await getAnimeKitsuResponse('anime',`filter[categories]=${genre}&page[limit]=20&page[offset]=${20 * pageNumber}`)
     pages.children[1].removeAttribute('disabled','')
-    if(animeData.length < 25){
+    if(animeData.length < 20){
         pages.children[1].setAttribute('disabled','')
     }
-    const animesByGenre = new AnimeRenderer('.genreAnimes')
-    animesByGenre.renderSubCards(animeData)
+    const animesByCategory = new AnimeRenderer('.categoryAnimes')
+    animesByCategory.renderSubCards(animeData)
 }
 
 export async function getAnimeByQuery(query,page){
@@ -111,7 +111,7 @@ function renderHoverImg(cards){
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
             let topCard = this.offsetTop
-            getAnimeDetail(id)
+            makeAnimeDetail(id)
             let cardDetailWidth = cardDetail.offsetWidth || 300
             cardDetail.style.top = `${topCard + 50}px`
             cardDetail.style.left = 
@@ -141,14 +141,25 @@ function renderDayCards(datas,day=''){
     container.renderSubCards(datas)
 }
 
-async function getAnimeGenres(id){
+export async function getAnimeCategories(){
+    const categories = await fetch(`${kitsuApi}categories?page[limit]=218`)
+    const categoriesData = await categories.json();
+    const {data} = categoriesData
+    let newData = data.filter(({attributes})=>{
+        const {childCount} = attributes
+        return childCount == 0
+    })
+    return newData
+}
+
+async function getAnimeGenresById(id){
     const genres = await fetch(`${kitsuApi}anime/${id}/genres`)
     const genresData = await genres.json();
     const {data} = genresData
     return data
 }
 
-async function getAnimeCategories(id){
+async function getAnimeCategoriesById(id){
     const categories = await fetch(`${kitsuApi}anime/${id}/categories`)
     const categoriesData = await categories.json();
     const {data} = categoriesData
@@ -159,26 +170,28 @@ async function getAnimeDetail(id){
     const anime = await fetch(`${kitsuApi}anime/${id}`)
     const animeData = await anime.json()
     const {data} = animeData
+    return data
+}
+
+async function makeAnimeDetail(id){
+    const data = await getAnimeDetail(id)
     const {attributes} = data
-    const genres = await getAnimeGenres(id);
+    const genres = await getAnimeGenresById(id);
     const genre = genres.map(({attributes})=>{
         const {name} = attributes
         return name
     })
-    const categories = await getAnimeCategories(id);
+    const categories = await getAnimeCategoriesById(id);
     const category = categories.map(({attributes})=>{
         const {title} = attributes
-        console.log(title)
         return title
     })
-    console.log(category)
-    console.log(genre)
     const {subtype,episodeCount,titles, startDate,synopsis, averageRating} = attributes
     cardDetail.innerHTML =`
         <article class="animeDetail">
             <div class="title">
-                <h3>${titles.en || titles.en_jp || titles.en_ch}</h3>
-                <p>${titles.en || titles.en_jp || titles.en_ch}</p>
+                <h3>${titles.en || titles.en_jp || titles.en_cn}</h3>
+                <p>${titles.en || titles.en_jp || titles.en_cn}</p>
             </div>
             <p class="synopsis">${synopsis}</p>
             <div class="info">
@@ -196,7 +209,6 @@ async function getAnimeDetail(id){
 class AnimeRenderer {
     constructor(containerId) {
         this.container = document.querySelector(containerId)
-        console.log(this.container)
         if (!this.container) {
             console.error(`Container with id ${containerId} not found.`)
         }
@@ -252,11 +264,11 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_ch}" />
+                        <img src="${posterImage.medium}" title="${titles.en || titles.en_jp || titles.en_cn}" />
                     </div>
                     <div class="title">
                         <h4>
-                            ${titles.en || titles.en_jp || titles.en_ch}
+                            ${titles.en || titles.en_jp || titles.en_cn}
                         </h4>
                     </div>
                 </div>
