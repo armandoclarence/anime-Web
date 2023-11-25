@@ -1,6 +1,38 @@
-ul li {
+* {
+	box-sizing: border-box;
+}
+header {
+	margin-bottom: 2em;
+}
+header::after {
+	content: "";
+	position: absolute;
+	border-bottom: 1px solid;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+ul[id] li {
 	display: flex;
+	padding: .5em;
 	gap: 0.5em;
+}
+
+ul[id] li > * {
+	align-self: center;
+}
+
+ul[id] li > :last-child {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}
+
+ul[id] li:hover {
+	background: var(--green);
+	border-radius: .1em;
 }
 
 .lists {
@@ -10,12 +42,16 @@ ul li {
 	position: relative;
 }
 
+.lists input {
+	outline: none;
+}
+
 * > .list.hidden {
 	display: none;
 }
 
 .lists button {
-	background: rgb(49, 44, 44, 0.6);
+	background: rgb(49, 44, 44, .4);
 	padding: 0.5em;
 	border: none;
 	position: relative;
@@ -25,6 +61,11 @@ ul li {
 	background: rgb(49, 44, 44, 1);
 }
 
+.lists > button:focus-within {
+	background: rgb(49, 44, 44, 0);
+	border: 1px solid var(--green);
+}
+
 .lists > .list {
 	background: var(--blackGrey);
 	position: absolute;
@@ -32,11 +73,8 @@ ul li {
 }
 
 ul.categories.list {
+	width: 500px;
 	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-}
-
-ul.categories.list li {
-	background: none;
 }
 
 ul.years {

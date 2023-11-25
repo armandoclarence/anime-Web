@@ -4,6 +4,7 @@ const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 window.addEventListener('load', function(e){
     makeYearList()
     makeCategoryList()
+    makeFilterObject()
 })
 
 async function makeCategoryList(){
@@ -11,13 +12,12 @@ async function makeCategoryList(){
     categories.map(({attributes})=>{
         const {title} = attributes
         categoryContainer.innerHTML += `
-            <li>
+            <li title="${title}">
                 <input type="checkbox" name="${title}" id="${title}"/>
                 <label for="${title}">${title}</label>
             </li>
         `
     })
-    console.log(categories)
 }
 
 async function makeYearList(){
@@ -50,3 +50,17 @@ listButtons.map(listButton => {
         })
     })
 })
+
+function makeFilterObject(){
+    const filter = {
+        typeAnime: "",
+        yearAnime: "",
+        categories: "",
+        ratingAnime: "",
+        statusAnime: "",
+        country: "",
+        season: "",
+        sorting: ""
+    }
+    console.log(filter)
+}
