@@ -1,5 +1,5 @@
-li {
-    list-style: none;
+li > *,li, button {
+    cursor: pointer;
 }
 
 ul.categories {
@@ -9,7 +9,7 @@ ul.categories {
     grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
 }
 
-ul.categories li {
+ul.categories:not(.list) li {
     background: rgb(49, 44, 44);
 }
 
