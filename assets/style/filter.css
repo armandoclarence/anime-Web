@@ -3,6 +3,10 @@
 }
 header {
 	margin-bottom: 2em;
+	grid-template-columns: repeat(3,1fr);
+	grid-template-areas: 
+		"titleHeader linkHeader search"
+	;
 }
 header::after {
 	content: "";
@@ -35,11 +39,19 @@ ul[id] li:hover {
 	border-radius: .1em;
 }
 
+ul li:focus {
+	background:var(--black, .3);
+}
+
 .lists {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	gap: 0.5em;
 	position: relative;
+}
+
+button, ul li {
+	color: var(--grey);
 }
 
 .lists input {
@@ -73,8 +85,7 @@ ul[id] li:hover {
 }
 
 ul.categories.list {
-	width: 500px;
-	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	grid-template-columns: repeat(4,85px);
 }
 
 ul.years {
