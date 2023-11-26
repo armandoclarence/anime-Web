@@ -40,7 +40,7 @@ ul[id] li:hover {
 }
 
 ul li:focus {
-	background:var(--black, .3);
+	background: rgba(var(--blackGrey) .4);
 }
 
 .lists {

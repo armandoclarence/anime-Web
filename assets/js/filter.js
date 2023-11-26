@@ -1,11 +1,47 @@
 import { getAnimeCategories, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
-window.addEventListener('load', function(e){
-    makeYearList()
-    makeCategoryList()
-    makeFilterObject()
+window.addEventListener('load', async function(e){
+    const filter = {
+        types: [],
+        years: [],
+        categories: [],
+        ratings: [],
+        statusAnime: [],
+        country: [],
+        season: [],
+        sorting: []
+    }
+    await makeYearList()
+    await makeCategoryList()
+    const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
+    checkboxes.map(checkbox => {
+        checkbox.addEventListener('change',function(){
+            if(this.checked){
+                const thisList = this.parentNode.parentNode
+                const idParent = thisList.getAttribute("id")
+                const id = this.getAttribute("id")
+                console.log(this)
+                console.log(id)
+                for(const key in filter){
+                    if(key == idParent && !id.checked){
+                        filter[key].push(id)
+                        console.log(key)
+                        console.log(filter[key])
+                        console.log(filter)
+                    }
+                    if(!id.checked){
+                        const index = filter[key].indexOf(id);
+                        filter[key].splice(index, 1);
+                    }
+                }
+            }
+        })
+    })
+    console.log(filter)
+    console.log(checkboxes)
 })
+
 
 async function makeCategoryList(){
     const categories = await getAnimeCategories();
@@ -50,17 +86,3 @@ listButtons.map(listButton => {
         })
     })
 })
-
-function makeFilterObject(){
-    const filter = {
-        typeAnime: "",
-        yearAnime: "",
-        categories: "",
-        ratingAnime: "",
-        statusAnime: "",
-        country: "",
-        season: "",
-        sorting: ""
-    }
-    console.log(filter)
-}
