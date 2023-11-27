@@ -1,7 +1,12 @@
 import { getAnimeCategories, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
+const filterButton = document.querySelector('#filter')
+
+let params = new URLSearchParams(window.location.search)
+
 window.addEventListener('load', async function(e){
+
     const filter = {
         types: [],
         years: [],
@@ -14,32 +19,42 @@ window.addEventListener('load', async function(e){
     }
     await makeYearList()
     await makeCategoryList()
+    
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     checkboxes.map(checkbox => {
+    checkbox.checked = false
+    })
+    checkboxes.map(checkbox => {
         checkbox.addEventListener('change',function(){
+            const thisList = this.parentNode.parentNode
+            const idParent = thisList.getAttribute("id")
+            const id = this.getAttribute("id")
             if(this.checked){
-                const thisList = this.parentNode.parentNode
-                const idParent = thisList.getAttribute("id")
-                const id = this.getAttribute("id")
-                console.log(this)
-                console.log(id)
-                for(const key in filter){
-                    if(key == idParent && !id.checked){
-                        filter[key].push(id)
-                        console.log(key)
-                        console.log(filter[key])
-                        console.log(filter)
-                    }
-                    if(!id.checked){
-                        const index = filter[key].indexOf(id);
-                        filter[key].splice(index, 1);
-                    }
-                }
+                filter[idParent].push(id)
+            }else {
+                const index = filter[idParent].indexOf(id);
+                filter[idParent].splice(index, 1);
             }
+            console.log(filter)
         })
     })
-    console.log(filter)
-    console.log(checkboxes)
+    console.log(location.search)
+    console.log(window)
+    filterButton.addEventListener('click',function(e){
+        e.preventDefault()  
+        for(const key in filter){
+            console.log(key)
+            console.log(filter[key].length)
+            if(filter[key].length>0){
+                params.set(key, filter[key])
+                window.location.search = params
+                console.log(filter[key])
+            }else{
+                params.delete()
+            }
+        }
+        console.log(location.search)
+    })
 })
 
 
