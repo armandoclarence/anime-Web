@@ -18,6 +18,19 @@ export async function getAnimeKitsuResponse(typeData, query=""){
     return data
 }
 
+export async function getAnimesByFilter(queryKey){
+    for(const key in queryKey){
+        if(queryKey[key] != null){
+        }
+    }
+    // const {types, years, categories, ratings, statusAnime, country, season, sorting} = queryKey
+    console.log(queryKey[types]);
+    console.log(types)
+    console.log(queryKey)
+        const animeData = await getAnimeKitsuResponse('anime',`filter[showType]=${types}&filter[seasonYear]=${years}&filter[categories]=${categories}&filter[ageRating]=${ratings}&filter[status]=${statusAnime}&filter[season]=${season}`)
+        console.log(animeData)
+}
+
 async function getAnimeSchedule(day) {
     const animeData = await getAnimeResponse('schedules',`filter=${day}`)
     return animeData

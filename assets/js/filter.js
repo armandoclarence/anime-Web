@@ -1,4 +1,4 @@
-import { getAnimeCategories, getAnimeResponse } from "./utils.js"
+import { getAnimesByFilter, getAnimeCategories, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 const filterButton = document.querySelector('#filter')
@@ -19,11 +19,13 @@ window.addEventListener('load', async function(e){
     const localKey = 'filter';
     await makeYearList()
     await makeCategoryList()
+    const newFilter = {}
     const filterLocal = JSON.parse(this.localStorage.getItem(localKey)) || {}
     for(const key in filterLocal){
         const query = params.get(key)
-        console.log(query)
+        newFilter[key]=query
     }
+    getAnimesByFilter(newFilter)
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     checkboxes.map(checkbox => {
         checkbox.addEventListener('change',function(){
@@ -32,6 +34,10 @@ window.addEventListener('load', async function(e){
             const id = this.getAttribute("id")
             if(this.checked){
                 filter[idParent].push(id)
+            }if(!this.checked){
+                const index = filter[idParent].indexOf(id)
+                console.log(index)
+                filter[idParent].splice(index,1)
             }
             console.log(filter)
         })
@@ -50,10 +56,9 @@ window.addEventListener('load', async function(e){
                 localStorage.setItem(localKey,JSON.stringify(filter))
                 window.location.search = params
                 console.log(filter[key])
+            }else{
+                params.delete(key)
             }
-            // else{
-            //     params.delete(key)
-            // }
         }
         console.log(location.search)
     })
