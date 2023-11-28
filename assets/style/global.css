@@ -273,10 +273,14 @@ main .page > button {
 	align-self: center;
 }
 
+img {
+	image-resolution: 3/4;
+}
+
 .card .cardSub.big img.image {
 	height: 200px;
 	width: 100%;
-	image-rendering: pixelated;
+	object-fit: cover;
 	padding: 0;
 }
 

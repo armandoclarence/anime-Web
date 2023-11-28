@@ -5,25 +5,26 @@ const filterButton = document.querySelector('#filter')
 
 let params = new URLSearchParams(window.location.search)
 
+const filter = {
+    types: [],
+    years: [],
+    categories: [],
+    ratings: [],
+    statusAnime: [],
+    country: [],
+    season: [],
+    sorting: []
+}
 window.addEventListener('load', async function(e){
-
-    const filter = {
-        types: [],
-        years: [],
-        categories: [],
-        ratings: [],
-        statusAnime: [],
-        country: [],
-        season: [],
-        sorting: []
-    }
+    const localKey = 'filter';
     await makeYearList()
     await makeCategoryList()
-    
+    const filterLocal = JSON.parse(this.localStorage.getItem(localKey)) || {}
+    for(const key in filterLocal){
+        const query = params.get(key)
+        console.log(query)
+    }
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
-    checkboxes.map(checkbox => {
-    checkbox.checked = false
-    })
     checkboxes.map(checkbox => {
         checkbox.addEventListener('change',function(){
             const thisList = this.parentNode.parentNode
@@ -31,27 +32,28 @@ window.addEventListener('load', async function(e){
             const id = this.getAttribute("id")
             if(this.checked){
                 filter[idParent].push(id)
-            }else {
-                const index = filter[idParent].indexOf(id);
-                filter[idParent].splice(index, 1);
             }
             console.log(filter)
         })
     })
+    console.log(filter)
+    console.log(filterLocal)
     console.log(location.search)
     console.log(window)
     filterButton.addEventListener('click',function(e){
-        e.preventDefault()  
+        // e.preventDefault()  
         for(const key in filter){
             console.log(key)
             console.log(filter[key].length)
             if(filter[key].length>0){
                 params.set(key, filter[key])
+                localStorage.setItem(localKey,JSON.stringify(filter))
                 window.location.search = params
                 console.log(filter[key])
-            }else{
-                params.delete()
             }
+            // else{
+            //     params.delete(key)
+            // }
         }
         console.log(location.search)
     })

@@ -264,7 +264,7 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img src="${posterImage.medium}" title="${titles.en || titles.en_jp || titles.en_cn}" />
+                        <img src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_cn}" />
                     </div>
                     <div class="title">
                         <h4>
