@@ -5,30 +5,29 @@ const filterButton = document.querySelector('#filter')
 
 let params = new URLSearchParams(window.location.search)
 
-const filter = {
-    types: [],
-    years: [],
-    categories: [],
-    ratings: [],
-    statusAnime: [],
-    country: [],
-    seasons: [],
-    sorting: []
-}
 window.addEventListener('load', async function(e){
     const localKey = 'filter';
     await makeYearList()
     await makeCategoryList()
     const newFilter = {}
-    const filterLocal = JSON.parse(this.localStorage.getItem(localKey)) || {}
-    for(const key in filterLocal){
+    const filter = JSON.parse(this.localStorage.getItem(localKey)) || {
+        types: [],
+        years: [],
+        categories: [],
+        ratings: [],
+        statusAnime: [],
+        country: [],
+        seasons: [],
+        sorting: []
+    }
+    for(const key in filter){
         const query = params.get(key) || ''
-        filterLocal[key].map(filtering =>{
+        filter[key].map(filtering =>{
+            filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
+            checkbox.checked = true
             console.log(checkbox)
         })
-        console.log(filterLocal[key])
-        console.log(query)
         newFilter[key]=query
     }
     await getAnimesByFilter(newFilter)
@@ -42,10 +41,8 @@ window.addEventListener('load', async function(e){
                 filter[idParent].push(id)
             }if(!this.checked){
                 const index = filter[idParent].indexOf(id)
-                console.log(index)
                 filter[idParent].splice(index,1)
             }
-            // localStorage.setItem()
             console.log(filter)
         })
     })
@@ -60,6 +57,7 @@ window.addEventListener('load', async function(e){
                 params.delete(key)
             }
         }
+        localStorage.setItem(localKey, JSON.stringify(filter))
         console.log(location.search)
     })
 })
@@ -68,8 +66,8 @@ window.addEventListener('load', async function(e){
 async function makeCategoryList(){
     const categories = await getAnimeCategories();
     categories.map(({attributes})=>{
-        const {title} = attributes
-        console.log(title.splice(' '))
+        let {title} = attributes
+        title = title.split(' ').join("")
         categoryContainer.innerHTML += `
             <li title="${title}">
                 <input type="checkbox" name="${title}" id="${title}"/>
@@ -89,8 +87,8 @@ async function makeYearList(){
     years.map(({year})=>{
         yearsWrapper.innerHTML += `
             <li>
-                <input type="checkbox" name="${year}" id="${year}"/>
-                <label for="${year}">${year}</label>
+                <input type="checkbox" name="${year}" id="s${year}"/>
+                <label for="s${year}">${year}</label>
             </li>
         `
     })
