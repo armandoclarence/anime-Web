@@ -12,7 +12,7 @@ const filter = {
     ratings: [],
     statusAnime: [],
     country: [],
-    season: [],
+    seasons: [],
     sorting: []
 }
 window.addEventListener('load', async function(e){
@@ -22,10 +22,16 @@ window.addEventListener('load', async function(e){
     const newFilter = {}
     const filterLocal = JSON.parse(this.localStorage.getItem(localKey)) || {}
     for(const key in filterLocal){
-        const query = params.get(key)
+        const query = params.get(key) || ''
+        filterLocal[key].map(filtering =>{
+            let checkbox = document.querySelector(`#${filtering}`)
+            console.log(checkbox)
+        })
+        console.log(filterLocal[key])
+        console.log(query)
         newFilter[key]=query
     }
-    getAnimesByFilter(newFilter)
+    await getAnimesByFilter(newFilter)
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     checkboxes.map(checkbox => {
         checkbox.addEventListener('change',function(){
@@ -39,21 +45,15 @@ window.addEventListener('load', async function(e){
                 console.log(index)
                 filter[idParent].splice(index,1)
             }
+            // localStorage.setItem()
             console.log(filter)
         })
     })
-    console.log(filter)
-    console.log(filterLocal)
-    console.log(location.search)
-    console.log(window)
+    
     filterButton.addEventListener('click',function(e){
-        // e.preventDefault()  
         for(const key in filter){
-            console.log(key)
-            console.log(filter[key].length)
             if(filter[key].length>0){
                 params.set(key, filter[key])
-                localStorage.setItem(localKey,JSON.stringify(filter))
                 window.location.search = params
                 console.log(filter[key])
             }else{
@@ -69,6 +69,7 @@ async function makeCategoryList(){
     const categories = await getAnimeCategories();
     categories.map(({attributes})=>{
         const {title} = attributes
+        console.log(title.splice(' '))
         categoryContainer.innerHTML += `
             <li title="${title}">
                 <input type="checkbox" name="${title}" id="${title}"/>
