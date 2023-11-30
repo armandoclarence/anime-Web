@@ -1,7 +1,8 @@
-import { getAnimesByFilter, getAnimeCategories, getAnimeResponse } from "./utils.js"
+import { getAnimesByFilter, getAnimeGenres, getAnimeCategories, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 const filterButton = document.querySelector('#filter')
+const search = document.querySelector('.search-i')
 
 let params = new URLSearchParams(window.location.search)
 
@@ -18,15 +19,17 @@ window.addEventListener('load', async function(e){
         statusAnime: [],
         country: [],
         seasons: [],
-        sorting: []
+        sorting: [],
+        keyword: "",
     }
+    console.log(filter)
     for(const key in filter){
         const query = params.get(key) || ''
-        filter[key].map(filtering =>{
+        key != 'keyword' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
             checkbox.checked = true
-        })
+        }) : ''
         newFilter[key]=query
     }
     await getAnimesByFilter(newFilter)
@@ -45,8 +48,9 @@ window.addEventListener('load', async function(e){
             console.log(filter)
         })
     })
-    
     filterButton.addEventListener('click',function(e){
+        params.set('keyword', search.value)
+        filter['keyword'] = search.value
         for(const key in filter){
             if(filter[key].length>0){
                 params.set(key, filter[key])
@@ -54,6 +58,7 @@ window.addEventListener('load', async function(e){
                 params.delete(key)
             }
         }
+        params.delete('page')
         window.location.search = params
         localStorage.setItem(localKey, JSON.stringify(filter))
     })
@@ -61,14 +66,15 @@ window.addEventListener('load', async function(e){
 
 
 async function makeCategoryList(){
-    const categories = await getAnimeCategories();
-    categories.map(({attributes})=>{
-        const {title} = attributes
-        const id = title.split(' ').join("")
+    const genres = await getAnimeGenres()
+    const categories = await getAnimeCategories()
+    console.log(categories)
+    genres.map(({name})=>{
+        const id = name.split(' ').join("")
         categoryContainer.innerHTML += `
-            <li title="${title}">
-                <input type="checkbox" name="${title}" id="${id}"/>
-                <label for="${id}">${title}</label>
+            <li title="${name}">
+                <input type="checkbox" name="${name}" id="${id}"/>
+                <label for="${id}">${name}</label>
             </li>
         `
     })

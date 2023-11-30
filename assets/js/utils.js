@@ -2,7 +2,7 @@ const cardDetail = document.querySelector('.card-detail')
 const baseUrl = "https://api.jikan.moe/v4/"
 const kitsuApi = "https://kitsu.io/api/edge/";
 const pages = document.querySelector('.page')
-const card = document.querySelector('.cards')
+const cards = document.querySelector('.cards')
 
 export async function getAnimeResponse(typeData, query=""){
     const anime = await fetch(`${baseUrl}${typeData}?${query}`)
@@ -19,8 +19,9 @@ export async function getAnimeKitsuResponse(typeData, query=""){
 }
 
 export async function getAnimesByFilter(queryKey){
-    const {types, years, categories, ratings, statusAnime, country, season, sorting} = queryKey
-    const animeData = await getAnimeKitsuResponse('anime',`${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}page[limit]=20&page[offset]=0`)
+    const {types, years, categories, ratings, statusAnime, country, season, sorting, keyword} = queryKey
+    console.log(keyword)
+    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}page[limit]=20&page[offset]=0`)
     console.log(animeData)
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(animeData)
@@ -139,7 +140,7 @@ function renderHoverImg(cards){
 }
 
 function renderDayCards(datas,day=''){
-    card.innerHTML+= ` 
+    cards.innerHTML+= ` 
         <h2>${day}</h2>
         <div class="cards-container ${day}">
         </div>`
@@ -147,6 +148,20 @@ function renderDayCards(datas,day=''){
     cardDay.classList.add('now-anime')
     const container = new AnimeRenderer(`.${day}`)
     container.renderSubCards(datas)
+}
+
+export async function getAnimeGenres(){
+    const genresByGenre = await getAnimeResponse('genres/anime', 'filter=genres')
+    const genresByDemo = await getAnimeResponse('genres/anime', 'filter=demographics')
+    const genresByEx = await getAnimeResponse('genres/anime', 'filter=explicit_genres')
+    const genresByThemes = await new Promise(resolve => setTimeout(()=>{
+        resolve(getAnimeResponse('genres/anime', 'filter=themes'))
+    },500))
+    console.log(genresByGenre)
+    console.log(genresByDemo)
+    console.log(genresByThemes)
+    console.log(genresByEx[0])
+    // return genres
 }
 
 export async function getAnimeCategories(){
@@ -161,24 +176,18 @@ export async function getAnimeCategories(){
 }
 
 async function getAnimeGenresById(id){
-    const genres = await fetch(`${kitsuApi}anime/${id}/genres`)
-    const genresData = await genres.json();
-    const {data} = genresData
-    return data
+    const genres = await getAnimeKitsuResponse(`anime/${id}/genres`)
+    return genres
 }
 
 async function getAnimeCategoriesById(id){
-    const categories = await fetch(`${kitsuApi}anime/${id}/categories`)
-    const categoriesData = await categories.json();
-    const {data} = categoriesData
-    return data
+    const categories = await getAnimeKitsuResponse(`anime/${id}/categories`)
+    return categories
 }
 
 async function getAnimeDetail(id){
-    const anime = await fetch(`${kitsuApi}anime/${id}`)
-    const animeData = await anime.json()
-    const {data} = animeData
-    return data
+    const anime = await getAnimeKitsuResponse(`anime/${id}`)
+    return anime
 }
 
 async function makeAnimeDetail(id){
@@ -187,12 +196,13 @@ async function makeAnimeDetail(id){
     const genres = await getAnimeGenresById(id);
     const genre = genres.map(({attributes})=>{
         const {name} = attributes
-        return name
+        return `<li>${name}</li>`
     })
+    console.log(genre)
     const categories = await getAnimeCategoriesById(id);
     const category = categories.map(({attributes})=>{
         const {title} = attributes
-        return title
+        return `<li>${title}</li>`
     })
     const {subtype,episodeCount,titles, startDate,synopsis, averageRating} = attributes
     cardDetail.innerHTML =`
@@ -206,8 +216,8 @@ async function makeAnimeDetail(id){
                 <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
                 <p>Date aired: ${startDate}</p>
                 <p>Status: ${subtype}</p>
-                Genre:<ul>
-                    ${genre==undefined ?genre : category}
+                <ul>
+                    Genre: ${genre==undefined ?genre : category}
                 </ul>
             </div>
         </article>

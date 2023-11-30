@@ -329,6 +329,7 @@ img {
 
 .card-detail > * > .info > ul {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .card .title h4 {
