@@ -25,10 +25,21 @@
 		<script
 			type="module"
 			src="assets/js/filter.js"
+			defer
 		></script>
-		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-		<script src="https://kit.fontawesome.com/15fc07582b.js" defer crossorigin="anonymous"></script>
-		<script src="assets/js/main.js" type="module"></script>
+		<link
+			rel="stylesheet"
+			href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+		/>
+		<script
+			src="https://kit.fontawesome.com/15fc07582b.js"
+			defer
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="assets/js/main.js"
+			type="module"
+		></script>
 		<title>Rimunime | Filter</title>
 	</head>
 	<body>
@@ -41,7 +52,7 @@
 					type="text"
 					id="search"
 					placeholder="Search..."
-					/>
+				/>
 				<i class="fas fa-search searchIcon"></i>
 			</div>
 			<nav id="nav">
@@ -86,100 +97,206 @@
 					<button id="country">Country</button>
 					<button id="seasons">Season</button>
 					<button id="sorting">Recently added</button>
-					<button type="submit" id="filter">Filter</button>
-					<ul id="types" class="list hidden">
+					<button
+						type="submit"
+						id="filter"
+					>
+						Filter
+					</button>
+					<ul
+						id="types"
+						class="list hidden"
+					>
 						<li>
-							<input type="checkbox" name="movie" id="movie"/>
-                			<label for="movie">Movie</label>
+							<input
+								type="checkbox"
+								name="movie"
+								id="movie"
+							/>
+							<label for="movie">Movie</label>
 						</li>
 						<li>
-							<input type="checkbox" name="tv" id="tv"/>
-                			<label for="tv">TV</label>
+							<input
+								type="checkbox"
+								name="tv"
+								id="tv"
+							/>
+							<label for="tv">TV</label>
 						</li>
 						<li>
-							<input type="checkbox" name="ova" id="ova"/>
-                			<label for="ova">OVA</label>
+							<input
+								type="checkbox"
+								name="ova"
+								id="ova"
+							/>
+							<label for="ova">OVA</label>
 						</li>
 						<li>
-							<input type="checkbox" name="ona" id="ona"/>
-                			<label for="ona">ONA</label>
+							<input
+								type="checkbox"
+								name="ona"
+								id="ona"
+							/>
+							<label for="ona">ONA</label>
 						</li>
 						<li>
-							<input type="checkbox" name="special" id="special"/>
-                			<label for="special">Special</label>
+							<input
+								type="checkbox"
+								name="special"
+								id="special"
+							/>
+							<label for="special">Special</label>
 						</li>
 						<li>
-							<input type="checkbox" name="music" id="music"/>
-                			<label for="music">Music</label>
+							<input
+								type="checkbox"
+								name="music"
+								id="music"
+							/>
+							<label for="music">Music</label>
 						</li>
 					</ul>
-					<ul id="categories"  class="list categories hidden"></ul>
-					<ul id="years" class="list years hidden"></ul>
-					<ul id="ratings" class="list hidden">
+					<ul
+						id="categories"
+						class="list categories hidden"
+					></ul>
+					<ul
+						id="years"
+						class="list years hidden"
+					></ul>
+					<ul
+						id="ratings"
+						class="list hidden"
+					>
 						<li>
-							<input type="checkbox" name="g" id="G"/>
-                			<label for="G">G - All Ages</label>
+							<input
+								type="checkbox"
+								name="G"
+								id="G"
+							/>
+							<label for="G">G - All Ages</label>
 						</li>
 						<li>
-							<input type="checkbox" name="pg" id="PG"/>
-                			<label for="PG">PG - Children</label>
+							<input
+								type="checkbox"
+								name="PG"
+								id="PG"
+							/>
+							<label for="PG">PG - Children</label>
 						</li>
 						<li>
-							<input type="checkbox" name="r" id="R"/>
-                			<label for="R">R - 17+ (violence & profanity)</label>
+							<input
+								type="checkbox"
+								name="R"
+								id="R"
+							/>
+							<label for="R">R - 17+ (violence & profanity)</label>
 						</li>
 						<li>
-							<input type="checkbox" name="r18" id="R18"/>
-                			<label for="R18">R18 - Hentai</label>
+							<input
+								type="checkbox"
+								name="R18"
+								id="R18"
+							/>
+							<label for="R18">R18 - Hentai</label>
 						</li>
 					</ul>
-					<ul id="statusAnime" class="list hidden">
+					<ul
+						id="statusAnime"
+						class="list hidden"
+					>
 						<li>
-							<input type="checkbox" name="unreleased" id="unreleased"/>
+							<input
+								type="checkbox"
+								name="unreleased"
+								id="unreleased"
+							/>
 							<label for="unreleased">Not Yet Aired</label>
 						</li>
 						<li>
-							<input type="checkbox" name="current" id="current"/>
+							<input
+								type="checkbox"
+								name="current"
+								id="current"
+							/>
 							<label for="current">Releasing</label>
 						</li>
 						<li>
-							<input type="checkbox" name="finished" id="finished"/>
+							<input
+								type="checkbox"
+								name="finished"
+								id="finished"
+							/>
 							<label for="finished">Completed</label>
 						</li>
 					</ul>
-					<ul id="country" class="list hidden">
+					<ul
+						id="country"
+						class="list hidden"
+					>
 						<li>
-							<input type="checkbox" name="china" id="china"/>
+							<input
+								type="checkbox"
+								name="china"
+								id="china"
+							/>
 							<label for="china">China</label>
 						</li>
 						<li>
-							<input type="checkbox" name="japan" id="japan"/>
+							<input
+								type="checkbox"
+								name="japan"
+								id="japan"
+							/>
 							<label for="japan">Japan</label>
 						</li>
 					</ul>
-					<ul id="seasons" class="list hidden">
+					<ul
+						id="seasons"
+						class="list hidden"
+					>
 						<li>
-							<input type="checkbox" name="fall" id="fall"/>
+							<input
+								type="checkbox"
+								name="fall"
+								id="fall"
+							/>
 							<label for="fall">Fall</label>
 						</li>
 						<li>
-							<input type="checkbox" name="summer" id="summer"/>
+							<input
+								type="checkbox"
+								name="summer"
+								id="summer"
+							/>
 							<label for="summer">Summer</label>
 						</li>
 						<li>
-							<input type="checkbox" name="spring" id="spring"/>
+							<input
+								type="checkbox"
+								name="spring"
+								id="spring"
+							/>
 							<label for="spring">Spring</label>
 						</li>
 						<li>
-							<input type="checkbox" name="winter" id="winter"/>
+							<input
+								type="checkbox"
+								name="winter"
+								id="winter"
+							/>
 							<label for="winter">Winter</label>
 						</li>
 					</ul>
-					<ul id="sorting" class="list hidden">
-
-					</ul>
+					<ul
+						id="sorting"
+						class="list hidden"
+					></ul>
 				</ul>
-				<div class="cards"></div>
+				<div class="cards">
+					<div class="anime filter-anime"></div>
+					<div class="card-detail hidden"></div>
+				</div>
 			</main>
 		</div>
 	</body>

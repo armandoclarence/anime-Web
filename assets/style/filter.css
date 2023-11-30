@@ -92,3 +92,8 @@ ul.years {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 }
+
+.filter-anime {
+	padding-top: 1em;
+	margin-top: 1em;
+}

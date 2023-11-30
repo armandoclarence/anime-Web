@@ -26,7 +26,6 @@ window.addEventListener('load', async function(e){
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
             checkbox.checked = true
-            console.log(checkbox)
         })
         newFilter[key]=query
     }
@@ -36,11 +35,11 @@ window.addEventListener('load', async function(e){
         checkbox.addEventListener('change',function(){
             const thisList = this.parentNode.parentNode
             const idParent = thisList.getAttribute("id")
-            const id = this.getAttribute("id")
+            const name = this.getAttribute("name")
             if(this.checked){
-                filter[idParent].push(id)
+                filter[idParent].push(name)
             }if(!this.checked){
-                const index = filter[idParent].indexOf(id)
+                const index = filter[idParent].indexOf(name)
                 filter[idParent].splice(index,1)
             }
             console.log(filter)
@@ -51,14 +50,12 @@ window.addEventListener('load', async function(e){
         for(const key in filter){
             if(filter[key].length>0){
                 params.set(key, filter[key])
-                window.location.search = params
-                console.log(filter[key])
             }else{
                 params.delete(key)
             }
         }
+        window.location.search = params
         localStorage.setItem(localKey, JSON.stringify(filter))
-        console.log(location.search)
     })
 })
 
@@ -66,12 +63,12 @@ window.addEventListener('load', async function(e){
 async function makeCategoryList(){
     const categories = await getAnimeCategories();
     categories.map(({attributes})=>{
-        let {title} = attributes
-        title = title.split(' ').join("")
+        const {title} = attributes
+        const id = title.split(' ').join("")
         categoryContainer.innerHTML += `
             <li title="${title}">
-                <input type="checkbox" name="${title}" id="${title}"/>
-                <label for="${title}">${title}</label>
+                <input type="checkbox" name="${title}" id="${id}"/>
+                <label for="${id}">${title}</label>
             </li>
         `
     })

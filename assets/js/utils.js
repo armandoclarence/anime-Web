@@ -20,8 +20,10 @@ export async function getAnimeKitsuResponse(typeData, query=""){
 
 export async function getAnimesByFilter(queryKey){
     const {types, years, categories, ratings, statusAnime, country, season, sorting} = queryKey
-        const animeData = await getAnimeKitsuResponse('anime',`${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}page[limit]=20&page[offset]=0`)
-        console.log(animeData)
+    const animeData = await getAnimeKitsuResponse('anime',`${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}page[limit]=20&page[offset]=0`)
+    console.log(animeData)
+    const animesByFilter = new AnimeRenderer('.filter-anime')
+    animesByFilter.renderSubCards(animeData)
 }
 
 async function getAnimeSchedule(day) {
@@ -196,16 +198,16 @@ async function makeAnimeDetail(id){
     cardDetail.innerHTML =`
         <article class="animeDetail">
             <div class="title">
-                <h3>${titles.en || titles.en_jp || titles.en_cn}</h3>
-                <p>${titles.en || titles.en_jp || titles.en_cn}</p>
+                <h3>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</h3>
+                <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
             </div>
             <p class="synopsis">${synopsis}</p>
             <div class="info">
                 <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
                 <p>Date aired: ${startDate}</p>
                 <p>Status: ${subtype}</p>
-                <ul>
-                    Genre: ${genre==undefined ?genre : category}
+                Genre:<ul>
+                    ${genre==undefined ?genre : category}
                 </ul>
             </div>
         </article>
@@ -232,10 +234,10 @@ class AnimeRenderer {
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
-                    <img class="image" src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_cn}" />
+                    <img class="image" src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     <div class="title">
                         <h4>
-                        ${titles.en || titles.en_jp || titles.en_cn}
+                        ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
                         </h4>
                         <p>
                             ${subtype} ${episodeCount|| ''} ${episodeLength}
@@ -248,7 +250,7 @@ class AnimeRenderer {
             `<article class="card sub mosts" id=${id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     <div class="imgs">
-                        <img class="image" src="${coverImage ?coverImage.small : posterImage.small}" title="${titles.en || titles.en_jp || titles.en_cn}" />
+                        <img class="image" src="${coverImage ?coverImage.small : posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     </div>
                     ${i == 1 ? `
                     <h3>MOST VIEWED</h3>
@@ -257,7 +259,7 @@ class AnimeRenderer {
                     }
                     <div class="title">
                         <h4>
-                        ${titles.en || titles.en_jp || titles.en_cn}
+                        ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
                         </h4>
                         <p>
                         ${subtype} 
@@ -270,11 +272,11 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_cn}" />
+                        <img src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     </div>
                     <div class="title">
                         <h4>
-                            ${titles.en || titles.en_jp || titles.en_cn}
+                            ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
                         </h4>
                     </div>
                 </div>
