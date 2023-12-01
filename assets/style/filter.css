@@ -23,10 +23,6 @@ ul[id] li {
 	gap: 0.5em;
 }
 
-ul[id] li > * {
-	align-self: center;
-}
-
 ul[id] li > :last-child {
 	overflow: hidden;
 	display: -webkit-box;
@@ -47,6 +43,8 @@ ul li:focus {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	gap: 0.5em;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
 	position: relative;
 }
 
@@ -58,7 +56,7 @@ button, ul li {
 	outline: none;
 }
 
-* > .list.hidden, .pages >.hidden {
+* > .list.hidden, .pages >.hidden, ul[id] li.hidden {
 	display: none;
 }
 
@@ -66,6 +64,7 @@ button, ul li {
 	background: rgb(49, 44, 44, .4);
 	padding: 0.5em;
 	border: none;
+	text-align: left;
 	position: relative;
 }
 
@@ -85,18 +84,18 @@ button, ul li {
 	padding: 1em;
 }
 
+.lists > .list:not(.categories, .years) {
+	width: 255px;
+}
+
 ul.categories.list {
-	grid-template-columns: repeat(4,85px);
+	grid-template-columns: repeat(4,120px);
+	gap: 0;
 }
 
 ul.years {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-}
-
-.filter-anime {
-	padding-top: 1em;
-	margin-top: 1em;
+	grid-template-columns: repeat(3, 100px);
 }
 
 .pages {
@@ -111,4 +110,24 @@ ul.years {
 	width: 2.5em;
 	height: 2.5em;
 	border: 1px solid var(--grey);
+}
+@media (max-width:40em) {
+	.lists {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width:60em){
+	header {
+		margin-bottom: 2em;
+		grid-template-columns: repeat(2,1fr);
+		grid-template-rows: repeat(2,1fr);
+		grid-template-areas: 
+			"titleHeader linkHeader"
+			"search search"
+		;
+	}
+	.search,#search {
+		width: 100%;
+	}
 }

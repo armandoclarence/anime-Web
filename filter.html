@@ -291,16 +291,109 @@
 					<ul
 						id="sorting"
 						class="list hidden"
-					></ul>
+					>
+						<li class="hidden">
+							<input
+								type="radio"
+								name="sort"
+								value="relevance"
+								id="mostRelevance"
+							/>
+							<label for="mostRelevance">Most relevance</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="updatedAt"
+								id="recentlyUpdated"
+							/>
+							<label for="recentlyUpdated">Recently updated</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="createdAt"
+								id="recentlyAdded"
+							/>
+							<label for="recentlyAdded">Recently added</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="startDate"
+								id="releaseDate"
+							/>
+							<label for="releaseDate">Release date</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="ratingRank"
+								id="trending"
+							/>
+							<label for="trending">Trending</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="titles"
+								id="AZ"
+							/>
+							<label for="AZ">Name A-Z</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="averageRating"
+								id="scores"
+							/>
+							<label for="scores">Scores</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="userCount"
+								id="mostWatched"
+							/>
+							<label for="mostWatched">Most watched</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="favoritesCount"
+								id="mostFavourited"
+							/>
+							<label for="mostFavourited">Most favourited</label>
+						</li>
+						<li>
+							<input
+								type="radio"
+								name="sort"
+								value="episodeCount"
+								id="NumberOfEpisodes"
+							/>
+							<label for="NumberOfEpisodes">Number of episodes</label>
+						</li>
+					</ul>
 				</ul>
 				<div class="cards">
 					<div class="anime filter-anime"></div>
-					<div class="card-detail hidden"></div>
+					<div class="cards-detail">
+						<div class="card-detail hidden"></div>
+					</div>
 					<div class="pages">
-						<button class="hidden">
+						<button class="hidden page fast-backward">
 							<i class="las la-angle-double-left"></i>
 						</button>
-						<button class="hidden">
+						<button class="hidden page prev">
 							<i class="las la-angle-left"></i>
 						</button>
 						<button class="page">1</button>
@@ -308,10 +401,10 @@
 						<button class="page">3</button>
 						<button class="page">4</button>
 						<button class="page">5</button>
-						<button class="">
+						<button class="page next">
 							<i class="las la-angle-double-right"></i>
 						</button>
-						<button>
+						<button class="page fast-forward">
 							<i class="las la-angle-right"></i>
 						</button>
 					</div>

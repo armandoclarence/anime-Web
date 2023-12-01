@@ -1,15 +1,14 @@
-import { getAnimesByFilter, getAnimeGenres, getAnimeCategories, getAnimeResponse } from "./utils.js"
+import { getAnimesByFilter, getAnimeGenres, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 const filterButton = document.querySelector('#filter')
 const search = document.querySelector('.search-i')
+const paging = document.querySelectorAll('.page')
 
 let params = new URLSearchParams(window.location.search)
-
+console.log(paging)
 window.addEventListener('load', async function(e){
     const localKey = 'filter';
-    await makeYearList()
-    await makeCategoryList()
     const newFilter = {}
     const filter = JSON.parse(this.localStorage.getItem(localKey)) || {
         types: [],
@@ -19,21 +18,57 @@ window.addEventListener('load', async function(e){
         statusAnime: [],
         country: [],
         seasons: [],
-        sorting: [],
+        sorting: "",
         keyword: "",
     }
     console.log(filter)
+    await makeCategoryList()
+    await makeYearList()
+    const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
+    const [...radios] = document.querySelectorAll('input[type=radio]')
+    console.log(radios)
     for(const key in filter){
         const query = params.get(key) || ''
-        key != 'keyword' ? filter[key].map(filtering =>{
+        let radio = document.querySelector(`input[value="${filter[key]}"]`)
+        if(key == 'keyword' && filter[key].length>0){
+            radios[0].parentNode.classList.remove('hidden')
+            params.set('sort','relevance')
+        }
+        console.log(filter[key])
+        key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
             checkbox.checked = true
-        }) : ''
+            console.log(checkbox.parentNode.parentNode)
+        }) 
+        :
+        key == 'keyword' ?
+        search.value = filter[key]
+        :
+        radio.checked = true
         newFilter[key]=query
     }
-    await getAnimesByFilter(newFilter)
-    const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
+    radios.map(radio=>{
+        radio.addEventListener('change',function(){
+            filter["sorting"] = this.value
+        })
+
+    })
+    const [...lists] = this.document.querySelectorAll('.list')
+    console.log(lists)
+    lists.map(list => {
+        list.addEventListener('click', function(e) {
+            let clickedLi = e.target.closest('li');
+            if (clickedLi) {
+              let checkbox = clickedLi.querySelector('input[type="checkbox"]') || clickedLi.querySelector('input[type="radio"]');
+              if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+              }
+            }
+            console.log(filter)
+        });
+    })
+    getAnimesByFilter(newFilter)
     checkboxes.map(checkbox => {
         checkbox.addEventListener('change',function(){
             const thisList = this.parentNode.parentNode
@@ -67,8 +102,6 @@ window.addEventListener('load', async function(e){
 
 async function makeCategoryList(){
     const genres = await getAnimeGenres()
-    const categories = await getAnimeCategories()
-    console.log(categories)
     genres.map(({name})=>{
         const id = name.split(' ').join("")
         categoryContainer.innerHTML += `
@@ -83,15 +116,15 @@ async function makeCategoryList(){
 async function makeYearList(){
     const yearsRes = await getAnimeResponse('seasons')
     const yearsWrapper = document.querySelector('ul#years')
-    let yearU2000 = yearsRes.filter(({year})=> year>=2000)
-    let yearD2000 = yearsRes.filter(({year})=> year < 2000 & year%10==0)
-    yearD2000 = yearD2000.map(({year}) => JSON.parse(`{"year":"${year}s"}`))
+    let yearU2000 = yearsRes.filter(({year})=> year>2000)
+    let yearD2000 = yearsRes.filter(({year})=> year <= 2000 & year%10==0)
     const years = [...yearU2000,...yearD2000]
+    console.log(years);
     years.map(({year})=>{
         yearsWrapper.innerHTML += `
             <li>
                 <input type="checkbox" name="${year}" id="s${year}"/>
-                <label for="s${year}">${year}</label>
+                <label for="s${year}">${year<=2000 ? `${year}s`:year}</label>
             </li>
         `
     })

@@ -1,4 +1,4 @@
-const cardDetail = document.querySelector('.card-detail')
+const cardsDetail = document.querySelector('.cards-detail')
 const baseUrl = "https://api.jikan.moe/v4/"
 const kitsuApi = "https://kitsu.io/api/edge/";
 const pages = document.querySelector('.page')
@@ -20,8 +20,7 @@ export async function getAnimeKitsuResponse(typeData, query=""){
 
 export async function getAnimesByFilter(queryKey){
     const {types, years, categories, ratings, statusAnime, country, season, sorting, keyword} = queryKey
-    console.log(keyword)
-    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}page[limit]=20&page[offset]=0`)
+    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=0`)
     console.log(animeData)
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(animeData)
@@ -46,6 +45,7 @@ export async function makeScheduleList() {
 }
 
 export async function getAnimesByCategory(genre,pageNumber){
+    console.log(pageNumber)
     const animeData = await getAnimeKitsuResponse('anime',`filter[categories]=${genre}&page[limit]=20&page[offset]=${20 * pageNumber}`)
     pages.children[1].removeAttribute('disabled','')
     if(animeData.length < 20){
@@ -64,6 +64,38 @@ export async function getAnimeByQuery(query,page){
     const animeByQuery = new AnimeRenderer('.query-anime')
     animeByQuery.renderSubCards(animeData)
 }
+
+function renderHoverImg(cards){ 
+    if(window.innerWidth < 1000) return
+    cards.forEach(card => {
+        let id = card.getAttribute('id')
+        const img = card.children[0].children[0]
+        const cardDetail = document.getElementById(`s${id}`) || ''
+        console.log(cardDetail)
+        img.addEventListener('mouseover',async function(){
+            let rightCard = this.offsetWidth + this.offsetLeft
+            let leftCard = this.offsetWidth
+            let topCard = this.offsetTop
+            if(cardDetail == '') await makeAnimeDetail(id)
+            console.log(cardDetail)
+            let cardDetailWidth = cardDetail.offsetWidth || 300
+            cardDetail.style.top = `${topCard + 50}px`
+            cardDetail.style.left = 
+            innerWidth < cardDetailWidth + rightCard 
+            ? `${rightCard - cardDetailWidth - leftCard}px`  
+            : `${rightCard}px`
+            cardDetail.style.marginLeft = 
+            innerWidth < cardDetailWidth + rightCard 
+            ?  '-.5em'
+            : '.5em'
+            cardDetail.classList.remove('hidden')
+        })
+        cardDetail.addEventListener('mouseleave',function(){
+            cardDetail.classList.add('hidden')
+        })
+    })
+}
+
 
 export async function getAnimeNow(pageNumber,limit){
     const animeNow = await getAnimeKitsuResponse('anime', `filter[status]=current&page[offset]=${pageNumber * limit}&page[limit]=${limit}`)
@@ -111,33 +143,6 @@ export async function getAnimeNows() {
     }
 }
 
-function renderHoverImg(cards){ 
-    if(window.innerWidth < 1000) return
-    cards.forEach(card => {
-        let id = card.getAttribute('id')
-        const img = card.children[0].children[0]
-        img.addEventListener('mouseover',function(){
-            let rightCard = this.offsetWidth + this.offsetLeft
-            let leftCard = this.offsetWidth
-            let topCard = this.offsetTop
-            makeAnimeDetail(id)
-            let cardDetailWidth = cardDetail.offsetWidth || 300
-            cardDetail.style.top = `${topCard + 50}px`
-            cardDetail.style.left = 
-            innerWidth < cardDetailWidth + rightCard 
-            ? `${rightCard - cardDetailWidth - leftCard}px`  
-            : `${rightCard}px`
-            cardDetail.style.marginLeft = 
-            innerWidth < cardDetailWidth + rightCard 
-            ?  '-.5em'
-            : '.5em'
-            cardDetail.classList.remove('hidden')
-        })
-        img.addEventListener('mouseleave',function(){
-            cardDetail.classList.add('hidden')
-        })
-    })
-}
 
 function renderDayCards(datas,day=''){
     cards.innerHTML+= ` 
@@ -151,28 +156,12 @@ function renderDayCards(datas,day=''){
 }
 
 export async function getAnimeGenres(){
-    const genresByGenre = await getAnimeResponse('genres/anime', 'filter=genres')
-    const genresByDemo = await getAnimeResponse('genres/anime', 'filter=demographics')
-    const genresByEx = await getAnimeResponse('genres/anime', 'filter=explicit_genres')
-    const genresByThemes = await new Promise(resolve => setTimeout(()=>{
-        resolve(getAnimeResponse('genres/anime', 'filter=themes'))
-    },500))
-    console.log(genresByGenre)
-    console.log(genresByDemo)
-    console.log(genresByThemes)
-    console.log(genresByEx[0])
-    // return genres
-}
-
-export async function getAnimeCategories(){
-    const categories = await fetch(`${kitsuApi}categories?page[limit]=218`)
-    const categoriesData = await categories.json();
-    const {data} = categoriesData
-    let newData = data.filter(({attributes})=>{
-        const {childCount} = attributes
-        return childCount == 0
+    let genre = await getAnimeResponse('genres/anime')
+    console.log(genre)
+    genre = genre.filter(({mal_id})=>{
+        return mal_id==1 || mal_id==2 || mal_id==4 || mal_id==5 || mal_id>=7 && mal_id<=10 || mal_id==14 || mal_id==15 || mal_id >=17 && mal_id<=20 || mal_id>=22 && mal_id<=32 || mal_id>=35 && mal_id<=38 || mal_id>=40 && mal_id<=43 || mal_id==47 || mal_id==62 || mal_id==63 || mal_id==66 || mal_id==73
     })
-    return newData
+    return genre
 }
 
 async function getAnimeGenresById(id){
@@ -204,25 +193,27 @@ async function makeAnimeDetail(id){
         const {title} = attributes
         return `<li>${title}</li>`
     })
-    const {subtype,episodeCount,titles, startDate,synopsis, averageRating} = attributes
-    cardDetail.innerHTML =`
-        <article class="animeDetail">
-            <div class="title">
-                <h3>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</h3>
-                <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
-            </div>
-            <p class="synopsis">${synopsis}</p>
-            <div class="info">
-                <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
-                <p>Date aired: ${startDate}</p>
-                <p>Status: ${subtype}</p>
-                <ul>
+    const {subtype,episodeCount, titles, startDate, endDate, synopsis, averageRating} = attributes
+    cardsDetail.innerHTML +=`
+        <div class="card-detail" id="s${id}">
+            <article class="animeDetail">
+                <div class="title">
+                    <h3>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</h3>
+                    <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
+                </div>
+                <p class="synopsis">${synopsis}</p>
+                <div class="info">
+                    <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
+                    <p>Date aired: ${startDate} to ${endDate}</p>
+                    <p>Status: ${subtype}</p>
+                    <ul>
                     Genre: ${genre==undefined ?genre : category}
-                </ul>
-            </div>
-        </article>
-    `
-}
+                    </ul>
+                </div>
+            </article>
+        </div>
+            `
+        }
 
 class AnimeRenderer {
     constructor(containerId) {
