@@ -26,16 +26,6 @@ window.addEventListener('load', async function(e){
     await makeYearList()
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     const [...radios] = document.querySelectorAll('input[type=radio]')
-    radios.map(radio=>{
-        radio.addEventListener('click', function(e) {
-            const thisList = this.parentNode.parentNode
-            const idParent = thisList.getAttribute("id")
-            const buttonLink = document.querySelector(`#${idParent}`)
-            console.log(idParent)
-            filter["sorting"] = this.value
-            console.log(this.parentNode.parentNode)
-        })
-    })
     for(const key in filter){
         const query = params.get(key) || ''
         let radio = document.querySelector(`input[value="${filter[key]}"]`)
@@ -63,12 +53,21 @@ window.addEventListener('load', async function(e){
             if (clickedLi) {
                 let checkbox = clickedLi.querySelector('input[type="checkbox"]')
                 let radio = clickedLi.querySelector('input[type="radio"]')  
-              if(radio){
-                radio.checked = true
-                filter["sorting"] = radio.value
-              }
-              if (checkbox) {
+                const thisList = clickedLi.parentNode
+                const idParent = thisList.getAttribute("id")
+                const name = clickedLi.children[1].childNodes[0].data;
+                const buttonLink = document.querySelector(`button#${idParent}`)
+                console.log(clickedLi)
+                console.log(buttonLink)  
+                console.log(name)
+                buttonLink.textContent =  name;
+                if(radio){
+                    radio.checked = true
+                    filter["sorting"] = radio.value
+                }
+                if (checkbox) {
                 checkbox.checked = !checkbox.checked
+                  console.log(buttonLink.textContent)
               }
             }
             console.log(filter)
@@ -76,7 +75,7 @@ window.addEventListener('load', async function(e){
     })
     getAnimesByFilter(newFilter)
     checkboxes.map(checkbox => {
-        checkbox.addEventListener('change',function(){
+        checkbox.addEventListener('click',function(){
             const thisList = this.parentNode.parentNode
             const idParent = thisList.getAttribute("id")
             const name = this.getAttribute("name")

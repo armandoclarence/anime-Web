@@ -82,19 +82,19 @@ function renderHoverImg(cards){
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
             let topCard = this.offsetTop
-            if(cardDetail == '') await makeAnimeDetail(id)
-            console.log(cardDetail)
-            let cardDetailWidth = cardDetail.offsetWidth || 300
-            cardDetail.style.top = `${topCard + 50}px`
-            cardDetail.style.left = 
-            innerWidth < cardDetailWidth + rightCard 
-            ? `${rightCard - cardDetailWidth - leftCard}px`  
-            : `${rightCard}px`
-            cardDetail.style.marginLeft = 
-            innerWidth < cardDetailWidth + rightCard 
-            ?  '-.5em'
-            : '.5em'
-            cardDetail.classList.remove('hidden')
+            // if(cardDetail == '') await makeAnimeDetail(id)
+            // console.log(cardDetail)
+            // let cardDetailWidth = cardDetail.offsetWidth || 300
+            // cardDetail.style.top = `${topCard + 50}px`
+            // cardDetail.style.left = 
+            // innerWidth < cardDetailWidth + rightCard 
+            // ? `${rightCard - cardDetailWidth - leftCard}px`  
+            // : `${rightCard}px`
+            // cardDetail.style.marginLeft = 
+            // innerWidth < cardDetailWidth + rightCard 
+            // ?  '-.5em'
+            // : '.5em'
+            // cardDetail.classList.remove('hidden')
         })
         // cardDetail.addEventListener('mouseleave',function(){
         //     cardDetail.classList.add('hidden')
