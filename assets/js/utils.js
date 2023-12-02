@@ -14,8 +14,8 @@ export async function getAnimeResponse(typeData, query=""){
 export async function getAnimeKitsuResponse(typeData, query=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
-    const { data } = animeData
-    return data
+    const { data,links } = animeData
+    return {...data,links}
 }
 
 export async function getAnimesByFilter(queryKey){
@@ -225,6 +225,13 @@ class AnimeRenderer {
 
     renderSubCards(datas) {
         let i = 1
+        let links = datas.links
+        delete datas.links
+        console.log(links)
+        console.log(datas)
+        // datas.map(data=>{
+        //     console.log(data)
+        // })
         this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
         const cards = this.container.querySelectorAll('.card')
         renderHoverImg(cards)

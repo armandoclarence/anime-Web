@@ -27,25 +27,20 @@ window.addEventListener('load', async function(e){
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     const [...radios] = document.querySelectorAll('input[type=radio]')
     console.log(radios)
+    console.log(window.location.search)
     for(const key in filter){
         const query = params.get(key) || ''
         let radio = document.querySelector(`input[value="${filter[key]}"]`)
-        if(key == 'keyword' && filter[key].length>0){
-            radios[0].parentNode.classList.remove('hidden')
-            params.set('sort','relevance')
-        }
-        console.log(filter[key])
         key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
-            checkbox.checked = true
-            console.log(checkbox.parentNode.parentNode)
+            checkbox ? checkbox.checked = true: ''
         }) 
         :
         key == 'keyword' ?
         search.value = filter[key]
         :
-        radio.checked = true
+        radio ?radio.checked = true:''
         newFilter[key]=query
     }
     radios.map(radio=>{
@@ -55,18 +50,21 @@ window.addEventListener('load', async function(e){
 
     })
     const [...lists] = this.document.querySelectorAll('.list')
-    console.log(lists)
     lists.map(list => {
         list.addEventListener('click', function(e) {
-            let clickedLi = e.target.closest('li');
+            let clickedLi = e.target.closest('li')
             if (clickedLi) {
-              let checkbox = clickedLi.querySelector('input[type="checkbox"]') || clickedLi.querySelector('input[type="radio"]');
+                let checkbox = clickedLi.querySelector('input[type="checkbox"]')
+                let radio = clickedLi.querySelector('input[type="radio"]')  
+              if(radio){
+                radio.checked = true
+              }
               if (checkbox) {
-                checkbox.checked = !checkbox.checked;
+                checkbox.checked = !checkbox.checked
               }
             }
             console.log(filter)
-        });
+        })
     })
     getAnimesByFilter(newFilter)
     checkboxes.map(checkbox => {
@@ -86,6 +84,11 @@ window.addEventListener('load', async function(e){
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
+        if(filter["keyword"].length>0){
+            radios[0].parentNode.classList.remove('hidden')
+            params.set('sort','relevance')
+            radios[0].checked = true
+        }
         for(const key in filter){
             if(filter[key].length>0){
                 params.set(key, filter[key])
@@ -114,12 +117,9 @@ async function makeCategoryList(){
 }
 
 async function makeYearList(){
-    const yearsRes = await getAnimeResponse('seasons')
+    let years= await getAnimeResponse('seasons')
     const yearsWrapper = document.querySelector('ul#years')
-    let yearU2000 = yearsRes.filter(({year})=> year>2000)
-    let yearD2000 = yearsRes.filter(({year})=> year <= 2000 & year%10==0)
-    const years = [...yearU2000,...yearD2000]
-    console.log(years);
+    years = years.filter(({year})=> year>2000 || year <= 2000 & year%10==0)
     years.map(({year})=>{
         yearsWrapper.innerHTML += `
             <li>
