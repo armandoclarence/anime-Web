@@ -26,29 +26,36 @@ window.addEventListener('load', async function(e){
     await makeYearList()
     const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     const [...radios] = document.querySelectorAll('input[type=radio]')
-    console.log(radios)
-    console.log(window.location.search)
+    radios.map(radio=>{
+        radio.addEventListener('click', function(e) {
+            const thisList = this.parentNode.parentNode
+            const idParent = thisList.getAttribute("id")
+            const buttonLink = document.querySelector(`#${idParent}`)
+            console.log(idParent)
+            filter["sorting"] = this.value
+            console.log(this.parentNode.parentNode)
+        })
+    })
     for(const key in filter){
         const query = params.get(key) || ''
         let radio = document.querySelector(`input[value="${filter[key]}"]`)
+        radio ?radio.checked = true: ''
+        if(filter["keyword"].length>0){
+            radios[0].parentNode.classList.remove('hidden')
+        }else{
+            radios[0].parentNode.classList.add('hidden')
+        }
         key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
             checkbox ? checkbox.checked = true: ''
         }) 
         :
-        key == 'keyword' ?
+        params.get('keyword') !=null ?
         search.value = filter[key]
-        :
-        radio ?radio.checked = true:''
+        :''
         newFilter[key]=query
     }
-    radios.map(radio=>{
-        radio.addEventListener('change',function(){
-            filter["sorting"] = this.value
-        })
-
-    })
     const [...lists] = this.document.querySelectorAll('.list')
     lists.map(list => {
         list.addEventListener('click', function(e) {
@@ -58,6 +65,7 @@ window.addEventListener('load', async function(e){
                 let radio = clickedLi.querySelector('input[type="radio"]')  
               if(radio){
                 radio.checked = true
+                filter["sorting"] = radio.value
               }
               if (checkbox) {
                 checkbox.checked = !checkbox.checked
@@ -78,17 +86,11 @@ window.addEventListener('load', async function(e){
                 const index = filter[idParent].indexOf(name)
                 filter[idParent].splice(index,1)
             }
-            console.log(filter)
         })
     })
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
-        if(filter["keyword"].length>0){
-            radios[0].parentNode.classList.remove('hidden')
-            params.set('sort','relevance')
-            radios[0].checked = true
-        }
         for(const key in filter){
             if(filter[key].length>0){
                 params.set(key, filter[key])

@@ -11,19 +11,25 @@ export async function getAnimeResponse(typeData, query=""){
     return data
 }
 
-export async function getAnimeKitsuResponse(typeData, query=""){
+export async function getAnimeKitsuResponse(typeData, query="", filter=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
     const { data,links } = animeData
-    return {...data,links}
+    return filter != 'filter' ? data: {data,links}
 }
 
 export async function getAnimesByFilter(queryKey){
     const {types, years, categories, ratings, statusAnime, country, season, sorting, keyword} = queryKey
-    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=0`)
-    console.log(animeData)
+    console.log(sorting)
+    console.log(keyword)
+    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=0`, 'filter')
+    let {data,links} = animeData
+    if(sorting == 'updateAt'){
+       data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    }
     const animesByFilter = new AnimeRenderer('.filter-anime')
-    animesByFilter.renderSubCards(animeData)
+    animesByFilter.renderSubCards(data)
+    return links
 }
 
 async function getAnimeSchedule(day) {
@@ -71,7 +77,7 @@ function renderHoverImg(cards){
         let id = card.getAttribute('id')
         const img = card.children[0].children[0]
         const cardDetail = document.getElementById(`s${id}`) || ''
-        console.log(cardDetail)
+        // console.log(cardDetail)
         img.addEventListener('mouseover',async function(){
             let rightCard = this.offsetWidth + this.offsetLeft
             let leftCard = this.offsetWidth
@@ -90,9 +96,9 @@ function renderHoverImg(cards){
             : '.5em'
             cardDetail.classList.remove('hidden')
         })
-        cardDetail.addEventListener('mouseleave',function(){
-            cardDetail.classList.add('hidden')
-        })
+        // cardDetail.addEventListener('mouseleave',function(){
+        //     cardDetail.classList.add('hidden')
+        // })
     })
 }
 
@@ -225,13 +231,7 @@ class AnimeRenderer {
 
     renderSubCards(datas) {
         let i = 1
-        let links = datas.links
-        delete datas.links
-        console.log(links)
         console.log(datas)
-        // datas.map(data=>{
-        //     console.log(data)
-        // })
         this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
         const cards = this.container.querySelectorAll('.card')
         renderHoverImg(cards)
