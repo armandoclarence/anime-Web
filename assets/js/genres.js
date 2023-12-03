@@ -16,7 +16,6 @@ window.addEventListener('load',function(e){
         container.classList.add('anime')
         page && page.classList.remove('hidden')
         getAnimesByCategory(name,pageNumber)
-        console.log(prevButton)
         prevButton && prevButton.addEventListener('click', function(e){
             pageNumber--
             if(pageNumber == 1) {

@@ -24,7 +24,6 @@ window.addEventListener('load', async function(e){
     console.log(filter)
     await makeCategoryList()
     await makeYearList()
-    const [...checkboxes] = document.querySelectorAll('input[type="checkbox"]')
     const [...radios] = document.querySelectorAll('input[type=radio]')
     for(const key in filter){
         const query = params.get(key) || ''
@@ -51,42 +50,47 @@ window.addEventListener('load', async function(e){
         list.addEventListener('click', function(e) {
             let clickedLi = e.target.closest('li')
             if (clickedLi) {
-                let checkbox = clickedLi.querySelector('input[type="checkbox"]')
+                let checkbox = clickedLi.children[0]
                 let radio = clickedLi.querySelector('input[type="radio"]')  
+                console.log(checkbox)
                 const thisList = clickedLi.parentNode
                 const idParent = thisList.getAttribute("id")
-                const name = clickedLi.children[1].childNodes[0].data;
+                const textButton = clickedLi.children[1].childNodes[0].data;
+                const name = checkbox.getAttribute("name")
                 const buttonLink = document.querySelector(`button#${idParent}`)
                 console.log(clickedLi)
                 console.log(buttonLink)  
+                console.log(idParent)  
                 console.log(name)
-                buttonLink.textContent =  name;
+                console.log(filter)
                 if(radio){
                     radio.checked = true
                     filter["sorting"] = radio.value
+                    buttonLink.textContent = radio.getAttribute('value')
                 }
                 if (checkbox) {
-                checkbox.checked = !checkbox.checked
+                    checkbox.checked = !checkbox.checked
                   console.log(buttonLink.textContent)
-              }
+                }
+                if(checkbox.checked){
+                    // buttonLink.textContent += buttonLink.getAttribute('data-value')
+                    filter[idParent].push(name)
+                }else{
+                    buttonLink.textContent = buttonLink.getAttribute('data-value')
+                    const index = filter[idParent].indexOf(name)
+                    name !='sort' ?filter[idParent].splice(index,1):''
+                }
+                if(filter[idParent].length>2){
+                    buttonLink.textContent =  `${filter[idParent].length} selected`;
+                }else if(filter[idParent].length>0){
+                    console.log(filter[idParent])
+                    buttonLink.textContent = filter[idParent]
+                }
             }
             console.log(filter)
         })
     })
     getAnimesByFilter(newFilter)
-    checkboxes.map(checkbox => {
-        checkbox.addEventListener('click',function(){
-            const thisList = this.parentNode.parentNode
-            const idParent = thisList.getAttribute("id")
-            const name = this.getAttribute("name")
-            if(this.checked){
-                filter[idParent].push(name)
-            }if(!this.checked){
-                const index = filter[idParent].indexOf(name)
-                filter[idParent].splice(index,1)
-            }
-        })
-    })
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value

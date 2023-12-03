@@ -18,16 +18,17 @@
 	--black: black;
 }
 
-html {
-	color-scheme: dark;
-}
-
 body {
 	font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto,
 		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 	color: var(--white);
+	background-color: #050505;
 	font-size: 1em;
 	padding: 0 1em;
+}
+
+.las {
+	display: swap;
 }
 
 ul li {
@@ -241,12 +242,14 @@ main .page > button {
 }
 
 .card.sub .cardSub.most {
+	grid-template-columns: 4fr 1fr;
 	grid-template-areas: "title img";
 	counter-increment: card;
 	padding: 0.4em;
 }
 
-.card.sub .cardSub.big {
+.card.sub .cardSub.big.most {
+	grid-template-columns: 1fr 4fr;
 	grid-template-rows: 1fr 200px 1fr;
 	grid-template-areas:
 		"titleCol titleCol"
@@ -256,7 +259,7 @@ main .page > button {
 	padding: 0;
 }
 
-.card .cardSub.big h2 {
+.card .cardSub.big h3 {
 	display: grid;
 	place-items: end;
 	justify-content: start;
@@ -268,7 +271,7 @@ main .page > button {
 	background: white;
 }
 
-.card .cardSub.big h3 {
+.card .cardSub.big h2 {
 	grid-area: titleCol;
 	align-self: center;
 }
@@ -328,11 +331,11 @@ main .page > button {
 	flex-wrap: wrap;
 }
 
-.card .title h4 {
+.card .title h3 {
 	-webkit-line-clamp: 1;
 }
 
-.cardHome .title h4 {
+.cardHome .title h3 {
 	-webkit-line-clamp: 2;
 }
 
@@ -384,14 +387,14 @@ main .page > button {
 	position: relative;
 }
 
-.card img {
+.card .img > img {
+	object-fit: cover;
 	transition: all 0.5s;
 	scale: 1.1;
 	width: 100%;
-	border: 0;
 }
 
-.card:hover img {
+.card:hover .img img {
 	scale: 1.2;
 	border: 1px solid white;
 }
@@ -436,16 +439,8 @@ main .page > button {
 	color: var(--green);
 }
 
-.card.sub img {
-	height: 85px;
-}
-
 .card.sub img,.card.sub .imgs {
 	grid-area: img;
-}
-
-.card.sub :not(.big) img {
-	width: 70px;
 }
 
 .card.mosts .most:not(.big) .imgs {

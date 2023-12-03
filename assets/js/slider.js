@@ -5,10 +5,10 @@ async function getImg(){
     const animeSlider = await getAnimeKitsuResponse('anime','filter[seasonYear]=2023&filter[status]=current&page[limit]=5')
     let i = 0
     let anime = animeSlider.map(img=>{
-        console.log(img)
         const {attributes} = img
         const {coverImage,titles} = attributes
-        return `<a style="background-image: url('${coverImage.original}')" alt="${titles.en_jp}" tabindex="${i++}" />`
+        console.log(coverImage)
+        return `<a href="/" aria-label="${titles.en_jp}" style="background-image: url('${coverImage.small}')" alt="${titles.en_jp}" tabindex="${i--}" />`
     })
     return anime
 }

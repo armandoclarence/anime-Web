@@ -128,6 +128,7 @@ export async function getAnimeNows() {
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
         top.renderSubCards(animeTop)
+        console.log(animeTop)
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
@@ -242,7 +243,8 @@ class AnimeRenderer {
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
-                    <img class="image" src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
+                    <img width="60" height="85" class="image" src="${posterImage.
+                    tiny}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     <div class="title">
                         <h4>
                         ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
@@ -258,11 +260,12 @@ class AnimeRenderer {
             `<article class="card sub mosts" id=${id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     <div class="imgs">
-                        <img class="image" src="${coverImage ?coverImage.small : posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
+                        <img width="60" height="${i == 1?"200":"85"}" class="image" src="${i==1 ?posterImage.small : posterImage.
+                        tiny}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     </div>
                     ${i == 1 ? `
-                    <h3>MOST VIEWED</h3>
-                    <h2>0${i}</h2>
+                    <h2>MOST VIEWED</h2>
+                    <h3>0${i}</h3>
                     ` : ''
                     }
                     <div class="title">
@@ -280,12 +283,13 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img src="${posterImage.small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
+                        <img width="177" height="250" src="${posterImage.
+                        small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     </div>
                     <div class="title">
-                        <h4>
+                        <h3>
                             ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
-                        </h4>
+                        </h3>
                     </div>
                 </div>
             </article>`
