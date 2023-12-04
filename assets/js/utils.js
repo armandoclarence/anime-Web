@@ -18,18 +18,21 @@ export async function getAnimeKitsuResponse(typeData, query="", filter=""){
     return filter != 'filter' ? data: {data,links}
 }
 
-export async function getAnimesByFilter(queryKey){
+export async function getAnimesByFilter(queryKey,page){
     const {types, years, categories, ratings, statusAnime, country, season, sorting, keyword} = queryKey
-    console.log(sorting)
-    console.log(keyword)
-    const animeData = await getAnimeKitsuResponse('anime',`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=0`, 'filter')
+    const filter =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
+    const animeData = await getAnimeKitsuResponse('anime',filter, 'filter')
     let {data,links} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(data)
-    return links
+    const {first,next,last} = links
+    return filter
+    console.log(first)
+    console.log(next)
+    console.log(last)
 }
 
 async function getAnimeSchedule(day) {

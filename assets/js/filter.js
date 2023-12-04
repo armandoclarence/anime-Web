@@ -21,13 +21,18 @@ window.addEventListener('load', async function(e){
         sorting: "",
         keyword: "",
     }
-    console.log(filter)
     await makeCategoryList()
     await makeYearList()
     const [...radios] = document.querySelectorAll('input[type=radio]')
     for(const key in filter){
         const query = params.get(key) || ''
         let radio = document.querySelector(`input[value="${filter[key]}"]`)
+        if(radio){
+            radio.checked = true
+            const buttonLink = document.querySelector(`button#${key}`)
+            const label = radio.nextElementSibling
+            buttonLink.textContent = label.childNodes[0].data
+        }
         radio ?radio.checked = true: ''
         if(filter["keyword"].length>0){
             radios[0].parentNode.classList.remove('hidden')
@@ -37,6 +42,23 @@ window.addEventListener('load', async function(e){
         key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
+            let filterLabel = checkbox.nextElementSibling;
+            const buttonLink = document.querySelector(`button#${key}`)
+            for(const filt of filter[key]){
+                const button = document.querySelector(`label[for="${filt>0 ?`s${filt}`:filt}"]`)
+                buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
+            }
+            if(filter[key].length>2){
+                buttonLink.textContent =  `${filter[key].length} selected`
+            }else if(filter[key].length>0){
+                buttonLink.textContent = ''
+                filter[key].map(filterButton=>{
+                    const button = document.querySelector(`label[for="${filterButton>0 ?`s${filterButton}`:filterButton}"]`)
+                    buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
+                })
+            }else{
+                buttonLink.textContent = buttonLink.getAttribute('data-value')
+            }
             checkbox ? checkbox.checked = true: ''
         }) 
         :
@@ -50,47 +72,48 @@ window.addEventListener('load', async function(e){
         list.addEventListener('click', function(e) {
             let clickedLi = e.target.closest('li')
             if (clickedLi) {
-                let checkbox = clickedLi.children[0]
+                let checkbox = clickedLi.querySelector('input[type="checkbox"]')
                 let radio = clickedLi.querySelector('input[type="radio"]')  
-                console.log(checkbox)
                 const thisList = clickedLi.parentNode
                 const idParent = thisList.getAttribute("id")
                 const textButton = clickedLi.children[1].childNodes[0].data;
-                const name = checkbox.getAttribute("name")
+                const name = checkbox? checkbox.getAttribute("name"):radio.getAttribute("value")
                 const buttonLink = document.querySelector(`button#${idParent}`)
-                console.log(clickedLi)
-                console.log(buttonLink)  
-                console.log(idParent)  
-                console.log(name)
-                console.log(filter)
                 if(radio){
                     radio.checked = true
                     filter["sorting"] = radio.value
-                    buttonLink.textContent = radio.getAttribute('value')
+                    buttonLink.textContent = textButton
                 }
                 if (checkbox) {
-                    checkbox.checked = !checkbox.checked
-                  console.log(buttonLink.textContent)
-                }
-                if(checkbox.checked){
-                    // buttonLink.textContent += buttonLink.getAttribute('data-value')
-                    filter[idParent].push(name)
-                }else{
-                    buttonLink.textContent = buttonLink.getAttribute('data-value')
-                    const index = filter[idParent].indexOf(name)
-                    name !='sort' ?filter[idParent].splice(index,1):''
-                }
-                if(filter[idParent].length>2){
-                    buttonLink.textContent =  `${filter[idParent].length} selected`;
-                }else if(filter[idParent].length>0){
-                    console.log(filter[idParent])
-                    buttonLink.textContent = filter[idParent]
+                    checkbox.checked = !checkbox.checked;
+                    const index = filter[idParent].indexOf(name);
+        
+                    if (checkbox.checked && index === -1) {
+                        filter[idParent].push(name);
+                    } else if (!checkbox.checked && index !== -1) {
+                        filter[idParent].splice(index, 1);
+                    }
+                    console.log(filter)
+                }        
+                if(idParent!="sorting"){
+                    if(filter[idParent].length>2){
+                        buttonLink.textContent =  `${filter[idParent].length} selected`
+                    }else if(filter[idParent].length>0){
+                        buttonLink.textContent = ''
+                        filter[idParent].map(filterButton=>{
+                            const button = document.querySelector(`label[for="${filterButton>0 ?`s${filterButton}`:filterButton}"]`)
+                            buttonLink.textContent += filter[idParent].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
+                        })
+                    }else{
+                        buttonLink.textContent = buttonLink.getAttribute('data-value')
+                    }
                 }
             }
             console.log(filter)
         })
     })
-    getAnimesByFilter(newFilter)
+    getAnimesByFilter(newFilter)    q
+    console.log(getAnimesByFilter(newFilter,2))
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
