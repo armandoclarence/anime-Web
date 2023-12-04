@@ -112,8 +112,7 @@ window.addEventListener('load', async function(e){
             console.log(filter)
         })
     })
-    getAnimesByFilter(newFilter)    q
-    console.log(getAnimesByFilter(newFilter,2))
+    getAnimesByFilter(newFilter)
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
