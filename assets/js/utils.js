@@ -14,25 +14,45 @@ export async function getAnimeResponse(typeData, query=""){
 export async function getAnimeKitsuResponse(typeData, query="", filter=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
-    const { data,links } = animeData
-    return filter != 'filter' ? data: {data,links}
+    const { data,meta } = animeData
+    console.log(animeData)
+    return filter != 'filter' ? data: {data,meta}
 }
 
-export async function getAnimesByFilter(queryKey,page){
-    const {types, years, categories, ratings, statusAnime, country, season, sorting, keyword} = queryKey
-    const filter =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${season? `filter[season]=${season}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
+export async function getAnimesByFilter(queryKey,page=0){
+    const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
+    const filter =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
     const animeData = await getAnimeKitsuResponse('anime',filter, 'filter')
-    let {data,links} = animeData
+    let {data,meta} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(data)
-    const {first,next,last} = links
-    return filter
-    console.log(first)
-    console.log(next)
-    console.log(last)
+    const {count} = meta
+    return count
+}
+
+export async function makePagingButton(count){
+    const pageContainer = document.querySelector(".pages")
+    const buttonCount = Math.ceil(count/20)
+    const maxButton = 5
+    console.log(pageContainer)
+    if(buttonCount <=maxButton){
+        for(let i=1;i<=buttonCount;i++){
+            pageContainer.innerHTML += `
+                <button class="page" value=${i}>${i}</button>
+            `
+        }
+    }else{
+        for(let i=1;i<=maxButton;i++){
+            pageContainer.innerHTML += `
+                <button class="page" value=${i}>${i}</button>
+            `
+        }
+    }
+    console.log(count)
+    console.log(buttonCount)
 }
 
 async function getAnimeSchedule(day) {

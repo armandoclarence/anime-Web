@@ -1,4 +1,4 @@
-import { getAnimesByFilter, getAnimeGenres, getAnimeResponse } from "./utils.js"
+import { getAnimesByFilter, makePagingButton, getAnimeGenres, getAnimeResponse } from "./utils.js"
 const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 const filterButton = document.querySelector('#filter')
@@ -42,7 +42,6 @@ window.addEventListener('load', async function(e){
         key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
-            let filterLabel = checkbox.nextElementSibling;
             const buttonLink = document.querySelector(`button#${key}`)
             for(const filt of filter[key]){
                 const button = document.querySelector(`label[for="${filt>0 ?`s${filt}`:filt}"]`)
@@ -112,7 +111,8 @@ window.addEventListener('load', async function(e){
             console.log(filter)
         })
     })
-    getAnimesByFilter(newFilter)
+    const count = await getAnimesByFilter(newFilter)
+    await filterPaging(newFilter,count)
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
@@ -129,6 +129,19 @@ window.addEventListener('load', async function(e){
     })
 })
 
+async function filterPaging(filter,count){
+    makePagingButton(count)
+    const [...pages] = document.querySelectorAll(".page")
+    for(let i in pages){
+        console.log(i)
+    
+        pages[i].addEventListener('click',function(){
+            getAnimesByFilter(filter,i)
+            i++;
+        })
+    }
+   
+}
 
 async function makeCategoryList(){
     const genres = await getAnimeGenres()
