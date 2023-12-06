@@ -47,17 +47,7 @@ window.addEventListener('load', async function(e){
                 const button = document.querySelector(`label[for="${filt>0 ?`s${filt}`:filt}"]`)
                 buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
             }
-            if(filter[key].length>2){
-                buttonLink.textContent =  `${filter[key].length} selected`
-            }else if(filter[key].length>0){
-                buttonLink.textContent = ''
-                filter[key].map(filterButton=>{
-                    const button = document.querySelector(`label[for="${filterButton>0 ?`s${filterButton}`:filterButton}"]`)
-                    buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
-                })
-            }else{
-                buttonLink.textContent = buttonLink.getAttribute('data-value')
-            }
+            checkFilter(filter,key,buttonLink)
             checkbox ? checkbox.checked = true: ''
         }) 
         :
@@ -95,24 +85,15 @@ window.addEventListener('load', async function(e){
                     console.log(filter)
                 }        
                 if(idParent!="sorting"){
-                    if(filter[idParent].length>2){
-                        buttonLink.textContent =  `${filter[idParent].length} selected`
-                    }else if(filter[idParent].length>0){
-                        buttonLink.textContent = ''
-                        filter[idParent].map(filterButton=>{
-                            const button = document.querySelector(`label[for="${filterButton>0 ?`s${filterButton}`:filterButton}"]`)
-                            buttonLink.textContent += filter[idParent].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
-                        })
-                    }else{
-                        buttonLink.textContent = buttonLink.getAttribute('data-value')
-                    }
+                    checkFilter(filter,idParent,buttonLink)
                 }
             }
             console.log(filter)
         })
     })
-    const count = await getAnimesByFilter(newFilter)
-    await filterPaging(newFilter,count)
+    const anime = await getAnimesByFilter(newFilter)
+    const {count,links} = anime
+    await filterPaging(links,count)
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
@@ -129,18 +110,32 @@ window.addEventListener('load', async function(e){
     })
 })
 
-async function filterPaging(filter,count){
-    makePagingButton(count)
-    const [...pages] = document.querySelectorAll(".page")
-    for(let i in pages){
-        console.log(i)
-    
-        pages[i].addEventListener('click',function(){
-            getAnimesByFilter(filter,i)
-            i++;
+function checkFilter(filter,key,buttonLink){
+    if(filter[key].length>2){
+        buttonLink.textContent =  `${filter[key].length} selected`
+    }else if(filter[key].length>0){
+        buttonLink.textContent = ''
+        filter[key].map(filterButton=>{
+            const button = document.querySelector(`label[for="${filterButton>0 ?`s${filterButton}`:filterButton}"]`)
+            buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`
         })
+    }else{
+        buttonLink.textContent = buttonLink.getAttribute('data-value')
     }
-   
+}
+
+async function filterPaging(filter,links,count){
+    makePagingButton(filter,links,count)
+    const [...pages] = document.querySelectorAll(".page")
+    pages.map(page=>{
+        page.addEventListener('click',function(){
+            getAnimesByFilter(filter,this.getAttribute('data-page'))
+            console.log(this)
+            // this.setAttribute('data-page',parseInt(this.getAttribute("data-page"))+1)
+        })
+        console.log(page.innerText)
+        // page.innerText = page.getAttribute("data-page")
+    })
 }
 
 async function makeCategoryList(){

@@ -14,26 +14,27 @@ export async function getAnimeResponse(typeData, query=""){
 export async function getAnimeKitsuResponse(typeData, query="", filter=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
-    const { data,meta } = animeData
-    console.log(animeData)
-    return filter != 'filter' ? data: {data,meta}
+    const { data,links,meta } = animeData
+    return filter != 'filter' ? data: {data,links,meta}
 }
 
 export async function getAnimesByFilter(queryKey,page=0){
     const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
     const filter =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
     const animeData = await getAnimeKitsuResponse('anime',filter, 'filter')
-    let {data,meta} = animeData
+    let {data,links,meta} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(data)
     const {count} = meta
-    return count
+    return {count,links}
 }
 
-export async function makePagingButton(count){
+export async function makePagingButton(links,count){
+    console.log(links)
+    console.log(filter)
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
     const maxButton = 5
@@ -41,18 +42,23 @@ export async function makePagingButton(count){
     if(buttonCount <=maxButton){
         for(let i=1;i<=buttonCount;i++){
             pageContainer.innerHTML += `
-                <button class="page" value=${i}>${i}</button>
+                <li class="page-item" data-page="${i}">
+                    <a href="">${i}</a>
+                </li>
             `
         }
     }else{
         for(let i=1;i<=maxButton;i++){
             pageContainer.innerHTML += `
-                <button class="page" value=${i}>${i}</button>
+                <li class="page-item" data-page="${i}">
+                    <a href="">${i}</a>
+                </li>
             `
         }
+        pageContainer.innerHTML += `
+            <li class=></li>
+        `
     }
-    console.log(count)
-    console.log(buttonCount)
 }
 
 async function getAnimeSchedule(day) {

@@ -112,9 +112,10 @@ ul.years {
 	margin-top: 1em;
 }
 
-.pages > button {
-	border-radius: 0;
+.pages > li {
+	border-radius: .2em;
 	width: 2.5em;
+	place-self: center;
 	height: 2.5em;
 	border: 1px solid var(--grey);
 }

@@ -61,13 +61,9 @@ h2 span {
 	background-color: var(--green);
 }
 header nav {
-	display: grid;
-	align-items: center;
-	grid-area: linkHeader;
-}
-
-header nav > * {
+	align-self: center;
 	justify-self: end;
+	grid-area: linkHeader;
 }
 
 header nav .bar {

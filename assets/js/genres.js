@@ -8,7 +8,6 @@ let pageNumber = 1
 window.addEventListener('load',function(e){
     category()
     let name = params.get('category')
-    console.log(name)
     if(name){
         const title = document.querySelector('.cards h2')
         title.textContent = `Category ${name}`
