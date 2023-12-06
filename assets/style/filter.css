@@ -1,6 +1,11 @@
 * {
 	box-sizing: border-box;
 }
+
+li:not(.active) {
+	cursor: pointer;
+}
+
 header {
 	margin-bottom: 2em;
 	grid-template-columns: repeat(3,1fr);
@@ -115,9 +120,20 @@ ul.years {
 .pages > li {
 	border-radius: .2em;
 	width: 2.5em;
-	place-self: center;
 	height: 2.5em;
 	border: 1px solid var(--grey);
+}
+
+.pages > li.active {
+	border: 1px solid var(--green);
+}
+
+.pages > li > *{
+	display: grid;
+	width: inherit;
+	height: inherit;
+	place-items: center;
+	
 }
 @media (max-width:40em) {
 	.lists {

@@ -3,10 +3,8 @@ const categoryContainer = document.querySelector('ul#categories')
 const [...listButtons] = document.querySelectorAll('.lists button:not(#filter)')
 const filterButton = document.querySelector('#filter')
 const search = document.querySelector('.search-i')
-const paging = document.querySelectorAll('.page')
 
 let params = new URLSearchParams(window.location.search)
-console.log(paging)
 window.addEventListener('load', async function(e){
     const localKey = 'filter';
     const newFilter = {}
@@ -91,9 +89,17 @@ window.addEventListener('load', async function(e){
             console.log(filter)
         })
     })
-    const anime = await getAnimesByFilter(newFilter)
+    const pageCount = params.get('pages')
+    const anime = await getAnimesByFilter(newFilter,pageCount)
     const {count,links} = anime
-    await filterPaging(links,count)
+    const url = window.location.href
+    await filterPaging(url,filter,links,count)
+    const page = document.querySelector(`li[data-page="${pageCount}"]`) || null
+    page&&page.classList.add('active')
+    page ?page.innerHTML = `
+        <span>${pageCount}</span>
+    `:''
+    console.log(page)
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
@@ -124,17 +130,17 @@ function checkFilter(filter,key,buttonLink){
     }
 }
 
-async function filterPaging(filter,links,count){
-    makePagingButton(filter,links,count)
-    const [...pages] = document.querySelectorAll(".page")
+async function filterPaging(url,filter,links,count){
+    makePagingButton(url,filter,links,count)
+    const [...pages] = document.querySelectorAll(".page-item:not(.active)")
     pages.map(page=>{
         page.addEventListener('click',function(){
-            getAnimesByFilter(filter,this.getAttribute('data-page'))
-            console.log(this)
-            // this.setAttribute('data-page',parseInt(this.getAttribute("data-page"))+1)
+            params.set('pages', this.getAttribute('data-page'))
+            console.log(params.get('pages'))
+            console.log(params)
+            this.children[0].href = '/filter.html?' + params
+            console.log(this.children[0])
         })
-        console.log(page.innerText)
-        // page.innerText = page.getAttribute("data-page")
     })
 }
 

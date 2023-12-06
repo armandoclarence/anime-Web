@@ -19,22 +19,26 @@ export async function getAnimeKitsuResponse(typeData, query="", filter=""){
 }
 
 export async function getAnimesByFilter(queryKey,page=0){
+    console.log(queryKey, page)
     const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
-    const filter =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
-    const animeData = await getAnimeKitsuResponse('anime',filter, 'filter')
+    const url =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
+    const animeData = await getAnimeKitsuResponse('anime',url, 'filter')
     let {data,links,meta} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
+    console.log(data)
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(data)
     const {count} = meta
     return {count,links}
 }
 
-export async function makePagingButton(links,count){
+export function makePagingButton(url,filter,links,count){
     console.log(links)
     console.log(filter)
+    console.log(url)
+    const {first,next,last} = links
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
     const maxButton = 5
@@ -43,7 +47,7 @@ export async function makePagingButton(links,count){
         for(let i=1;i<=buttonCount;i++){
             pageContainer.innerHTML += `
                 <li class="page-item" data-page="${i}">
-                    <a href="">${i}</a>
+                    <a>${i}</a>
                 </li>
             `
         }
@@ -51,12 +55,19 @@ export async function makePagingButton(links,count){
         for(let i=1;i<=maxButton;i++){
             pageContainer.innerHTML += `
                 <li class="page-item" data-page="${i}">
-                    <a href="">${i}</a>
+                    <a>${i}</a>
                 </li>
             `
         }
         pageContainer.innerHTML += `
-            <li class=></li>
+            <li class="page-item">
+                <a rel="next"><i class="las la-angle-right"></i></a>
+            </li>
+        `
+        pageContainer.innerHTML += `
+            <li class="page-item">
+                <a rel="last"><i class="las la-angle-double-right"></i></a>
+            </li>
         `
     }
 }
