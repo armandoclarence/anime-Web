@@ -34,20 +34,21 @@ export async function getAnimesByFilter(queryKey,page=0){
     return {count,links}
 }
 
-export function makePagingButton(url,filter,links,count){
+export function makePagingButton(params,url,filter,links,count){
     console.log(links)
     console.log(filter)
     console.log(url)
+    console.log(params.get('pages'))
     const {first,next,last} = links
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
     const maxButton = 5
     console.log(pageContainer)
-    if(buttonCount <=maxButton){
-        for(let i=1;i<=buttonCount;i++){
+    if(buttonCount <maxButton){
+        for(let i=0;i<buttonCount;i++){
             pageContainer.innerHTML += `
                 <li class="page-item" data-page="${i}">
-                    <a>${i}</a>
+                    <a href="${url}>${i++}</a>
                 </li>
             `
         }

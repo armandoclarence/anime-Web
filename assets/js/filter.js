@@ -89,13 +89,13 @@ window.addEventListener('load', async function(e){
             console.log(filter)
         })
     })
-    const pageCount = params.get('pages')
+    const pageCount = params.get('pages') ?? 1
     const anime = await getAnimesByFilter(newFilter,pageCount)
     const {count,links} = anime
     const url = window.location.href
-    await filterPaging(url,filter,links,count)
-    const page = document.querySelector(`li[data-page="${pageCount}"]`) || null
-    page&&page.classList.add('active')
+    await filterPaging(params,url,filter,links,count)
+    const page = document.querySelector(`li[data-page="${pageCount}"]`)
+    page && page.classList.add('active')
     page ?page.innerHTML = `
         <span>${pageCount}</span>
     `:''
@@ -130,8 +130,8 @@ function checkFilter(filter,key,buttonLink){
     }
 }
 
-async function filterPaging(url,filter,links,count){
-    makePagingButton(url,filter,links,count)
+async function filterPaging(params,url,filter,links,count){
+    makePagingButton(params,url,filter,links,count)
     const [...pages] = document.querySelectorAll(".page-item:not(.active)")
     pages.map(page=>{
         page.addEventListener('click',function(){
