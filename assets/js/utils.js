@@ -19,7 +19,6 @@ export async function getAnimeKitsuResponse(typeData, query="", filter=""){
 }
 
 export async function getAnimesByFilter(queryKey,page=0){
-    console.log(queryKey, page)
     const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
     const url =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
     const animeData = await getAnimeKitsuResponse('anime',url, 'filter')
@@ -34,44 +33,62 @@ export async function getAnimesByFilter(queryKey,page=0){
     return {count,links}
 }
 
-export function makePagingButton(params,url,filter,links,count){
-    console.log(links)
-    console.log(filter)
-    console.log(url)
-    console.log(params.get('pages'))
-    const {first,next,last} = links
+export function makePagingButton(filter,count){
+    const baseUrl = 'http://127.0.0.1:5500/filter.html';
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
+    console.log(filter)
+    const filterObj = Object.keys(filter).map(key =>[key,filter[key]])
+    console.log(filterObj)
+    let filters =filterObj.filter(filt=> filt[1]!=='' && filt[1].length>0)
+    let newObj = {};
+    console.log(filters)
+    filters.map((v)=>{
+        let key = v[0]
+        let value = v[1]
+        newObj[key] = value
+    })
+    console.log(newObj)
+    // const filters = [...filter].filter((filt)=> filt != '' || filt != [])
+    console.log(buttonCount)
     const maxButton = 5
     console.log(pageContainer)
     if(buttonCount <maxButton){
-        for(let i=0;i<buttonCount;i++){
-            pageContainer.innerHTML += `
-                <li class="page-item" data-page="${i}">
-                    <a href="${url}>${i++}</a>
-                </li>
-            `
+        for(let page=1;page<=buttonCount;page++){
+            let newUrl = updateUrlParameter(baseUrl, 'pages', page);
+    
+            let listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}">${page}</a>`;
+    
+            pageContainer.appendChild(listItem)
         }
     }else{
-        for(let i=1;i<=maxButton;i++){
-            pageContainer.innerHTML += `
-                <li class="page-item" data-page="${i}">
-                    <a>${i}</a>
-                </li>
-            `
+        for(let page=1;page<=maxButton;page++){
+            let newUrl = updateUrlParameter(baseUrl, 'pages', page);
+    
+            let listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}">${page}</a>`;
+    
+            pageContainer.appendChild(listItem)
         }
-        pageContainer.innerHTML += `
-            <li class="page-item">
-                <a rel="next"><i class="las la-angle-right"></i></a>
-            </li>
-        `
-        pageContainer.innerHTML += `
-            <li class="page-item">
-                <a rel="last"><i class="las la-angle-double-right"></i></a>
-            </li>
-        `
+        // pageContainer.innerHTML += `
+        //     <li class="page-item">
+        //         <a rel="next"><i class="las la-angle-right"></i></a>
+        //     </li>
+        // `
+        // pageContainer.innerHTML += `
+        //     <li class="page-item">
+        //         <a rel="last"><i class="las la-angle-double-right"></i></a>
+        //     </li>
+        // `
     }
 }
+
+function updateUrlParameter(url, key, value) {
+    var updatedUrl = new URL(url);
+    updatedUrl.searchParams.set(key, value);
+    return updatedUrl.href;
+  }
 
 async function getAnimeSchedule(day) {
     const animeData = await getAnimeResponse('schedules',`filter=${day}`)
