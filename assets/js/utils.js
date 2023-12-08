@@ -37,40 +37,47 @@ export function makePagingButton(filter,count){
     const baseUrl = 'http://127.0.0.1:5500/filter.html';
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
-    console.log(filter)
     const filterObj = Object.keys(filter).map(key =>[key,filter[key]])
-    console.log(filterObj)
     let filters =filterObj.filter(filt=> filt[1]!=='' && filt[1].length>0)
     let newObj = {};
-    console.log(filters)
     filters.map((v)=>{
         let key = v[0]
         let value = v[1]
         newObj[key] = value
     })
-    console.log(newObj)
-    // const filters = [...filter].filter((filt)=> filt != '' || filt != [])
     console.log(buttonCount)
+    console.log(baseUrl)
     const maxButton = 5
     console.log(pageContainer)
+    console.log(window.location)
+    console.log(window)
+    const page = new URL(window.location).searchParams.get('pages')
+    console.log(page)
     if(buttonCount <maxButton){
-        for(let page=1;page<=buttonCount;page++){
-            let newUrl = updateUrlParameter(baseUrl, 'pages', page);
+        for(let pages=1;pages<=5;pages++){
+            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', pages);
     
             let listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}">${page}</a>`;
+            listItem.innerHTML = `<a href="${newUrl}">${pages}</a>`;
     
             pageContainer.appendChild(listItem)
         }
     }else{
-        for(let page=1;page<=maxButton;page++){
-            let newUrl = updateUrlParameter(baseUrl, 'pages', page);
-    
+        const range = 2;
+        const startPage = Math.max(1, page - range);
+        const endPage = startPage + 2 * range;
+        for (let currentPage = startPage; currentPage <= endPage; currentPage++) {
+            console.log(currentPage);
+            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', currentPage);
+
             let listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}">${page}</a>`;
-    
-            pageContainer.appendChild(listItem)
+            currentPage == page ? listItem.classList.add('active') : ''
+            listItem.innerHTML = currentPage == page ? `<span>${currentPage}</span>` : `<a href="${newUrl}">${currentPage}</a>`;
+
+            pageContainer.appendChild(listItem);
         }
+
+
         // pageContainer.innerHTML += `
         //     <li class="page-item">
         //         <a rel="next"><i class="las la-angle-right"></i></a>
@@ -84,9 +91,13 @@ export function makePagingButton(filter,count){
     }
 }
 
-function updateUrlParameter(url, key, value) {
-    var updatedUrl = new URL(url);
+function updateUrlParameter(url, Obj, key, value) {
+    console.log(Obj)
+    let updatedUrl = new URL(url);
     updatedUrl.searchParams.set(key, value);
+    for(const key in Obj){
+        updatedUrl.searchParams.set(key, Obj[key]);
+    }
     return updatedUrl.href;
   }
 
@@ -246,7 +257,7 @@ async function getAnimeDetail(id){
 
 async function makeAnimeDetail(id){
     const data = await getAnimeDetail(id)
-    const {attributes} = data
+    const {attributes:{subtype,episodeCount, titles, startDate, endDate, synopsis, averageRating}} = data
     const genres = await getAnimeGenresById(id);
     const genre = genres.map(({attributes})=>{
         const {name} = attributes
@@ -258,7 +269,6 @@ async function makeAnimeDetail(id){
         const {title} = attributes
         return `<li>${title}</li>`
     })
-    const {subtype,episodeCount, titles, startDate, endDate, synopsis, averageRating} = attributes
     cardsDetail.innerHTML +=`
         <div class="card-detail" id="s${id}">
             <article class="animeDetail">
@@ -278,7 +288,7 @@ async function makeAnimeDetail(id){
             </article>
         </div>
             `
-        }
+}
 
 class AnimeRenderer {
     constructor(containerId) {
@@ -296,8 +306,7 @@ class AnimeRenderer {
         renderHoverImg(cards)
     }
     renderSubCardHTML(data,i) {
-        const {attributes,id} = data
-        const {titles,subtype,coverImage,posterImage,episodeCount,episodeLength}  = attributes
+        const {attributes: {titles,subtype,coverImage,posterImage,episodeCount,episodeLength},id} = data
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
