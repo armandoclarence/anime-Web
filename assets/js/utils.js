@@ -51,22 +51,10 @@ export function makePagingButton(filter,count){
     console.log(pageContainer)
     console.log(window.location)
     console.log(window)
-    const page = new URL(window.location).searchParams.get('pages')
+    const page = new URL(window.location).searchParams.get('pages') ?? 1
     console.log(page)
-    if(buttonCount <maxButton){
-        for(let pages=1;pages<=5;pages++){
-            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', pages);
-    
-            let listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}">${pages}</a>`;
-    
-            pageContainer.appendChild(listItem)
-        }
-    }else{
-        const range = 2;
-        const startPage = Math.max(1, page - range);
-        const endPage = startPage + 2 * range;
-        for (let currentPage = startPage; currentPage <= endPage; currentPage++) {
+    if(buttonCount <=maxButton){
+        for (let currentPage = 1; currentPage <= buttonCount; currentPage++) {
             console.log(currentPage);
             let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', currentPage);
 
@@ -76,18 +64,41 @@ export function makePagingButton(filter,count){
 
             pageContainer.appendChild(listItem);
         }
+    }else{
+        const range = 2;
+        const startPage = Math.max(1,page - range);
+        const endPage = Math.min(buttonCount ,startPage + 2 * range);
+        console.log(startPage)
+        if(page > 3){
+            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', 1);
+            let listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}">&lt</a>`;
+            pageContainer.appendChild(listItem);
+            newUrl = updateUrlParameter(baseUrl, newObj, 'pages', parseInt(page)-1);
+            listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-left"></i></a>`;
+            pageContainer.appendChild(listItem);
+        }
+        for (let currentPage = `${page < buttonCount - 1 ?startPage: page == buttonCount ? startPage - 2: startPage - 1}`; currentPage <= endPage; currentPage++) {
+            console.log(currentPage);
+            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', currentPage);
 
+            let listItem = document.createElement('li');
+            currentPage == page ? listItem.classList.add('active') : ''
+            listItem.innerHTML = currentPage == page ? `<span>${currentPage}</span>` : `<a href="${newUrl}">${currentPage}</a>`;
 
-        // pageContainer.innerHTML += `
-        //     <li class="page-item">
-        //         <a rel="next"><i class="las la-angle-right"></i></a>
-        //     </li>
-        // `
-        // pageContainer.innerHTML += `
-        //     <li class="page-item">
-        //         <a rel="last"><i class="las la-angle-double-right"></i></a>
-        //     </li>
-        // `
+            pageContainer.appendChild(listItem);
+        }
+        if(page < buttonCount - 2 ){
+            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', parseInt(page)+1);
+            let listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-right"></i></a>`;
+            pageContainer.appendChild(listItem);
+            newUrl = updateUrlParameter(baseUrl, newObj, 'pages', buttonCount);
+            listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-double-right"></i></a>`;
+            pageContainer.appendChild(listItem);
+        }
     }
 }
 
@@ -306,7 +317,9 @@ class AnimeRenderer {
         renderHoverImg(cards)
     }
     renderSubCardHTML(data,i) {
-        const {attributes: {titles,subtype,coverImage,posterImage,episodeCount,episodeLength},id} = data
+        console.log(data)
+        const {attributes: {titles,subtype,posterImage,episodeCount,episodeLength},id} = data
+        console.log(posterImage)
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
@@ -350,8 +363,8 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img width="177" height="250" src="${posterImage.
-                        small}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
+                        <img width="177" height="250" src="${posterImage != null?posterImage.
+                        small : 'https://media.kitsu.io/anime/poster_images/6336/small.jpg'}" title="${titles.en || titles.en_jp || titles.en_us || titles.en_cn}" />
                     </div>
                     <div class="title">
                         <h3>

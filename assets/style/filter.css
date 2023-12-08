@@ -121,19 +121,29 @@ ul.years {
 	border-radius: .2em;
 	width: 2.5em;
 	height: 2.5em;
-	border: 1px solid var(--grey);
+	border: 1px solid var(--blackGrey);
+}
+
+.pages > li:hover a {
+	background: var(--blackGrey);
+	color: var(--white);
+}
+
+.pages > li a,.pages > li span {
+	height: 100%;
+}
+.pages > li a {
+	color: var(--blackGrey);
 }
 
 .pages > li.active {
 	border: 1px solid var(--green);
+	color: var(--white);
 }
 
 .pages > li > *{
 	display: grid;
-	width: inherit;
-	height: inherit;
-	place-items: center;
-	
+	place-content: center;
 }
 @media (max-width:40em) {
 	.lists {

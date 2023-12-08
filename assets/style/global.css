@@ -36,8 +36,10 @@ ul li {
 }
 
 a {
-	cursor: pointer;
 	text-decoration: none;
+}
+
+footer a, header a {
 	color: var(--white);
 }
 
@@ -388,6 +390,7 @@ main .page > button {
 	transition: all 0.5s;
 	scale: 1.1;
 	width: 100%;
+	margin-bottom: 1em;
 }
 
 .card:hover .img img {
