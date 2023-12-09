@@ -28,7 +28,7 @@ export async function getAnimesByFilter(queryKey,page=0){
     }
     console.log(data)
     const animesByFilter = new AnimeRenderer('.filter-anime')
-    animesByFilter.renderSubCards(data)
+    await animesByFilter.renderSubCards(data)
     const {count} = meta
     return {count}
 }
@@ -120,7 +120,7 @@ export async function getAnimesByCategory(genre,pageNumber){
         pages.children[1].setAttribute('disabled','')
     }
     const animesByCategory = new AnimeRenderer('.categoryAnimes')
-    animesByCategory.renderSubCards(animeData)
+    await animesByCategory.renderSubCards(animeData)
 }
 
 export async function getAnimeByQuery(query,page){
@@ -130,45 +130,13 @@ export async function getAnimeByQuery(query,page){
         pages.children[1].setAttribute('disabled','')
     }
     const animeByQuery = new AnimeRenderer('.query-anime')
-    animeByQuery.renderSubCards(animeData)
+    await animeByQuery.renderSubCards(animeData)
 }
-
-function renderHoverImg(cards){ 
-    if(window.innerWidth < 1000) return
-    cards.forEach(card => {
-        let id = card.getAttribute('id')
-        const img = card.children[0].children[0]
-        const cardDetail = document.getElementById(`s${id}`) || ''
-        // console.log(cardDetail)
-        img.addEventListener('mouseover',async function(){
-            let rightCard = this.offsetWidth + this.offsetLeft
-            let leftCard = this.offsetWidth
-            let topCard = this.offsetTop
-            // if(cardDetail == '') await makeAnimeDetail(id)
-            // console.log(cardDetail)
-            // let cardDetailWidth = cardDetail.offsetWidth || 300
-            // cardDetail.style.top = `${topCard + 50}px`
-            // cardDetail.style.left = 
-            // innerWidth < cardDetailWidth + rightCard 
-            // ? `${rightCard - cardDetailWidth - leftCard}px`  
-            // : `${rightCard}px`
-            // cardDetail.style.marginLeft = 
-            // innerWidth < cardDetailWidth + rightCard 
-            // ?  '-.5em'
-            // : '.5em'
-            // cardDetail.classList.remove('hidden')
-        })
-        // cardDetail.addEventListener('mouseleave',function(){
-        //     cardDetail.classList.add('hidden')
-        // })
-    })
-}
-
 
 export async function getAnimeNow(pageNumber,limit){
     const animeNow = await getAnimeKitsuResponse('anime', `filter[status]=current&page[offset]=${pageNumber * limit}&page[limit]=${limit}`)
     const now = new AnimeRenderer('.now-anime')
-    now && now.renderSubCards(animeNow)
+    now && await now.renderSubCards(animeNow)
     return animeNow
 } 
 
@@ -181,7 +149,7 @@ export async function getAnimeNows() {
             ),250)
         )
         const now = new AnimeRenderer('.now-anime')
-        now && now.renderSubCards(animeNow)
+        now && await now.renderSubCards(animeNow)
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
@@ -189,7 +157,7 @@ export async function getAnimeNows() {
             ),500)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
-        top.renderSubCards(animeTop)
+  await       top.renderSubCards(animeTop)
         console.log(animeTop)
         const animeMostViewed = await new Promise(
             resolve => 
@@ -198,7 +166,7 @@ export async function getAnimeNows() {
             ),750)
         )
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
-        mostViewed.renderSubCards(animeMostViewed)
+        await mostViewed.renderSubCards(animeMostViewed)
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
@@ -206,14 +174,14 @@ export async function getAnimeNows() {
             ),1000)
         )
         const completed = new AnimeRenderer('.completed-anime') 
-        completed.renderSubCards(animeCompleted)
+        await completed.renderSubCards(animeCompleted)
     } catch (error) {
         console.error('Error fetching anime data:', error)
     }
 }
 
 
-function renderDayCards(datas,day=''){
+async function renderDayCards(datas,day=''){
     cards.innerHTML+= ` 
         <h2>${day}</h2>
         <div class="cards-container ${day}">
@@ -221,7 +189,7 @@ function renderDayCards(datas,day=''){
     const cardDay = document.querySelector(`.${day}`)
     cardDay.classList.add('now-anime')
     const container = new AnimeRenderer(`.${day}`)
-    container.renderSubCards(datas)
+    await container.renderSubCards(datas)
 }
 
 export async function getAnimeGenres(){
@@ -246,42 +214,6 @@ async function getAnimeDetail(id){
     const anime = await getAnimeKitsuResponse(`anime/${id}`)
     return anime
 }
-
-async function makeAnimeDetail(id){
-    const data = await getAnimeDetail(id)
-    const {attributes:{subtype,episodeCount, titles, startDate, endDate, synopsis, averageRating}} = data
-    const genres = await getAnimeGenresById(id);
-    const genre = genres.map(({attributes})=>{
-        const {name} = attributes
-        return `<li>${name}</li>`
-    })
-    console.log(genre)
-    const categories = await getAnimeCategoriesById(id);
-    const category = categories.map(({attributes})=>{
-        const {title} = attributes
-        return `<li>${title}</li>`
-    })
-    cardsDetail.innerHTML +=`
-        <div class="card-detail" id="s${id}">
-            <article class="animeDetail">
-                <div class="title">
-                    <h3>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</h3>
-                    <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
-                </div>
-                <p class="synopsis">${synopsis}</p>
-                <div class="info">
-                    <p>Scores: ${(averageRating / 10).toFixed(2)}</p>
-                    <p>Date aired: ${startDate} to ${endDate}</p>
-                    <p>Status: ${subtype}</p>
-                    <ul>
-                    Genre: ${genre==undefined ?genre : category}
-                    </ul>
-                </div>
-            </article>
-        </div>
-            `
-}
-
 class AnimeRenderer {
     constructor(containerId) {
         this.container = document.querySelector(containerId)
@@ -290,15 +222,104 @@ class AnimeRenderer {
         }
     }
 
-    renderSubCards(datas) {
+    async renderSubCards(datas) {
         let i = 1
         console.table(datas)
-        this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
+        this.container.innerHTML = (await Promise.all(datas.map(async (data) => await this.renderSubCardHTML(data, i++)))).join('');
         const cards = this.container.querySelectorAll('.card')
-        renderHoverImg(cards)
+        this.renderHoverImg(cards)
     }
-    renderSubCardHTML(data,i) {
-        const {attributes: {titles,subtype,posterImage,episodeCount,episodeLength},id} = data
+    
+    renderHoverImg(cards) {
+        cards.forEach(async (card) => {
+            const cardDetail = card.querySelector('.card-detail');
+            let isMouseOverHandled = false;
+    
+            card.addEventListener('mouseover', async () => {
+                if (!isMouseOverHandled) {
+                    isMouseOverHandled = true;
+    
+                    if (cardDetail) {
+                        const id = card.getAttribute('id');
+                        await this.makeAnimeDetail(id);
+    
+                        const img = card.children[0].children[0];
+                        let rightCard = img.offsetWidth + img.offsetLeft;
+                        let leftCard = img.offsetWidth;
+                        let cardDetailWidth = 300;
+    
+                        const innerWidth = window.innerWidth;
+    
+                        if (innerWidth < cardDetailWidth + rightCard) {
+                            cardDetail.style.left = `${rightCard - cardDetailWidth - leftCard}px`;
+                            cardDetail.style.marginLeft = '-.5em';
+                        } else {
+                            cardDetail.style.left = `${rightCard}px`;
+                            cardDetail.style.marginLeft = '.5em';
+                        }
+    
+                        cardDetail.classList.remove('hidden');
+                    }
+                }
+            });
+    
+            card.addEventListener('mouseleave', () => {
+                isMouseOverHandled = false;
+    
+                if (cardDetail) {
+                    cardDetail.classList.add('hidden');
+                }
+            });
+        });
+    }
+
+    async makeAnimeDetail(id) {
+        try {
+            const data = await getAnimeDetail(id);
+            const { attributes: { subtype, episodeCount, episodeLength, titles, startDate, endDate, synopsis, averageRating } } = data;
+            const genres = await getAnimeGenresById(id);
+            const genre = genres.map(({ attributes }) => {
+                const { name } = attributes;
+                return `<li>${name}</li>`;
+            });
+    
+            const categories = await getAnimeCategoriesById(id);
+            const category = categories.map(({ attributes }) => {
+                const { title } = attributes;
+                return `<li>${title}</li>`;
+            });
+    
+            const detailTitle = titles.en || titles.en_jp || titles.en_us || titles.en_cn;
+            const detailSubtype = subtype;
+    
+            const genreHtml = genre === undefined ? genre : category;
+            const synopsisHtml = synopsis;
+            const averageRatingHtml = (averageRating / 10).toFixed(2);
+            const startDateHtml = startDate;
+            const endDateHtml = endDate;
+            const episodeCountHtml = episodeCount || '';
+            const episodeLengthHtml = episodeLength || '';
+    
+            return {
+                detailTitle,
+                synopsisHtml,
+                averageRatingHtml,
+                startDateHtml,
+                endDateHtml,
+                genreHtml,
+                detailSubtype,
+                episodeCountHtml,
+                episodeLengthHtml,
+            };
+        } catch (error) {
+            console.error("Error fetching anime details:", error);
+            return null; // Handle error appropriately
+        }
+    }
+    
+    async renderSubCardHTML(data,i) {
+        const {attributes: {titles,posterImage},id} = data
+        const { detailTitle, synopsisHtml, averageRatingHtml, startDateHtml, endDateHtml, genreHtml, detailSubtype, episodeCountHtml, episodeLengthHtml } = await this.makeAnimeDetail(id);
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
@@ -309,7 +330,7 @@ class AnimeRenderer {
                         ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
                         </h4>
                         <p>
-                            ${subtype} ${episodeCount|| ''} ${episodeLength}
+                            ${detailSubtype} ${episodeCountHtml|| ''} ${episodeLengthHtml}
                         </p>
                     </div>
                 </div>
@@ -332,8 +353,8 @@ class AnimeRenderer {
                         ${titles.en || titles.en_jp || titles.en_us || titles.en_cn}
                         </h4>
                         <p>
-                        ${subtype} 
-                        <i class="lar la-closed-captioning"></i>${episodeCount || ''}
+                        ${detailSubtype} 
+                        <i class="lar la-closed-captioning"></i>${episodeCountHtml}
                         </p>    
                     </div>
                 </div>
@@ -351,6 +372,22 @@ class AnimeRenderer {
                         </h3>
                     </div>
                 </div>
+                <div class="card-detail hidden" id="s${id}">
+                    <article class="animeDetail">
+                        <div class="title">
+                            <h3>${detailTitle}</h3>
+                            <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
+                        </div>
+                        <p class="synopsis">${synopsisHtml}</p>
+                        <div class="info">
+                            <p>Scores: ${averageRatingHtml}</p>
+                            <p>Date aired: ${startDateHtml} to ${endDateHtml}</p>
+                            <p>Status: ${detailSubtype}</p>
+                            <p>Episodes: ${episodeCountHtml} ${episodeLengthHtml}</p>
+                            <ul>Genre: ${genreHtml}</ul>
+                        </div>
+                    </article>
+                </div>  
             </article>`
     }
 }
