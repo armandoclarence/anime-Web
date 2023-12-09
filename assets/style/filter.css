@@ -5,6 +5,9 @@
 li:not(.active) {
 	cursor: pointer;
 }
+.lists > *:not(ul) {
+	border: 1px solid transparent;
+}
 
 header {
 	margin-bottom: 2em;
@@ -86,7 +89,7 @@ button#ratings {
 
 .lists > button:focus-within {
 	background: rgb(49, 44, 44, 0);
-	border: 1px solid var(--green);
+	border-color: var(--green);
 }
 
 .lists > .list {

@@ -155,9 +155,9 @@ ul {
 
 main .page > button {
 	background-color: inherit;
-	border: 0;
 	color: var(--white);
 	cursor: pointer;
+	border-width: 0;
 	width: 25px;
 	height: 25px;
 }
@@ -388,14 +388,16 @@ main .page > button {
 .card .img > img {
 	object-fit: cover;
 	transition: all 0.5s;
-	scale: 1.1;
+	transform: scale(1.1);
 	width: 100%;
+	border: 0;
+	scale: 1.2;
 	margin-bottom: 1em;
 }
 
 .card:hover .img img {
-	scale: 1.2;
-	border: 1px solid white;
+	transform: scale(1.2);
+	border: 1px solid transparent;
 }
 
 .card .img::before {

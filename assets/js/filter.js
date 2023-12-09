@@ -7,8 +7,8 @@ const search = document.querySelector('.search-i')
 let params = new URLSearchParams(window.location.search)
 window.addEventListener('load', async function(e){
     const localKey = 'filter';
-    const newFilter = {}
-    const filter = JSON.parse(this.localStorage.getItem(localKey)) || {
+    const newFilter = {}    
+    const filter = !new URL(window.location).searchParams.get('page')? JSON.parse(this.localStorage.getItem(localKey)) : {
         types: [],
         years: [],
         categories: [],
@@ -19,6 +19,14 @@ window.addEventListener('load', async function(e){
         sorting: "",
         keyword: "",
     }
+    const baseUrl = new URLSearchParams(window.location.search);
+    baseUrl.forEach((value,key)=>{
+        if(key == 'sorting' || key == 'keyword'){
+            filter[key] = value
+        }else if(key !== 'page' && key !== 'pages'){
+            filter[key] =value.split(',')
+        }
+    })
     await makeCategoryList()
     await makeYearList()
     const [...radios] = document.querySelectorAll('input[type=radio]')
@@ -37,7 +45,7 @@ window.addEventListener('load', async function(e){
         }else{
             radios[0].parentNode.classList.add('hidden')
         }
-        key != 'keyword' &&  key!= 'sorting' ? filter[key].map(filtering =>{
+        key != 'keyword' &&  key!= 'sorting' ?filter[key].length>0 ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
             const buttonLink = document.querySelector(`button#${key}`)
@@ -47,7 +55,7 @@ window.addEventListener('load', async function(e){
             }
             checkFilter(filter,key,buttonLink)
             checkbox ? checkbox.checked = true: ''
-        }) 
+        }) : '' 
         :
         params.get('keyword') !=null ?
         search.value = filter[key]
@@ -80,19 +88,25 @@ window.addEventListener('load', async function(e){
                     } else if (!checkbox.checked && index !== -1) {
                         filter[idParent].splice(index, 1);
                     }
-                    console.log(filter)
                 }        
                 if(idParent!="sorting"){
                     checkFilter(filter,idParent,buttonLink)
                 }
             }
+            localStorage.setItem(localKey, JSON.stringify(filter))
             console.log(filter)
         })
     })
-    const pageCount = params.get('pages') ?? 1
+    const pageCount = params.get('pages') ?? 0
     const anime = await getAnimesByFilter(newFilter,pageCount)
-    const {count,links} = anime
-    filterPaging(filter,links,count)
+    const {count} = anime
+    filterPaging(count)
+    search.addEventListener('change',function(e){
+        // e.preventDefault()
+        console.log(e)
+        params.set('keyword', this.value)
+        // window.location.search = params
+    })
     filterButton.addEventListener('click',function(e){
         params.set('keyword', search.value)
         filter['keyword'] = search.value
@@ -104,10 +118,12 @@ window.addEventListener('load', async function(e){
             }
         }
         params.delete('page')
+        params.delete('pages')
         window.location.search = params
         localStorage.setItem(localKey, JSON.stringify(filter))
     })
 })
+
 
 function checkFilter(filter,key,buttonLink){
     if(filter[key].length>2){
@@ -123,8 +139,8 @@ function checkFilter(filter,key,buttonLink){
     }
 }
 
-function filterPaging(filter,links,count){
-    makePagingButton(filter,count)
+function filterPaging(count){
+    makePagingButton(count)
 }
 
 async function makeCategoryList(){

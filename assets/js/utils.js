@@ -14,15 +14,15 @@ export async function getAnimeResponse(typeData, query=""){
 export async function getAnimeKitsuResponse(typeData, query="", filter=""){
     const anime = await fetch(`${kitsuApi}${typeData}?${query}`)
     const animeData = await anime.json()
-    const { data,links,meta } = animeData
-    return filter != 'filter' ? data: {data,links,meta}
+    const { data,meta } = animeData
+    return filter != 'filter' ? data: {data,meta}
 }
 
 export async function getAnimesByFilter(queryKey,page=0){
     const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
     const url =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
     const animeData = await getAnimeKitsuResponse('anime',url, 'filter')
-    let {data,links,meta} = animeData
+    let {data,meta} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
@@ -30,58 +30,44 @@ export async function getAnimesByFilter(queryKey,page=0){
     const animesByFilter = new AnimeRenderer('.filter-anime')
     animesByFilter.renderSubCards(data)
     const {count} = meta
-    return {count,links}
+    return {count}
 }
 
-export function makePagingButton(filter,count){
-    const baseUrl = 'http://127.0.0.1:5500/filter.html';
+export function makePagingButton(count){
+    console.log(count)
+    const baseUrl = new URL(window.location).href;
+    console.log(baseUrl)
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
-    const filterObj = Object.keys(filter).map(key =>[key,filter[key]])
-    let filters =filterObj.filter(filt=> filt[1]!=='' && filt[1].length>0)
-    let newObj = {};
-    filters.map((v)=>{
-        let key = v[0]
-        let value = v[1]
-        newObj[key] = value
-    })
-    console.log(buttonCount)
-    console.log(baseUrl)
     const maxButton = 5
-    console.log(pageContainer)
-    console.log(window.location)
-    console.log(window)
-    const page = new URL(window.location).searchParams.get('pages') ?? 1
+    const page = parseInt(new URL(window.location).searchParams.get('pages')) || 1
     console.log(page)
     if(buttonCount <=maxButton){
         for (let currentPage = 1; currentPage <= buttonCount; currentPage++) {
             console.log(currentPage);
-            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', currentPage);
-
+            let newUrl = updateUrlParameter(baseUrl, 'pages', currentPage);
             let listItem = document.createElement('li');
             currentPage == page ? listItem.classList.add('active') : ''
             listItem.innerHTML = currentPage == page ? `<span>${currentPage}</span>` : `<a href="${newUrl}">${currentPage}</a>`;
-
             pageContainer.appendChild(listItem);
         }
     }else{
         const range = 2;
         const startPage = Math.max(1,page - range);
         const endPage = Math.min(buttonCount ,startPage + 2 * range);
-        console.log(startPage)
         if(page > 3){
-            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', 1);
+            let newUrl = updateUrlParameter(baseUrl, 'pages', 1);
             let listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}">&lt</a>`;
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-double-left"></i></a>`;
             pageContainer.appendChild(listItem);
-            newUrl = updateUrlParameter(baseUrl, newObj, 'pages', parseInt(page)-1);
+            newUrl = updateUrlParameter(baseUrl, 'pages', page - 1);
             listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-left"></i></a>`;
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-left"></i></a>`;
             pageContainer.appendChild(listItem);
         }
         for (let currentPage = `${page < buttonCount - 1 ?startPage: page == buttonCount ? startPage - 2: startPage - 1}`; currentPage <= endPage; currentPage++) {
-            console.log(currentPage);
-            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', currentPage);
+            console.log(currentPage)
+            let newUrl = updateUrlParameter(baseUrl, 'pages', currentPage);
 
             let listItem = document.createElement('li');
             currentPage == page ? listItem.classList.add('active') : ''
@@ -90,27 +76,23 @@ export function makePagingButton(filter,count){
             pageContainer.appendChild(listItem);
         }
         if(page < buttonCount - 2 ){
-            let newUrl = updateUrlParameter(baseUrl, newObj, 'pages', parseInt(page)+1);
+            let newUrl = updateUrlParameter(baseUrl, 'pages', page+1);
             let listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-right"></i></a>`;
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-right"></i></a>`;
             pageContainer.appendChild(listItem);
-            newUrl = updateUrlParameter(baseUrl, newObj, 'pages', buttonCount);
+            newUrl = updateUrlParameter(baseUrl, 'pages', buttonCount);
             listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-angle-double-right"></i></a>`;
+            listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-double-right"></i></a>`;
             pageContainer.appendChild(listItem);
         }
     }
 }
 
-function updateUrlParameter(url, Obj, key, value) {
-    console.log(Obj)
+function updateUrlParameter(url, key, value) {
     let updatedUrl = new URL(url);
     updatedUrl.searchParams.set(key, value);
-    for(const key in Obj){
-        updatedUrl.searchParams.set(key, Obj[key]);
-    }
     return updatedUrl.href;
-  }
+}
 
 async function getAnimeSchedule(day) {
     const animeData = await getAnimeResponse('schedules',`filter=${day}`)
@@ -244,7 +226,6 @@ function renderDayCards(datas,day=''){
 
 export async function getAnimeGenres(){
     let genre = await getAnimeResponse('genres/anime')
-    console.log(genre)
     genre = genre.filter(({mal_id})=>{
         return mal_id==1 || mal_id==2 || mal_id==4 || mal_id==5 || mal_id>=7 && mal_id<=10 || mal_id==14 || mal_id==15 || mal_id >=17 && mal_id<=20 || mal_id>=22 && mal_id<=32 || mal_id>=35 && mal_id<=38 || mal_id>=40 && mal_id<=43 || mal_id==47 || mal_id==62 || mal_id==63 || mal_id==66 || mal_id==73
     })
@@ -311,15 +292,13 @@ class AnimeRenderer {
 
     renderSubCards(datas) {
         let i = 1
-        console.log(datas)
+        console.table(datas)
         this.container.innerHTML = datas.map(data => this.renderSubCardHTML(data,i++)).join('')
         const cards = this.container.querySelectorAll('.card')
         renderHoverImg(cards)
     }
     renderSubCardHTML(data,i) {
-        console.log(data)
         const {attributes: {titles,subtype,posterImage,episodeCount,episodeLength},id} = data
-        console.log(posterImage)
         return  this.container.classList[0] == 'top-popularity-anime' || this.container.classList[0] == 'completed-anime' ?
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
