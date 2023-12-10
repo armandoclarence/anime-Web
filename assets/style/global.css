@@ -389,7 +389,7 @@ main .page > button {
 	transition: all 0.5s;
 }
 
-.card:hover .img img {
+.card .img:hover img {
 	transform: scale(1.2);
 	border: 1px solid transparent;
 }
@@ -434,8 +434,12 @@ main .page > button {
 	color: var(--green);
 }
 
-.card.sub > * {
+.card.sub .imgs {
 	grid-area: img;
+}
+
+.card.sub .imgs > img{
+	height: 100%;
 }
 
 .card.mosts .most:not(.big) .imgs {
