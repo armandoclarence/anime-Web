@@ -35,8 +35,7 @@ export async function getAnimesByFilter(queryKey,page=0){
 
 export function makePagingButton(count){
     console.log(count)
-    const baseUrl = new URL(window.location).href;
-    console.log(baseUrl)
+    const searchParams = new URL(window.location).href;
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
     const maxButton = 5
@@ -45,7 +44,7 @@ export function makePagingButton(count){
     if(buttonCount <=maxButton){
         for (let currentPage = 1; currentPage <= buttonCount; currentPage++) {
             console.log(currentPage);
-            let newUrl = updateUrlParameter(baseUrl, 'pages', currentPage);
+            let newUrl = updateUrlParameter(searchParams, 'pages', currentPage);
             let listItem = document.createElement('li');
             currentPage == page ? listItem.classList.add('active') : ''
             listItem.innerHTML = currentPage == page ? `<span>${currentPage}</span>` : `<a href="${newUrl}">${currentPage}</a>`;
@@ -56,18 +55,17 @@ export function makePagingButton(count){
         const startPage = Math.max(1,page - range);
         const endPage = Math.min(buttonCount ,startPage + 2 * range);
         if(page > 3){
-            let newUrl = updateUrlParameter(baseUrl, 'pages', 1);
+            let newUrl = updateUrlParameter(searchParams, 'pages', 1);
             let listItem = document.createElement('li');
             listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-double-left"></i></a>`;
             pageContainer.appendChild(listItem);
-            newUrl = updateUrlParameter(baseUrl, 'pages', page - 1);
+            newUrl = updateUrlParameter(searchParams, 'pages', page - 1);
             listItem = document.createElement('li');
             listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-left"></i></a>`;
             pageContainer.appendChild(listItem);
         }
         for (let currentPage = `${page < buttonCount - 1 ?startPage: page == buttonCount ? startPage - 2: startPage - 1}`; currentPage <= endPage; currentPage++) {
-            console.log(currentPage)
-            let newUrl = updateUrlParameter(baseUrl, 'pages', currentPage);
+            let newUrl = updateUrlParameter(searchParams, 'pages', currentPage);
 
             let listItem = document.createElement('li');
             currentPage == page ? listItem.classList.add('active') : ''
@@ -76,11 +74,11 @@ export function makePagingButton(count){
             pageContainer.appendChild(listItem);
         }
         if(page < buttonCount - 2 ){
-            let newUrl = updateUrlParameter(baseUrl, 'pages', page+1);
+            let newUrl = updateUrlParameter(searchParams, 'pages', page+1);
             let listItem = document.createElement('li');
             listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-right"></i></a>`;
             pageContainer.appendChild(listItem);
-            newUrl = updateUrlParameter(baseUrl, 'pages', buttonCount);
+            newUrl = updateUrlParameter(searchParams, 'pages', buttonCount);
             listItem = document.createElement('li');
             listItem.innerHTML = `<a href="${newUrl}"><i class="las la-xs la-angle-double-right"></i></a>`;
             pageContainer.appendChild(listItem);
@@ -88,8 +86,8 @@ export function makePagingButton(count){
     }
 }
 
-function updateUrlParameter(url, key, value) {
-    let updatedUrl = new URL(url);
+function updateUrlParameter(updatedUrl, key, value) {
+    updatedUrl = new URL(updatedUrl)
     updatedUrl.searchParams.set(key, value);
     return updatedUrl.href;
 }
@@ -233,39 +231,13 @@ class AnimeRenderer {
     renderHoverImg(cards) {
         cards.forEach(async (card) => {
             const cardDetail = card.querySelector('.card-detail');
-            let isMouseOverHandled = false;
-    
             card.addEventListener('mouseover', async () => {
-                if (!isMouseOverHandled) {
-                    isMouseOverHandled = true;
-    
-                    if (cardDetail) {
-                        const id = card.getAttribute('id');
-                        await this.makeAnimeDetail(id);
-    
-                        const img = card.children[0].children[0];
-                        let rightCard = img.offsetWidth + img.offsetLeft;
-                        let leftCard = img.offsetWidth;
-                        let cardDetailWidth = 300;
-    
-                        const innerWidth = window.innerWidth;
-    
-                        if (innerWidth < cardDetailWidth + rightCard) {
-                            cardDetail.style.left = `${rightCard - cardDetailWidth - leftCard}px`;
-                            cardDetail.style.marginLeft = '-.5em';
-                        } else {
-                            cardDetail.style.left = `${rightCard}px`;
-                            cardDetail.style.marginLeft = '.5em';
-                        }
-    
-                        cardDetail.classList.remove('hidden');
-                    }
+                if (cardDetail) {
+                    cardDetail.classList.remove('hidden');
                 }
             });
     
             card.addEventListener('mouseleave', () => {
-                isMouseOverHandled = false;
-    
                 if (cardDetail) {
                     cardDetail.classList.add('hidden');
                 }
@@ -334,6 +306,22 @@ class AnimeRenderer {
                         </p>
                     </div>
                 </div>
+                <div class="card-detail hidden" id="s${id}">
+                    <article class="animeDetail">
+                        <div class="title">
+                            <h3>${detailTitle}</h3>
+                            <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
+                        </div>
+                        <p class="synopsis">${synopsisHtml}</p>
+                        <div class="info">
+                            <p>Scores: ${averageRatingHtml}</p>
+                            <p>Date aired: ${startDateHtml} to ${endDateHtml}</p>
+                            <p>Status: ${detailSubtype}</p>
+                            <p>Episodes: ${episodeCountHtml} ${episodeLengthHtml}</p>
+                            <ul>Genre: ${genreHtml}</ul>
+                        </div>
+                    </article>
+                </div>  
             </article>`
         :
         this.container.classList[0] == 'most-viewed-anime' ?
@@ -358,6 +346,22 @@ class AnimeRenderer {
                         </p>    
                     </div>
                 </div>
+                <div class="card-detail hidden" id="s${id}">
+                    <article class="animeDetail">
+                        <div class="title">
+                            <h3>${detailTitle}</h3>
+                            <p>${titles.en || titles.en_jp || titles.en_us || titles.en_cn}</p>
+                        </div>
+                        <p class="synopsis">${synopsisHtml}</p>
+                        <div class="info">
+                            <p>Scores: ${averageRatingHtml}</p>
+                            <p>Date aired: ${startDateHtml} to ${endDateHtml}</p>
+                            <p>Status: ${detailSubtype}</p>
+                            <p>Episodes: ${episodeCountHtml} ${episodeLengthHtml}</p>
+                            <ul>Genre: ${genreHtml}</ul>
+                        </div>
+                    </article>
+                </div>  
             </article>`
             :
             `<article class="card" id=${id}>
