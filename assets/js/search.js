@@ -50,7 +50,6 @@ window.addEventListener('load', function(e){
         nextButton.addEventListener('click', function(e){
             pageNumber++
             if(pageNumber > 0)prevButton.removeAttribute('disabled', '')
-            console.log(query)
             getAnimeByQuery(query,pageNumber)
         })
     }

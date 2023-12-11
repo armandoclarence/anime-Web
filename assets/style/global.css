@@ -27,10 +27,6 @@ body {
 	padding: 0 1em;
 }
 
-.las {
-	display: swap;
-}
-
 ul li {
 	list-style: none;
 }
@@ -157,8 +153,8 @@ main .page > button {
 	color: var(--white);
 	cursor: pointer;
 	border-width: 0;
-	width: 25px;
-	height: 25px;
+	width: 48px;
+	height: 48px;
 }
 
 .page > button:hover {
@@ -236,6 +232,9 @@ main .page > button {
 
 .most-viewed-anime {
 	counter-reset: card;
+	display: flex;
+	flex-direction: column;
+	gap: .75em;
 }
 
 .card.sub .cardSub.most {
@@ -383,9 +382,11 @@ main .page > button {
 .card .img {
 	overflow: hidden;
 	position: relative;
+	object-fit: cover;	
 }
 
 .card .img > img {
+	width: 100%;
 	transition: all 0.5s;
 }
 
@@ -438,8 +439,9 @@ main .page > button {
 	grid-area: img;
 }
 
-.card.sub .imgs > img{
-	height: 100%;
+.card.sub img.image {
+	width: 70px;
+	height: 90px;
 }
 
 .card.mosts .most:not(.big) .imgs {

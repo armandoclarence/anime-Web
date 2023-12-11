@@ -26,6 +26,7 @@ window.addEventListener('load', async function(e){
         }else if(key !== 'page' && key !== 'pages'){
             filter[key] =value.split(',')
         }
+        console.log(filter)
     })
     await makeCategoryList()
     await makeYearList()
@@ -33,9 +34,11 @@ window.addEventListener('load', async function(e){
     for(const key in filter){
         const query = params.get(key) || ''
         let radio = document.querySelector(`input[value="${filter[key]}"]`)
+        console.log(key)
+        const buttonLink = document.querySelector(`button#${key}`)
+        console.log(buttonLink)
         if(radio){
             radio.checked = true
-            const buttonLink = document.querySelector(`button#${key}`)
             const label = radio.nextElementSibling
             buttonLink.textContent = label.childNodes[0].data
         }
@@ -48,7 +51,6 @@ window.addEventListener('load', async function(e){
         key != 'keyword' &&  key!= 'sorting' ?filter[key].length>0 ? filter[key].map(filtering =>{
             filtering = filtering>0 ?filtering.replace(/^/,"s") : filtering.split(' ').join("")
             let checkbox = document.querySelector(`#${filtering}`)
-            const buttonLink = document.querySelector(`button#${key}`)
             for(const filt of filter[key]){
                 const button = document.querySelector(`label[for="${filt>0 ?`s${filt}`:filt}"]`)
                 buttonLink.textContent += filter[key].length==1?`${button.childNodes[0].data}`:`${button.childNodes[0].data},`

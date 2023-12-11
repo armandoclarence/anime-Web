@@ -27,12 +27,6 @@ for(let img of imgs) {
     imgs[9].classList.add('prev-slide')
     imgs[0].classList.add('current-slide')
     imgs[1].classList.add('next-slide')
-    // img.addEventListener('mousedown',function(){
-    //     sliderContainer.style.transform = `translate3d(${-img.clientWidth * j++}px,0px,0px)`
-    //     if(j==10){
-    //         j=0;
-    //     }
-    // })
 }
 let k=1
 let j = 1

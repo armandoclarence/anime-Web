@@ -20,13 +20,12 @@ export async function getAnimeKitsuResponse(typeData, query="", filter=""){
 
 export async function getAnimesByFilter(queryKey,page=0){
     const {types, years, categories, ratings, statusAnime, country, seasons, sorting, keyword} = queryKey
-    const url =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}`
+    const url =`${keyword ? `filter[text]=${keyword}&`:''}${types ? `filter[subtype]=${types}&` : ''}${years ? `filter[seasonYear]=${years}&`: ''}${categories ? `filter[categories]=${categories}&`:''}${ratings ? `filter[ageRating]=${ratings}&`: ''}${statusAnime ? `filter[status]=${statusAnime}&`: ''}${seasons? `filter[season]=${seasons}&`: ''}${country? `filter[categories]=${country}&`: ''}${sorting != 'relevance' && sorting!= 'updatedAt' ? `sort=${sorting}&`: ''}page[limit]=20&page[offset]=${page * 20}&fields[anime]=id`
     const animeData = await getAnimeKitsuResponse('anime',url, 'filter')
     let {data,meta} = animeData
     if(sorting == 'updateAt'){
        data = data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     }
-    console.log(data)
     const animesByFilter = new AnimeRenderer('.filter-anime')
     await animesByFilter.renderSubCards(data)
     const {count} = meta
@@ -34,16 +33,13 @@ export async function getAnimesByFilter(queryKey,page=0){
 }
 
 export function makePagingButton(count){
-    console.log(count)
     const searchParams = new URL(window.location).href;
     const pageContainer = document.querySelector(".pages")
     const buttonCount = Math.ceil(count/20)
     const maxButton = 5
     const page = parseInt(new URL(window.location).searchParams.get('pages')) || 1
-    console.log(page)
     if(buttonCount <=maxButton){
         for (let currentPage = 1; currentPage <= buttonCount; currentPage++) {
-            console.log(currentPage);
             let newUrl = updateUrlParameter(searchParams, 'pages', currentPage);
             let listItem = document.createElement('li');
             currentPage == page ? listItem.classList.add('active') : ''
@@ -111,7 +107,6 @@ export async function makeScheduleList() {
 }
 
 export async function getAnimesByCategory(genre,pageNumber){
-    console.log(pageNumber)
     const animeData = await getAnimeKitsuResponse('anime',`filter[categories]=${genre}&page[limit]=20&page[offset]=${20 * pageNumber}`)
     pages.children[1].removeAttribute('disabled','')
     if(animeData.length < 20){
@@ -132,7 +127,7 @@ export async function getAnimeByQuery(query,page){
 }
 
 export async function getAnimeNow(pageNumber,limit){
-    const animeNow = await getAnimeKitsuResponse('anime', `filter[status]=current&page[offset]=${pageNumber * limit}&page[limit]=${limit}`)
+    const animeNow = await getAnimeKitsuResponse('anime', `fields[anime]=id&filter[status]=current&page[offset]=${pageNumber * limit}&page[limit]=${limit}`)
     const now = new AnimeRenderer('.now-anime')
     now && await now.renderSubCards(animeNow)
     return animeNow
@@ -151,7 +146,7 @@ export async function getAnimeNows() {
         const animeTop = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('anime',`filter[status]=current&sort=ratingRank&page[limit]=7`)
+                getAnimeKitsuResponse('anime',`fields[anime]=id&filter[status]=current&sort=ratingRank&page[limit]=7`)
             ),500)
         )
         const top = new AnimeRenderer('.top-popularity-anime') 
@@ -159,7 +154,7 @@ export async function getAnimeNows() {
         const animeMostViewed = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('anime','filter[status]=current&sort=favoritesCount&page[limit]=5')
+                getAnimeKitsuResponse('anime','fields[anime]=id&filter[status]=current&sort=favoritesCount&page[limit]=5')
             ),750)
         )
         const mostViewed = new AnimeRenderer('.most-viewed-anime') 
@@ -167,7 +162,7 @@ export async function getAnimeNows() {
         const animeCompleted = await new Promise(
             resolve => 
             setTimeout(()=>resolve(
-                getAnimeKitsuResponse('anime',`filter[status]=finished&page[limit]=7`)
+                getAnimeKitsuResponse('anime',`fields[anime]=id&filter[status]=finished&page[limit]=7`)
             ),1000)
         )
         const completed = new AnimeRenderer('.completed-anime') 
@@ -220,7 +215,6 @@ class AnimeRenderer {
 
     async renderSubCards(datas) {
         let i = 1
-        console.table(datas)
         this.container.innerHTML = (await Promise.all(datas.map(async ({id}) => await this.renderSubCardHTML(id, i++)))).join('');
         const cards = this.container.querySelectorAll('.card')
         this.renderHoverImg(cards)
@@ -232,22 +226,22 @@ class AnimeRenderer {
             const img = card.children[0].children[0]
             img.addEventListener('mouseenter', () => {
                 if (cardDetail) {
-                    let cardWidth = card.classList[2] ? card.offsetWidth: img.children[0].offsetWidth
-                    console.log(cardWidth)
                     let cardRect = card.getBoundingClientRect();
-                    let cardDetailRect = cardDetail.getBoundingClientRect();
                     let imgRect = img.children[0].getBoundingClientRect();
-                    console.log(imgRect)
-                    console.log(cardRect)
-                    console.log(cardDetailRect)
-
-                    if (cardRect.right + imgRect.width > card.parentNode.offsetWidth) {
-                        cardRect.right + imgRect.width > card.parentNode.offsetWidth ? 
-                        cardDetail.style.right = `${imgRect.width + 8}px`
+                    if(cardRect.right + imgRect.width > card.parentNode.offsetWidth){
+                        card.classList[2] ? 
+                         cardDetail.style.left =`${cardRect.width}px`
                         :
-                        cardDetail.style.left =  card.classList[2] ? `${cardRect.width}px`: `${imgRect.width}px`;
-                    } else  {
-                        cardDetail.style.left = `${imgRect.width}px`;
+                        card.classList[1] ?
+                        cardDetail.style.left = `${imgRect.width}px`
+                        :
+                        cardDetail.style.right = `${imgRect.width + 8}px`
+
+                    }else{
+                        card.classList[2] ? 
+                         cardDetail.style.left =`${cardRect.width}px`
+                        :
+                        cardDetail.style.left = `${imgRect.width}px` 
                     }
                     cardDetail.style.marginLeft = '.5em'
                     cardDetail.style.top = '1.5em'
@@ -265,17 +259,14 @@ class AnimeRenderer {
     async makeAnimeDetail(id) {
         try {
             const data = await getAnimeDetail(id);
-            console.log(data)
             const { attributes: { status, subtype,posterImage, episodeCount, episodeLength, titles, startDate, endDate, synopsis, averageRating } } = data;
             const genres = await getAnimeGenresById(id);
-            const genre = genres.map(({ attributes }) => {
-                const { name } = attributes;
+            const genre = genres.map(({ attributes : {name} }) => {
                 return `<li>${name}</li>`;
             });
     
             const categories = await getAnimeCategoriesById(id);
-            const category = categories.map(({ attributes }) => {
-                const { title } = attributes;
+            const category = categories.map(({ attributes : {title} }) => {
                 return `<li>${title}</li>`;
             });
     
@@ -314,7 +305,7 @@ class AnimeRenderer {
             `<article class="card sub" id=${id}>
                 <div class="cardSub">
                     <div class="imgs">
-                        <img width="60" height="85" class="image" src="${posterImage.
+                        <img class="image" src="${posterImage.
                         tiny}" title="${detailTitle}" />
                     </div>
                     <div class="title">
@@ -348,7 +339,7 @@ class AnimeRenderer {
             `<article class="card sub mosts" id=${id}>
                 <div class="cardSub most ${i == 1 ? 'big' : ''}">
                     <div class="imgs">
-                        <img width="60" height="${i == 1?"200":"85"}" class="image" src="${i==1 ?posterImage.small : posterImage.
+                        <img class="image" src="${i==1 ?posterImage.small : posterImage.
                         tiny}" title="${detailTitle}" />
                     </div>
                     ${i == 1 ? `
@@ -387,7 +378,7 @@ class AnimeRenderer {
             `<article class="card" id=${id}>
                 <div class="cardHome">
                     <div class="img">
-                        <img width="177" height="250" src="${posterImage != null?posterImage.
+                        <img src="${posterImage != null?posterImage.
                         small : 'https://media.kitsu.io/anime/poster_images/6336/small.jpg'}" title="${detailTitle}" />
                     </div>
                     <div class="title">
